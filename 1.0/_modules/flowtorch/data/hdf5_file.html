@@ -1,0 +1,782 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>flowtorch.data.hdf5_file &mdash; flowTorch 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> flowTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/linear_algebra_basics.html">Linear algebra with PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_ht.html">Optimal hard threshold for singular values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/ipsp_explorer.html">PSP data explorer and loader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_intro.html">An introduction to DMD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_cylinder.html">SVD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_cylinder.html">DMD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/cnm_cylinder.html">CNM of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_naca0012_surface.html">SVD and DMD analysis of airfoil surface data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/piv_analysis.html">Analyzing PIV data of a longitudinal vortex</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../flowtorch.html">flowtorch</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">flowTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>flowtorch.data.hdf5_file</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for flowtorch.data.hdf5_file</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Module to read and write the internal flowTorch data format.</span>
+
+<span class="sd">The :class:`HDF5Writer` class allows to write field and mesh data</span>
+<span class="sd">into an HDF5 file. It also creates an XDMF accessor file for postprocessing</span>
+<span class="sd">in ParaView. The XDMF file creation is implemented in the :class:`XDMFWriter`</span>
+<span class="sd">class. The :class:`HDF5Dataloader` class is the complementary writer for the</span>
+<span class="sd">flowTorch data format. Moreover, the :class:`FOAM2HDF5` class allows conversion</span>
+<span class="sd">of reconstructed OpenFOAM simulation cases into the HDF5-based flowTorch format.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># standard library packages</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">isfile</span><span class="p">,</span> <span class="n">exists</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">remove</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="c1"># third party packages</span>
+<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">from</span> <span class="nn">h5py</span> <span class="kn">import</span> <span class="n">File</span>
+<span class="c1"># flowtorch packages</span>
+<span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DEFAULT_DTYPE</span>
+<span class="kn">from</span> <span class="nn">.dataloader</span> <span class="kn">import</span> <span class="n">Dataloader</span>
+<span class="kn">from</span> <span class="nn">.foam_dataloader</span> <span class="kn">import</span> <span class="n">FOAMCase</span><span class="p">,</span> <span class="n">FOAMMesh</span><span class="p">,</span> <span class="n">FOAMDataloader</span><span class="p">,</span> <span class="n">POLYMESH_PATH</span><span class="p">,</span> <span class="n">MAX_LINE_HEADER</span><span class="p">,</span> <span class="n">FIELD_TYPE_DIMENSION</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">check_list_or_str</span>
+
+
+<span class="n">CONST_GROUP</span> <span class="o">=</span> <span class="s2">&quot;constant&quot;</span>
+<span class="n">VAR_GROUP</span> <span class="o">=</span> <span class="s2">&quot;variable&quot;</span>
+<span class="n">VERTICES_DS</span> <span class="o">=</span> <span class="s2">&quot;vertices&quot;</span>
+<span class="n">CONNECTIVITY_DS</span> <span class="o">=</span> <span class="s2">&quot;connectivity&quot;</span>
+<span class="n">CENTERS_DS</span> <span class="o">=</span> <span class="s2">&quot;centers&quot;</span>
+<span class="n">VOLUMES_DS</span> <span class="o">=</span> <span class="s2">&quot;volumes&quot;</span>
+<span class="n">XDMF_HEADER</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&lt;source lang=&quot;xml&quot; line=&quot;1&quot;&gt;</span>
+<span class="s2">    &lt;Domain&gt;</span>
+<span class="s2">        &lt;Grid Name=&quot;flowTorch&quot; GridType=&quot;Collection&quot; CollectionType=&quot;Temporal&quot;&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">XDMF_FOOTER</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        &lt;/Grid&gt;</span>
+<span class="s2">    &lt;/Domain&gt;</span>
+<span class="s2">&lt;/source&gt; </span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">TOPOLOGY</span> <span class="o">=</span> <span class="s2">&quot;topology&quot;</span>
+<span class="n">GEOMETRY</span> <span class="o">=</span> <span class="s2">&quot;geometry&quot;</span>
+
+<span class="n">dtype_conversion</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">pt</span><span class="o">.</span><span class="n">float32</span><span class="p">:</span> <span class="s2">&quot;f4&quot;</span><span class="p">,</span>
+    <span class="n">pt</span><span class="o">.</span><span class="n">float64</span><span class="p">:</span> <span class="s2">&quot;f8&quot;</span><span class="p">,</span>
+    <span class="n">pt</span><span class="o">.</span><span class="n">int32</span><span class="p">:</span> <span class="s2">&quot;i4&quot;</span><span class="p">,</span>
+    <span class="n">pt</span><span class="o">.</span><span class="n">int64</span><span class="p">:</span> <span class="s2">&quot;i8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;float32&quot;</span><span class="p">:</span> <span class="s2">&quot;f4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;float64&quot;</span><span class="p">:</span> <span class="s2">&quot;f8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;int32&quot;</span><span class="p">:</span> <span class="s2">&quot;i4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;int64&quot;</span><span class="p">:</span> <span class="s2">&quot;i8&quot;</span>
+<span class="p">}</span>
+
+<span class="n">xdmf_attributes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Scalar&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Vector&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Vector&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;Tensor6&quot;</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;Tensor&quot;</span>
+<span class="p">}</span>
+
+<span class="n">xdmf_dtype_conversion</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;f4&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Float&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="s2">&quot;f8&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Float&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+    <span class="s2">&quot;i4&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Int&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="s2">&quot;i8&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Int&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+    <span class="s2">&quot;float32&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Float&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="s2">&quot;float64&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Float&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+    <span class="s2">&quot;int32&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Int&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="s2">&quot;int64&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Int&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="HDF5Dataloader"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.hdf5_file.HDF5Dataloader">[docs]</a><span class="k">class</span> <span class="nc">HDF5Dataloader</span><span class="p">(</span><span class="n">Dataloader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load HDF5-based flowTorch data.</span>
+
+<span class="sd">    Examples</span>
+
+<span class="sd">    &gt;&gt;&gt; from flowtorch import HDF5Dataloader</span>
+<span class="sd">    &gt;&gt;&gt; loader = HDF5Dataloader(&quot;flowtorch.hdf5&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; times = loader.write_times</span>
+<span class="sd">    &gt;&gt;&gt; p, U = loader.load_snapshot([&quot;p&quot;, &quot;U&quot;], write_times)</span>
+<span class="sd">    &gt;&gt;&gt; vertices = loader.vertices</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_DTYPE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create HDF5Dataloader instance.</span>
+
+<span class="sd">        :param file_path: path to HDF5 file</span>
+<span class="sd">        :type file_path: str</span>
+<span class="sd">        :param dtype: tensor type of floating point values, defaults to DEFAULT_DTYPE</span>
+<span class="sd">        :type dtype: str, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not find file </span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">file_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">File</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="HDF5Dataloader.load_snapshot"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.hdf5_file.HDF5Dataloader.load_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">load_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+                      <span class="n">time</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+        <span class="n">check_list_or_str</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="s2">&quot;field_name&quot;</span><span class="p">)</span>
+        <span class="n">check_list_or_str</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">)</span>
+        <span class="c1"># load multiple fields</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">pt</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">VAR_GROUP</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][:],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">time</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">field_name</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">VAR_GROUP</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][:],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">field_name</span><span class="p">]</span>
+        <span class="c1"># load single field</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">VAR_GROUP</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][:],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">time</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">VAR_GROUP</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][:],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">write_times</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="n">VAR_GROUP</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">field_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_times</span>
+        <span class="n">field_names</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">times</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">times</span><span class="p">:</span>
+            <span class="n">field_names</span><span class="p">[</span><span class="n">time</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">VAR_GROUP</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">field_names</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">CONST_GROUP</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">CENTERS_DS</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][:],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">weights</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">CONST_GROUP</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">VOLUMES_DS</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">][:],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HDF5Writer"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.hdf5_file.HDF5Writer">[docs]</a><span class="k">class</span> <span class="nc">HDF5Writer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to write flowTorch data to HDF5 file.</span>
+
+<span class="sd">    Two types of data are supported:</span>
+<span class="sd">    - variable: (field) data that changes with times, e.g, snapshots</span>
+<span class="sd">    - constant: constant data like mesh vertices or cell volumes</span>
+
+<span class="sd">    An XDMF accessor file can be created to support visual post-processing</span>
+<span class="sd">    with ParaView and other XDMF-compatible software packages.</span>
+
+<span class="sd">    Examples</span>
+
+<span class="sd">    &gt;&gt;&gt; import torch as pt</span>
+<span class="sd">    &gt;&gt;&gt; from flowtorch.data import HDF5Writer</span>
+<span class="sd">    &gt;&gt;&gt; writer = HDF5Writer(&quot;test_file.hdf5&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; writer.write(&quot;ones&quot;, (3, 2), pt.ones((3, 2)), &quot;0.01&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; int_data =  pt.ones((3, 2), dtype=pt.int32)</span>
+<span class="sd">    &gt;&gt;&gt; writer.write(&quot;ones_int&quot;, (3, 2), int_data, dtype=pt.int32)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write flowTorch HDF5 files.</span>
+
+<span class="sd">        :param file: path and file name to HDF5 file.</span>
+<span class="sd">        :type file: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">File</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="HDF5Writer.write"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.hdf5_file.HDF5Writer.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+              <span class="n">size</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
+              <span class="n">data</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+              <span class="n">time</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+              <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_DTYPE</span>
+              <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write data to HDF5 file.</span>
+
+<span class="sd">        :param name: dataset name</span>
+<span class="sd">        :type name: str</span>
+<span class="sd">        :param size: dataset shape</span>
+<span class="sd">        :type size: tuple</span>
+<span class="sd">        :param data: data to write; if None, dataset is only allocated</span>
+<span class="sd">        :type data: pt.Tensor, optional</span>
+<span class="sd">        :param time: snapshot time, dataset if created in VAR_GROUP if present</span>
+<span class="sd">        :type time: str, optional</span>
+<span class="sd">        :param dtype: data type, defaults to pt.float32</span>
+<span class="sd">        :type dtype: str, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ds_name</span> <span class="o">=</span> <span class="n">VAR_GROUP</span> <span class="o">+</span> <span class="s2">&quot;/</span><span class="si">{:s}</span><span class="s2">/</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ds_name</span> <span class="o">=</span> <span class="n">CONST_GROUP</span> <span class="o">+</span> <span class="s2">&quot;/</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="n">dtype_conversion</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">ds_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="n">ds_name</span><span class="p">]</span>
+
+            <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span>
+                <span class="n">ds_name</span><span class="p">,</span>
+                <span class="n">size</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">dtype_conversion</span><span class="p">[</span><span class="n">dtype</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">shape_diff</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">shape_diff</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">shape_diff</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+                <span class="n">ds</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Warning: invalid data type </span><span class="si">{:s}</span><span class="s2"> for field </span><span class="si">{:s}</span><span class="s2">. Skipping field.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">dtype</span><span class="p">),</span> <span class="n">name</span><span class="p">)</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="HDF5Writer.write_xdmf"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.hdf5_file.HDF5Writer.write_xdmf">[docs]</a>    <span class="k">def</span> <span class="nf">write_xdmf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">XDMFWriter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">create_xdmf</span><span class="p">(</span><span class="s2">&quot;flowtorch.xdmf&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="FOAM2HDF5"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.hdf5_file.FOAM2HDF5">[docs]</a><span class="k">class</span> <span class="nc">FOAM2HDF5</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert reconstructed OpenFOAM cases to flowTorch HDF5 format.</span>
+
+<span class="sd">    If the simulation case is decomposed into processor folders/domains,</span>
+<span class="sd">    an info statement is displayed and no conversion is performed.</span>
+
+<span class="sd">    Examples</span>
+
+<span class="sd">    &gt;&gt;&gt; from flowtorch import DATASETS</span>
+<span class="sd">    &gt;&gt;&gt; from flowtorch.data import FOAM2HDF5</span>
+<span class="sd">    &gt;&gt;&gt; converter = FOAM2HDF5(DATASETS[&quot;of_cavity_ascii&quot;])</span>
+<span class="sd">    &gt;&gt;&gt; converter.convert(&quot;cavity.hdf5&quot;, skip_zero=True)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">DEFAULT_DTYPE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create FOAM2HDF5 converter from path.</span>
+
+<span class="sd">        :param path: path to OpenFOAM case</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :param dtype: tensor type, defaults to DEFAULT_DTYPE</span>
+<span class="sd">        :type dtype: str, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span> <span class="o">=</span> <span class="n">FOAMDataloader</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mesh_points</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="FOAM2HDF5.convert"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.hdf5_file.FOAM2HDF5.convert">[docs]</a>    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">skip_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert OpenFOAM case to flowTorch HDF5 file.</span>
+
+<span class="sd">        :param filename: name of the HDF5 file</span>
+<span class="sd">        :type filename: str</span>
+<span class="sd">        :param skip_zero: skip zero folder if true; defaults to True</span>
+<span class="sd">        :type skip_zero: bool, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_remove_file_if_present</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_distributed</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The direct conversion of distributed cases is currently not supported.</span><span class="se">\n</span><span class="s2"></span>
+<span class="s2">Workaround:</span>
+<span class="s2">    1. run reconstructPar (OpenFOAM utility)</span>
+<span class="s2">    1.1 if there is no reconstructed mesh, run also reconstructParMesh</span>
+<span class="s2">    2. remove all processor* folders</span>
+<span class="s2">    3. perform the conversion again (flowTorch)</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Writing data to file </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">HDF5Writer</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converting mesh.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_convert_mesh</span><span class="p">(</span><span class="n">writer</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converting fields.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_convert_fields</span><span class="p">(</span><span class="n">writer</span><span class="p">,</span> <span class="n">skip_zero</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Conversion finished. Writing XDMF file.&quot;</span><span class="p">)</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">write_xdmf</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_remove_file_if_present</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove output file from previous runs if present</span>
+
+<span class="sd">        :param file_path: path to file</span>
+<span class="sd">        :type file_path: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">exists</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Removing old file </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_path</span><span class="p">))</span>
+            <span class="n">remove</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_convert_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">writer</span><span class="p">:</span> <span class="n">HDF5Writer</span><span class="p">):</span>
+        <span class="n">mesh_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">POLYMESH_PATH</span>
+        <span class="n">n_cells</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">n_top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gather_mesh_information</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_vertices</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">,</span> <span class="n">job</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">VERTICES_DS</span><span class="p">,</span> <span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">data</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_topology</span><span class="p">(</span><span class="n">job</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">CONNECTIVITY_DS</span><span class="p">,</span> <span class="p">(</span><span class="n">n_top</span><span class="p">,),</span> <span class="n">data</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_cell_centers</span><span class="p">(</span><span class="n">job</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">CENTERS_DS</span><span class="p">,</span> <span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">data</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_cell_volumes</span><span class="p">(</span><span class="n">job</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">VOLUMES_DS</span><span class="p">,</span> <span class="p">(</span><span class="n">n_cells</span><span class="p">,),</span> <span class="n">data</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_gather_mesh_information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Gather information for parallel writing of mesh data.</span>
+
+
+<span class="sd">        :param mesh_path: path to polyMesh folder</span>
+<span class="sd">        :type mesh_path: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">_mesh</span><span class="o">.</span><span class="n">_get_n_cells</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">)</span>
+        <span class="n">n_points_faces</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">_mesh</span><span class="o">.</span><span class="n">_parse_faces</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">)</span>
+        <span class="n">owners</span><span class="p">,</span> <span class="n">neighbors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">_mesh</span><span class="o">.</span><span class="n">_parse_owners_and_neighbors</span><span class="p">(</span>
+            <span class="n">mesh_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mesh_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">_mesh</span><span class="o">.</span><span class="n">_parse_points</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">)</span>
+
+        <span class="n">cell_faces</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_cells</span><span class="p">)]</span>
+        <span class="n">n_faces_cell</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="n">n_face_labels</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">owner</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">owners</span><span class="p">):</span>
+            <span class="n">cell_faces</span><span class="p">[</span><span class="n">owner</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">faces</span><span class="p">[</span><span class="n">i</span><span class="p">][:</span><span class="n">n_points_faces</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+            <span class="n">n_face_labels</span> <span class="o">+=</span> <span class="n">n_points_faces</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">n_faces_cell</span><span class="p">[</span><span class="n">owner</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">neigh</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">neighbors</span><span class="p">):</span>
+            <span class="n">cell_faces</span><span class="p">[</span><span class="n">neigh</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">faces</span><span class="p">[</span><span class="n">i</span><span class="p">][:</span><span class="n">n_points_faces</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+            <span class="n">n_face_labels</span> <span class="o">+=</span> <span class="n">n_points_faces</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">n_faces_cell</span><span class="p">[</span><span class="n">neigh</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">topology_length</span> <span class="o">=</span> <span class="n">n_cells</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> \
+            <span class="n">pt</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">n_faces_cell</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">+</span> <span class="n">n_face_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">topology_length</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="n">marker</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">faces</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cell_faces</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="p">[</span><span class="n">marker</span><span class="p">]</span> <span class="o">=</span> <span class="mi">16</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="p">[</span><span class="n">marker</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
+            <span class="n">marker</span> <span class="o">+=</span> <span class="mi">2</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">)):</span>
+                <span class="n">n_labels</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="p">[</span><span class="n">marker</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_labels</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="p">[</span><span class="n">marker</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">marker</span><span class="o">+</span><span class="mi">1</span><span class="o">+</span><span class="n">n_labels</span><span class="p">]</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">marker</span> <span class="o">+=</span> <span class="n">n_labels</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">n_cells</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mesh_points</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_get_topology</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topology</span>
+
+    <span class="k">def</span> <span class="nf">_get_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mesh_points</span>
+
+    <span class="k">def</span> <span class="nf">_get_cell_centers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">_mesh</span><span class="o">.</span><span class="n">get_cell_centers</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_get_cell_volumes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">_mesh</span><span class="o">.</span><span class="n">get_cell_volumes</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_convert_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">writer</span><span class="p">:</span> <span class="n">HDF5Writer</span><span class="p">,</span> <span class="n">skip_zero</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert convert OpenFOAM fields to HDF5.</span>
+
+<span class="sd">        :param writer: HDF5 writer</span>
+<span class="sd">        :type writer: :class:`HDF5Writer`</span>
+<span class="sd">        :param skip_zero: skip zero folder if true</span>
+<span class="sd">        :type skip_zero: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gather_field_information</span><span class="p">(</span><span class="n">skip_zero</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">job</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">field_info</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Converting field </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> at time </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, dimension </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_field</span><span class="p">(</span><span class="o">*</span><span class="n">info</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">job</span><span class="o">=</span><span class="n">job</span><span class="p">)</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">info</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">data</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_gather_field_information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">skip_zero</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">list</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Gather field information for parallel writing.</span>
+
+<span class="sd">        - check if field type is supported</span>
+<span class="sd">        - determine data size</span>
+
+<span class="sd">        :param skip_zero: skip zero folder if true</span>
+<span class="sd">        :type skip_zero: bool</span>
+<span class="sd">        :return: list of all fields; each list element is a list</span>
+<span class="sd">            with the entries [name, time, shape]</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">load_n_lines</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">lines</span>
+
+        <span class="n">field_info</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">mesh_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">POLYMESH_PATH</span>
+        <span class="n">n_cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">_mesh</span><span class="o">.</span><span class="n">_get_n_cells</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">)</span>
+        <span class="n">all_fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">field_names</span>
+        <span class="k">if</span> <span class="n">skip_zero</span> <span class="ow">and</span> <span class="s2">&quot;0&quot;</span> <span class="ow">in</span> <span class="n">all_fields</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">del</span> <span class="n">all_fields</span><span class="p">[</span><span class="s2">&quot;0&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">all_fields</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">all_fields</span><span class="p">[</span><span class="n">time</span><span class="p">]:</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">build_file_path</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="n">load_n_lines</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">MAX_LINE_HEADER</span><span class="p">)</span>
+                <span class="n">field_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">_field_type</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">field_type</span> <span class="ow">in</span> <span class="n">FIELD_TYPE_DIMENSION</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="n">field_info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">[</span><span class="n">name</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="n">FIELD_TYPE_DIMENSION</span><span class="p">[</span><span class="n">field_type</span><span class="p">])])</span>
+        <span class="k">return</span> <span class="n">field_info</span>
+
+    <span class="k">def</span> <span class="nf">_load_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">job</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="XDMFWriter"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.hdf5_file.XDMFWriter">[docs]</a><span class="k">class</span> <span class="nc">XDMFWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create XDMF file to open flowTorch HDF5 files in ParaView.</span>
+
+<span class="sd">    Example</span>
+
+<span class="sd">    &gt;&gt;&gt; from flowtorch.data import XDMFWriter</span>
+<span class="sd">    &gt;&gt;&gt; writer = XDMFWriter(&quot;flowtorch.hdf5&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; writer.create_xdmf(&quot;flowtorch.xdmf&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hdf5_file</span><span class="p">:</span> <span class="n">File</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create XDMFWriter instance from path and file.</span>
+
+<span class="sd">        :param file_path: path to DHF5 file</span>
+<span class="sd">        :type file_path: str</span>
+<span class="sd">        :param hdf5_file: HDF5 file instance</span>
+<span class="sd">        :type hdf5_file: File</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">file_path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">file_path</span><span class="p">[:</span><span class="n">file_path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hdf5_filename</span> <span class="o">=</span> <span class="n">file_path</span><span class="p">[</span><span class="n">file_path</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hdf5_filename</span> <span class="o">=</span> <span class="n">file_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file</span> <span class="o">=</span> <span class="n">hdf5_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_n_cells</span><span class="p">()</span>
+
+<div class="viewcode-block" id="XDMFWriter.from_filepath"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.hdf5_file.XDMFWriter.from_filepath">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_filepath</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create XDMFWriter from file path.</span>
+
+<span class="sd">        :param file_path: path to HDF5 file</span>
+<span class="sd">        :type file_path: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">file_path</span><span class="p">,</span>
+            <span class="n">File</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_n_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">n_cells</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;/</span><span class="si">{:s}</span><span class="s2">/</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">CONST_GROUP</span><span class="p">,</span> <span class="n">VOLUMES_DS</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">:</span>
+            <span class="n">n_cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="n">location</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">n_cells</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;XDMF warning: could not determine number of cells.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">n_cells</span>
+
+    <span class="k">def</span> <span class="nf">_add_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot;&lt;Grid Name=</span><span class="se">\&quot;</span><span class="s2">Grid</span><span class="se">\&quot;</span><span class="s2"> GridType=</span><span class="se">\&quot;</span><span class="s2">Uniform</span><span class="se">\&quot;</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">grid</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_topology</span><span class="p">(</span><span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">grid</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_geometry</span><span class="p">(</span><span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">grid</span> <span class="o">+=</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="s2">&quot;&lt;Time Value=</span><span class="se">\&quot;</span><span class="si">{:s}</span><span class="se">\&quot;</span><span class="s2">/&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_attributes</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
+                <span class="n">grid</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_attribute</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">grid</span> <span class="o">+=</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot;&lt;/Grid&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">grid</span>
+
+    <span class="k">def</span> <span class="nf">_find_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;/</span><span class="si">{:s}</span><span class="s2">/</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">VAR_GROUP</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="n">location</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">valid_attr</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="n">loc</span> <span class="o">=</span> <span class="n">location</span> <span class="o">+</span> <span class="s2">&quot;/</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="n">first_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="n">loc</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">first_dim</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_cells</span><span class="p">:</span>
+                <span class="n">valid_attr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">valid_attr</span>
+
+    <span class="k">def</span> <span class="nf">_add_topology</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">topology</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> \
+            <span class="s2">&quot;&lt;Topology Name=</span><span class="se">\&quot;</span><span class="si">{:s}</span><span class="se">\&quot;</span><span class="s2"> TopologyType=</span><span class="se">\&quot;</span><span class="s2">Mixed</span><span class="se">\&quot;</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">TOPOLOGY</span><span class="p">)</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hdf5_filename</span> <span class="o">+</span> \
+            <span class="s2">&quot;:/</span><span class="si">{:s}</span><span class="s2">/</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">CONST_GROUP</span><span class="p">,</span> <span class="n">CONNECTIVITY_DS</span><span class="p">)</span>
+        <span class="n">topology</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_dataitem</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">topology</span> <span class="o">+=</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot;&lt;/Topology&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">topology</span>
+
+    <span class="k">def</span> <span class="nf">_add_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot;&lt;Geometry GeometryType=</span><span class="se">\&quot;</span><span class="s2">XYZ</span><span class="se">\&quot;</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hdf5_filename</span> <span class="o">+</span> \
+            <span class="s2">&quot;:/</span><span class="si">{:s}</span><span class="s2">/</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">CONST_GROUP</span><span class="p">,</span> <span class="n">VERTICES_DS</span><span class="p">)</span>
+        <span class="n">geometry</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_dataitem</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">geometry</span> <span class="o">+=</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot;&lt;/Geometry&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">geometry</span>
+
+    <span class="k">def</span> <span class="nf">_add_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hdf5_filename</span> <span class="o">+</span> <span class="s2">&quot;:/</span><span class="si">{:s}</span><span class="s2">/</span><span class="si">{:s}</span><span class="s2">/</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">VAR_GROUP</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">name</span>
+        <span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="n">location</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">tensor_type</span> <span class="o">=</span> <span class="n">xdmf_attributes</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)]</span>
+        <span class="n">attribute</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot;&lt;Attribute Name=</span><span class="se">\&quot;</span><span class="si">{:s}</span><span class="se">\&quot;</span><span class="s2"> AttributeType=</span><span class="se">\&quot;</span><span class="si">{:s}</span><span class="se">\&quot;</span><span class="s2"> Center=</span><span class="se">\&quot;</span><span class="s2">Cell</span><span class="se">\&quot;</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">tensor_type</span>
+        <span class="p">)</span>
+        <span class="n">attribute</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_dataitem</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">attribute</span> <span class="o">+=</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot;&lt;/Attribute&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">attribute</span>
+
+    <span class="k">def</span> <span class="nf">_add_dataitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>  <span class="n">offset</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">path_in_file</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="n">path_in_file</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">dimensions</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">])</span>
+        <span class="n">dtype</span><span class="p">,</span> <span class="n">precision</span> <span class="o">=</span> <span class="n">xdmf_dtype_conversion</span><span class="p">[</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="n">path_in_file</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">dataitem</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot;&lt;DataItem Dimensions=</span><span class="se">\&quot;</span><span class="si">{:s}</span><span class="se">\&quot;</span><span class="s2"> NumberType=</span><span class="se">\&quot;</span><span class="si">{:s}</span><span class="se">\&quot;</span><span class="s2"> Precision=</span><span class="se">\&quot;</span><span class="si">{:d}</span><span class="se">\&quot;</span><span class="s2"> Format=</span><span class="se">\&quot;</span><span class="s2">HDF</span><span class="se">\&quot;</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">dimensions</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">precision</span>
+        <span class="p">)</span>
+        <span class="n">dataitem</span> <span class="o">+=</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="si">{:s}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+        <span class="n">dataitem</span> <span class="o">+=</span> <span class="n">offset</span> <span class="o">+</span> <span class="s2">&quot;&lt;/DataItem&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">dataitem</span>
+
+<div class="viewcode-block" id="XDMFWriter.create_xdmf"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.hdf5_file.XDMFWriter.create_xdmf">[docs]</a>    <span class="k">def</span> <span class="nf">create_xdmf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param filename: [description]</span>
+<span class="sd">        :type filename: [type]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xdmf_str</span> <span class="o">=</span> <span class="n">XDMF_HEADER</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">[</span><span class="n">VAR_GROUP</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">times</span><span class="p">:</span>
+                <span class="n">xdmf_str</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_grid</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="mi">12</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xdmf_str</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_grid</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="mi">12</span><span class="p">)</span>
+        <span class="n">xdmf_str</span> <span class="o">=</span> <span class="n">xdmf_str</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># remove last linebreak</span>
+        <span class="n">xdmf_str</span> <span class="o">+=</span> <span class="n">XDMF_FOOTER</span>
+
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hdf5_filename</span><span class="p">:</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hdf5_filename</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">_hdf5_filename</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span>
+                    <span class="s2">&quot;.&quot;</span><span class="p">)]</span> <span class="o">+</span> <span class="s2">&quot;.xdmf&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hdf5_filename</span> <span class="o">+</span> <span class="s2">&quot;.xdmf&quot;</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Writing file </span><span class="si">{:s}</span><span class="s2"> as wrapper for </span><span class="si">{:s}</span><span class="s2"> at location </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hdf5_filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">xdmf_str</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, flowTorch contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1614 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>flowtorch.data &mdash; flowTorch 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="flowtorch.analysis" href="flowtorch.analysis.html" />
+    <link rel="prev" title="flowtorch" href="flowtorch.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> flowTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/linear_algebra_basics.html">Linear algebra with PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/svd_ht.html">Optimal hard threshold for singular values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/ipsp_explorer.html">PSP data explorer and loader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/dmd_intro.html">An introduction to DMD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/svd_cylinder.html">SVD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/dmd_cylinder.html">DMD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/cnm_cylinder.html">CNM of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/dmd_naca0012_surface.html">SVD and DMD analysis of airfoil surface data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/piv_analysis.html">Analyzing PIV data of a longitudinal vortex</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Python API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="flowtorch.html">flowtorch</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">flowtorch.data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.data.dataloader">flowtorch.data.dataloader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.data.foam_dataloader">flowtorch.data.foam_dataloader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.data.hdf5_file">flowtorch.data.hdf5_file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.data.psp_dataloader">flowtorch.data.psp_dataloader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.data.vtk_dataloader">flowtorch.data.vtk_dataloader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.data.csv_dataloader">flowtorch.data.csv_dataloader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.data.tau_dataloader">flowtorch.data.tau_dataloader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.data.selection_tools">flowtorch.data.selection_tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.data.utils">flowtorch.data.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="flowtorch.analysis.html">flowtorch.analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flowtorch.rom.html">flowtorch.rom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flowtorch.html#module-flowtorch.constants">flowtorch.constants</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">flowTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="flowtorch.html">flowtorch</a> &raquo;</li>
+        
+      <li>flowtorch.data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/flowtorch.data.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="flowtorch-data">
+<h1>flowtorch.data<a class="headerlink" href="#flowtorch-data" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-flowtorch.data.dataloader">
+<span id="flowtorch-data-dataloader"></span><h2>flowtorch.data.dataloader<a class="headerlink" href="#module-flowtorch.data.dataloader" title="Permalink to this headline">¶</a></h2>
+<p>Definition of a common interface for all dataloaders.</p>
+<p>This abstract base class should be used as parent class when
+defining new dataloaders, e.g., to support additional file
+formats.</p>
+<dl class="py class">
+<dt id="flowtorch.data.dataloader.Dataloader">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.data.dataloader.</code><code class="sig-name descname">Dataloader</code><a class="reference internal" href="_modules/flowtorch/data/dataloader.html#Dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.dataloader.Dataloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Abstract base class to define a common interface for dataloaders.</p>
+<dl class="py method">
+<dt id="flowtorch.data.dataloader.Dataloader.field_names">
+<em class="property">abstract property </em><code class="sig-name descname">field_names</code><a class="headerlink" href="#flowtorch.data.dataloader.Dataloader.field_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary containing availale fields</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dictionary with write times as keys and
+field names as values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[str, List[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.dataloader.Dataloader.load_snapshot">
+<em class="property">abstract </em><code class="sig-name descname">load_snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">field_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>List<span class="p">[</span>torch.Tensor<span class="p">]</span><span class="p">, </span>torch.Tensor<span class="p">]</span><a class="reference internal" href="_modules/flowtorch/data/dataloader.html#Dataloader.load_snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.dataloader.Dataloader.load_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load one or more snapshots of one or more fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field_name</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – name of the field to load</p></li>
+<li><p><strong>time</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – snapshot time</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>field values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[List[Tensor], Tensor]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.dataloader.Dataloader.vertices">
+<em class="property">abstract property </em><code class="sig-name descname">vertices</code><a class="headerlink" href="#flowtorch.data.dataloader.Dataloader.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the vertices at which field values are defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>coordinates of vertices</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.dataloader.Dataloader.weights">
+<em class="property">abstract property </em><code class="sig-name descname">weights</code><a class="headerlink" href="#flowtorch.data.dataloader.Dataloader.weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the weights for field values.</p>
+<p>In a standard finite volume method, the weights are
+the cell volumes. For other methods, the definition
+of the weight is described in the Dataloader implementation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>weight for field values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.dataloader.Dataloader.write_times">
+<em class="property">abstract property </em><code class="sig-name descname">write_times</code><a class="headerlink" href="#flowtorch.data.dataloader.Dataloader.write_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Available write times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of available write times</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flowtorch.data.foam_dataloader">
+<span id="flowtorch-data-foam-dataloader"></span><h2>flowtorch.data.foam_dataloader<a class="headerlink" href="#module-flowtorch.data.foam_dataloader" title="Permalink to this headline">¶</a></h2>
+<p>Classes to work with OpenFOAM cases, meshes, and fields.</p>
+<p>The <a class="reference internal" href="#flowtorch.data.foam_dataloader.FOAMDataloader" title="flowtorch.data.foam_dataloader.FOAMDataloader"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOAMDataloader</span></code></a> class allows to load fields from
+an OpenFOAM simulation folder. Currently, only the ESI-OpenCFD
+branch of OpenFOAM is supported (v1912, v2006). The <a class="reference internal" href="#flowtorch.data.foam_dataloader.FOAMCase" title="flowtorch.data.foam_dataloader.FOAMCase"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOAMCase</span></code></a>
+class assembles information about the folder and file structure
+of a simulation. The <a class="reference internal" href="#flowtorch.data.foam_dataloader.FOAMMesh" title="flowtorch.data.foam_dataloader.FOAMMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOAMMesh</span></code></a> allows loading and parsing
+the finite volume mesh.</p>
+<dl class="py class">
+<dt id="flowtorch.data.foam_dataloader.FOAMCase">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.data.foam_dataloader.</code><code class="sig-name descname">FOAMCase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to access and parse OpenFOAM cases.</p>
+<p>Most of the attributes and methods are private because they are
+typically accessed via a <a class="reference internal" href="#flowtorch.data.foam_dataloader.FOAMDataloader" title="flowtorch.data.foam_dataloader.FOAMDataloader"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOAMDataloader</span></code></a> instance.</p>
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMCase._eval_distributed">
+<code class="sig-name descname">_eval_distributed</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMCase._eval_distributed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMCase._eval_distributed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the simulation case is distributed (parallel).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Collated output is currently not supported/not detected.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><cite>True</cite> if distributed</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMCase._eval_processors">
+<code class="sig-name descname">_eval_processors</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMCase._eval_processors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMCase._eval_processors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get number of processor folders.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>number of processor folders or 1 for serial runs</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMCase._eval_write_times">
+<code class="sig-name descname">_eval_write_times</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>str<span class="p">]</span><a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMCase._eval_write_times"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMCase._eval_write_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assemble a list of all write times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a list of all time folders</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list(str)</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For distributed simulations, it is assumed that all processor
+folders contain the same time folders.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMCase._eval_field_names">
+<code class="sig-name descname">_eval_field_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMCase._eval_field_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMCase._eval_field_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a dictionary of all fields and files in all time folders.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For distributed cases, only <em>processor0</em> is evaluated. The fields
+for all other processors are assumed to be the same.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dictionary with write times as keys and a list of field names
+for each time as values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMCase.build_file_path">
+<code class="sig-name descname">build_file_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">field_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">processor</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMCase.build_file_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMCase.build_file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the path to file inside the time folder of a simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field_name</strong> (<em>str</em>) – name of the field or file, e.g., “U” or “p”</p></li>
+<li><p><strong>time</strong> (<em>str</em>) – name of the time folder, e.g., “0.01”</p></li>
+<li><p><strong>processor</strong> (<em>int</em><em>, </em><em>optional</em>) – processor folder to load the data from; ignored
+in serial simulation cases; defaults to <cite>0</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>path to file inside a time folder</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">FOAMCase</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">case</span> <span class="o">=</span> <span class="n">FOAMCase</span><span class="p">(</span><span class="s2">&quot;./cavity_binary_parallel/&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">case</span><span class="o">.</span><span class="n">_distributed</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">case</span><span class="o">.</span><span class="n">_processors</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">case</span><span class="o">.</span><span class="n">_time_folders</span>
+<span class="go">[&#39;0&#39;, &#39;0.1&#39;, &#39;0.2&#39;, &#39;0.3&#39;, &#39;0.4&#39;, &#39;0.5&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">case</span><span class="o">.</span><span class="n">_field_names</span>
+<span class="go">{&#39;0&#39;: [&#39;U&#39;, &#39;p&#39;], &#39;0.1&#39;: [&#39;U&#39;, &#39;p&#39;, &#39;phi&#39;], &#39;0.2&#39;: [&#39;U&#39;, &#39;p&#39;, &#39;phi&#39;], &#39;0.3&#39;: [</span>
+<span class="go">    &#39;U&#39;, &#39;p&#39;, &#39;phi&#39;], &#39;0.4&#39;: [&#39;U&#39;, &#39;p&#39;, &#39;phi&#39;], &#39;0.5&#39;: [&#39;U&#39;, &#39;p&#39;, &#39;phi&#39;]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">case</span><span class="o">.</span><span class="n">build_file_path</span><span class="p">(</span><span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;0.1&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">&#39;./cavity_binary_parallel/processor1/0.1/U&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="flowtorch.data.foam_dataloader.FOAMDataloader">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.data.foam_dataloader.</code><code class="sig-name descname">FOAMDataloader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMDataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMDataloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flowtorch.data.dataloader.Dataloader" title="flowtorch.data.dataloader.Dataloader"><code class="xref py py-class docutils literal notranslate"><span class="pre">flowtorch.data.dataloader.Dataloader</span></code></a></p>
+<p>Load internal fields and mesh properties of OpenFOAM cases.</p>
+<p>The project <a class="reference external" href="https://github.com/xu-xianghua/ofpp">ofpp</a> by Xu Xianghua has been a great
+help to implement some of the methods.</p>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DATASETS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">FOAMDataloader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="n">DATASETS</span><span class="p">[</span><span class="s2">&quot;of_cavity_ascii_parallel&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">FOAMDataloader</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">write_times</span>
+<span class="go">[&#39;0&#39;, &#39;0.1&#39;, &#39;0.2&#39;, &#39;0.3&#39;, &#39;0.4&#39;, &#39;0.5&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">field_names</span>
+<span class="go">{&#39;0&#39;: [&#39;p&#39;, &#39;U&#39;], &#39;0.1&#39;: [&#39;p&#39;, &#39;phi&#39;, &#39;U&#39;], &#39;0.2&#39;: [&#39;p&#39;, &#39;phi&#39;, &#39;U&#39;], &#39;0.3&#39;: [</span>
+<span class="go">    &#39;p&#39;, &#39;phi&#39;, &#39;U&#39;], &#39;0.4&#39;: [&#39;p&#39;, &#39;phi&#39;, &#39;U&#39;], &#39;0.5&#39;: [&#39;p&#39;, &#39;phi&#39;, &#39;U&#39;]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">vertices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">tensor([[0.0025, 0.0025, 0.0050],</span>
+<span class="go">        [0.0075, 0.0025, 0.0050],</span>
+<span class="go">        [0.0125, 0.0025, 0.0050]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">weights</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># cell volumes</span>
+<span class="go">tensor([2.5000e-07, 2.5000e-07, 2.5000e-07])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;0.5&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">torch.Size([400])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">tensor([ 4.2993e-06, -5.8226e-03, -1.2960e-02])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMDataloader.field_names">
+<em class="property">property </em><code class="sig-name descname">field_names</code><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMDataloader.field_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access to the available field names for all available write times via
+<a class="reference internal" href="#flowtorch.data.foam_dataloader.FOAMCase._eval_field_names" title="flowtorch.data.foam_dataloader.FOAMCase._eval_field_names"><code class="xref py py-func docutils literal notranslate"><span class="pre">FOAMCase._eval_field_names()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Getter</dt>
+<dd class="field-odd"><p>returns names of availabe fields</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>Dict[str, List[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMDataloader.load_snapshot">
+<code class="sig-name descname">load_snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">field_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>List<span class="p">[</span>torch.Tensor<span class="p">]</span><span class="p">, </span>torch.Tensor<span class="p">]</span><a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMDataloader.load_snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMDataloader.load_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load one or more snapshots of one or more fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field_name</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – name of the field to load</p></li>
+<li><p><strong>time</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – snapshot time</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>field values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[List[Tensor], Tensor]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMDataloader.vertices">
+<em class="property">property </em><code class="sig-name descname">vertices</code><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMDataloader.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>In OpenFOAM, field for post-processing are defined at the control volume’s
+center (<em>vol&lt;Type&gt;Fields</em>). Therefore, the <cite>vertices</cite> property enables access
+to cell center locations via <a class="reference internal" href="#flowtorch.data.foam_dataloader.FOAMMesh" title="flowtorch.data.foam_dataloader.FOAMMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOAMMesh</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Getter</dt>
+<dd class="field-odd"><p>returns control volume centers</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>pt.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMDataloader.weights">
+<em class="property">property </em><code class="sig-name descname">weights</code><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMDataloader.weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>For results obtained using a finite volume method with co-located
+arrangement (OpenFOAM), a sensible weight for a cell-centered value
+is the cell volume. The cell volumes are availabe via the
+<a class="reference internal" href="#flowtorch.data.foam_dataloader.FOAMMesh" title="flowtorch.data.foam_dataloader.FOAMMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOAMMesh</span></code></a> class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Getter</dt>
+<dd class="field-odd"><p>returns cell volumes</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>pt.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMDataloader.write_times">
+<em class="property">property </em><code class="sig-name descname">write_times</code><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMDataloader.write_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access to available snapshot/write times via <a class="reference internal" href="#flowtorch.data.foam_dataloader.FOAMCase._eval_write_times" title="flowtorch.data.foam_dataloader.FOAMCase._eval_write_times"><code class="xref py py-func docutils literal notranslate"><span class="pre">FOAMCase._eval_write_times()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Getter</dt>
+<dd class="field-odd"><p>returns the available write times</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="flowtorch.data.foam_dataloader.FOAMMesh">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.data.foam_dataloader.</code><code class="sig-name descname">FOAMMesh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">case</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#flowtorch.data.foam_dataloader.FOAMCase" title="flowtorch.data.foam_dataloader.FOAMCase">flowtorch.data.foam_dataloader.FOAMCase</a></span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMMesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMMesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to load and process OpenFOAM meshes.</p>
+<p>OpenFOAM stores the finite volume mesh as a collection of several
+files located in <em>constant/polyMesh</em> or in <em>processorXX/constant/polyMesh</em>
+for serial and distributed cases, respectively. Even though OpenFOAM
+is a cell-centered finite volume method, the cell-centers and volumes are
+not explicitly stored. Instead, a so-called face-addressing storage is used.
+All internal faces have an owner cell and a neighbor cell. Boundary faces only
+have an owner cell. The mesh attributes are defined in several files:</p>
+<ul class="simple">
+<li><p><strong>points</strong>: list of vertices forming cell faces; the list index of a point is used as label</p></li>
+<li><p><strong>faces</strong>: list of all cell faces defined as point labels</p></li>
+<li><p><strong>owner</strong>: list of cell labels that are face owners</p></li>
+<li><p><strong>neighbour</strong>: list of cell labels that are face neighbors; BE spelling</p></li>
+<li><p><strong>boundary</strong>: definition of faces belonging to a patch</p></li>
+</ul>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">FOAMMesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">FOAMMesh</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">centers</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_cell_centers</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">centers</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="go">torch.Size([400, 3])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">centers</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">tensor([[0.0025, 0.0025, 0.0050],</span>
+<span class="go">        [0.0075, 0.0025, 0.0050]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">volumes</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">get_cell_volumes</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">volumes</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="go">torch.Size([400])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">volumes</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">tensor([2.5000e-07, 2.5000e-07])</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Dynamically changing meshes are currently not supported.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Distributed meshes may be parsed and concatenated, but
+the cell centers and volumes won’t have the same ordering
+as when computed from a reconstructed mesh.</p>
+</div>
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMMesh._compute_face_centers_and_areas">
+<code class="sig-name descname">_compute_face_centers_and_areas</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">points</span><span class="p">:</span> <span class="n">torch.Tensor</span></em>, <em class="sig-param"><span class="n">faces</span><span class="p">:</span> <span class="n">torch.Tensor</span></em>, <em class="sig-param"><span class="n">n_points_faces</span><span class="p">:</span> <span class="n">torch.Tensor</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>torch.Tensor<span class="p">, </span>torch.Tensor<span class="p">]</span><a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMMesh._compute_face_centers_and_areas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMMesh._compute_face_centers_and_areas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute face centers and areas.</p>
+<p>The implemented algorithm is close to the one in <a class="reference external" href="https://www.openfoam.com/documentation/guides/latest/api/primitiveMeshFaceCentresAndAreas_8C_source.html">makeFaceCentresAndAreas</a>.
+The main steps are:</p>
+<ol class="arabic simple">
+<li><p>compute an estimate of the face center by averaging all face vertices</p></li>
+<li><p>decompose the face into triangles</p></li>
+<li><p>compute the sum over all area-weighted triangle centroids, triangle areas,
+and face area normal vectors</p></li>
+<li><p>compute the face centroid and face area normal from the (weighted) sums</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMMesh._compute_cell_centers_and_volumes">
+<code class="sig-name descname">_compute_cell_centers_and_volumes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mesh_path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>torch.Tensor<span class="p">, </span>torch.Tensor<span class="p">]</span><a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMMesh._compute_cell_centers_and_volumes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMMesh._compute_cell_centers_and_volumes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the cell centers and volumes of an OpenFOAM mesh.</p>
+<p>The implemented algorithm is close to the one in <a class="reference external" href="https://www.openfoam.com/documentation/guides/latest/api/primitiveMeshCellCentresAndVols_8C_source.html">makeCellCentresAndVols</a>.
+The following steps are involved:</p>
+<ol class="arabic simple">
+<li><p>compute an estimate of the cell center as the average over all face centers</p></li>
+<li><p>compute centroids and volumes of all pyramids formed by the cell faces and
+and the center estimate</p></li>
+<li><p>the cell volume equals the sum over all pyramid volumes</p></li>
+<li><p>the cell center is the volume-weighted average of all pyramid centroids</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMMesh.from_path">
+<em class="property">classmethod </em><code class="sig-name descname">from_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMMesh.from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMMesh.from_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create FOAMMesh object based on path to OpenFOAM simulation case.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMMesh.get_cell_centers">
+<code class="sig-name descname">get_cell_centers</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; torch.Tensor<a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMMesh.get_cell_centers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMMesh.get_cell_centers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return or compute and return control volume centers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>control volume centers</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pt.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.foam_dataloader.FOAMMesh.get_cell_volumes">
+<code class="sig-name descname">get_cell_volumes</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; torch.Tensor<a class="reference internal" href="_modules/flowtorch/data/foam_dataloader.html#FOAMMesh.get_cell_volumes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.foam_dataloader.FOAMMesh.get_cell_volumes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return or compute and return cell volumes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>cell volumes</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pt.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flowtorch.data.hdf5_file">
+<span id="flowtorch-data-hdf5-file"></span><h2>flowtorch.data.hdf5_file<a class="headerlink" href="#module-flowtorch.data.hdf5_file" title="Permalink to this headline">¶</a></h2>
+<p>Module to read and write the internal flowTorch data format.</p>
+<p>The <a class="reference internal" href="#flowtorch.data.hdf5_file.HDF5Writer" title="flowtorch.data.hdf5_file.HDF5Writer"><code class="xref py py-class docutils literal notranslate"><span class="pre">HDF5Writer</span></code></a> class allows to write field and mesh data
+into an HDF5 file. It also creates an XDMF accessor file for postprocessing
+in ParaView. The XDMF file creation is implemented in the <a class="reference internal" href="#flowtorch.data.hdf5_file.XDMFWriter" title="flowtorch.data.hdf5_file.XDMFWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">XDMFWriter</span></code></a>
+class. The <a class="reference internal" href="#flowtorch.data.hdf5_file.HDF5Dataloader" title="flowtorch.data.hdf5_file.HDF5Dataloader"><code class="xref py py-class docutils literal notranslate"><span class="pre">HDF5Dataloader</span></code></a> class is the complementary writer for the
+flowTorch data format. Moreover, the <a class="reference internal" href="#flowtorch.data.hdf5_file.FOAM2HDF5" title="flowtorch.data.hdf5_file.FOAM2HDF5"><code class="xref py py-class docutils literal notranslate"><span class="pre">FOAM2HDF5</span></code></a> class allows conversion
+of reconstructed OpenFOAM simulation cases into the HDF5-based flowTorch format.</p>
+<dl class="py class">
+<dt id="flowtorch.data.hdf5_file.FOAM2HDF5">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.data.hdf5_file.</code><code class="sig-name descname">FOAM2HDF5</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="o">=</span><span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/hdf5_file.html#FOAM2HDF5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.hdf5_file.FOAM2HDF5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Convert reconstructed OpenFOAM cases to flowTorch HDF5 format.</p>
+<p>If the simulation case is decomposed into processor folders/domains,
+an info statement is displayed and no conversion is performed.</p>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DATASETS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">FOAM2HDF5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">converter</span> <span class="o">=</span> <span class="n">FOAM2HDF5</span><span class="p">(</span><span class="n">DATASETS</span><span class="p">[</span><span class="s2">&quot;of_cavity_ascii&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">converter</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;cavity.hdf5&quot;</span><span class="p">,</span> <span class="n">skip_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="flowtorch.data.hdf5_file.FOAM2HDF5.convert">
+<code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">skip_zero</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/hdf5_file.html#FOAM2HDF5.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.hdf5_file.FOAM2HDF5.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert OpenFOAM case to flowTorch HDF5 file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – name of the HDF5 file</p></li>
+<li><p><strong>skip_zero</strong> (<em>bool</em><em>, </em><em>optional</em>) – skip zero folder if true; defaults to True</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="flowtorch.data.hdf5_file.HDF5Dataloader">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.data.hdf5_file.</code><code class="sig-name descname">HDF5Dataloader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/hdf5_file.html#HDF5Dataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.hdf5_file.HDF5Dataloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flowtorch.data.dataloader.Dataloader" title="flowtorch.data.dataloader.Dataloader"><code class="xref py py-class docutils literal notranslate"><span class="pre">flowtorch.data.dataloader.Dataloader</span></code></a></p>
+<p>Load HDF5-based flowTorch data.</p>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">HDF5Dataloader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">HDF5Dataloader</span><span class="p">(</span><span class="s2">&quot;flowtorch.hdf5&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">times</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">write_times</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">([</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">],</span> <span class="n">write_times</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">vertices</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="flowtorch.data.hdf5_file.HDF5Dataloader.field_names">
+<em class="property">property </em><code class="sig-name descname">field_names</code><a class="headerlink" href="#flowtorch.data.hdf5_file.HDF5Dataloader.field_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary containing availale fields</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dictionary with write times as keys and
+field names as values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[str, List[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.hdf5_file.HDF5Dataloader.load_snapshot">
+<code class="sig-name descname">load_snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">field_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>List<span class="p">[</span>torch.Tensor<span class="p">]</span><span class="p">, </span>torch.Tensor<span class="p">]</span><a class="reference internal" href="_modules/flowtorch/data/hdf5_file.html#HDF5Dataloader.load_snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.hdf5_file.HDF5Dataloader.load_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load one or more snapshots of one or more fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field_name</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – name of the field to load</p></li>
+<li><p><strong>time</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – snapshot time</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>field values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[List[Tensor], Tensor]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.hdf5_file.HDF5Dataloader.vertices">
+<em class="property">property </em><code class="sig-name descname">vertices</code><a class="headerlink" href="#flowtorch.data.hdf5_file.HDF5Dataloader.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the vertices at which field values are defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>coordinates of vertices</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.hdf5_file.HDF5Dataloader.weights">
+<em class="property">property </em><code class="sig-name descname">weights</code><a class="headerlink" href="#flowtorch.data.hdf5_file.HDF5Dataloader.weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the weights for field values.</p>
+<p>In a standard finite volume method, the weights are
+the cell volumes. For other methods, the definition
+of the weight is described in the Dataloader implementation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>weight for field values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.hdf5_file.HDF5Dataloader.write_times">
+<em class="property">property </em><code class="sig-name descname">write_times</code><a class="headerlink" href="#flowtorch.data.hdf5_file.HDF5Dataloader.write_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Available write times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of available write times</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="flowtorch.data.hdf5_file.HDF5Writer">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.data.hdf5_file.</code><code class="sig-name descname">HDF5Writer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/hdf5_file.html#HDF5Writer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.hdf5_file.HDF5Writer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to write flowTorch data to HDF5 file.</p>
+<p>Two types of data are supported:
+- variable: (field) data that changes with times, e.g, snapshots
+- constant: constant data like mesh vertices or cell volumes</p>
+<p>An XDMF accessor file can be created to support visual post-processing
+with ParaView and other XDMF-compatible software packages.</p>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">HDF5Writer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span> <span class="o">=</span> <span class="n">HDF5Writer</span><span class="p">(</span><span class="s2">&quot;test_file.hdf5&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;ones&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">pt</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="s2">&quot;0.01&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">int_data</span> <span class="o">=</span>  <span class="n">pt</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;ones_int&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">int_data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="flowtorch.data.hdf5_file.HDF5Writer.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">tuple</span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>torch.Tensor<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/hdf5_file.html#HDF5Writer.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.hdf5_file.HDF5Writer.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write data to HDF5 file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – dataset name</p></li>
+<li><p><strong>size</strong> (<em>tuple</em>) – dataset shape</p></li>
+<li><p><strong>data</strong> (<em>pt.Tensor</em><em>, </em><em>optional</em>) – data to write; if None, dataset is only allocated</p></li>
+<li><p><strong>time</strong> (<em>str</em><em>, </em><em>optional</em>) – snapshot time, dataset if created in VAR_GROUP if present</p></li>
+<li><p><strong>dtype</strong> (<em>str</em><em>, </em><em>optional</em>) – data type, defaults to pt.float32</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.hdf5_file.HDF5Writer.write_xdmf">
+<code class="sig-name descname">write_xdmf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/hdf5_file.html#HDF5Writer.write_xdmf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.hdf5_file.HDF5Writer.write_xdmf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="flowtorch.data.hdf5_file.XDMFWriter">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.data.hdf5_file.</code><code class="sig-name descname">XDMFWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">hdf5_file</span><span class="p">:</span> <span class="n">h5py._hl.files.File</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/hdf5_file.html#XDMFWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.hdf5_file.XDMFWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Create XDMF file to open flowTorch HDF5 files in ParaView.</p>
+<p>Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">XDMFWriter</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span> <span class="o">=</span> <span class="n">XDMFWriter</span><span class="p">(</span><span class="s2">&quot;flowtorch.hdf5&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">writer</span><span class="o">.</span><span class="n">create_xdmf</span><span class="p">(</span><span class="s2">&quot;flowtorch.xdmf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="flowtorch.data.hdf5_file.XDMFWriter.create_xdmf">
+<code class="sig-name descname">create_xdmf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/hdf5_file.html#XDMFWriter.create_xdmf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.hdf5_file.XDMFWriter.create_xdmf" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.hdf5_file.XDMFWriter.from_filepath">
+<em class="property">classmethod </em><code class="sig-name descname">from_filepath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/hdf5_file.html#XDMFWriter.from_filepath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.hdf5_file.XDMFWriter.from_filepath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create XDMFWriter from file path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – path to HDF5 file</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flowtorch.data.psp_dataloader">
+<span id="flowtorch-data-psp-dataloader"></span><h2>flowtorch.data.psp_dataloader<a class="headerlink" href="#module-flowtorch.data.psp_dataloader" title="Permalink to this headline">¶</a></h2>
+<p>Module to load FOR2895 iPSP data.</p>
+<p>The <a class="reference internal" href="#flowtorch.data.psp_dataloader.PSPDataloader" title="flowtorch.data.psp_dataloader.PSPDataloader"><code class="xref py py-class docutils literal notranslate"><span class="pre">PSPDataloader</span></code></a> class allows to load
+instationary pressure-sensitive paint (<a class="reference external" href="https://www.dlr.de/as/en/desktopdefault.aspx/tabid-183/251_read-13334/">iPSP</a>) data provided by
+DLR (Deutsches Luft- und Raumfahrtzentrum) within the FOR2895
+research group.</p>
+<dl class="py class">
+<dt id="flowtorch.data.psp_dataloader.PSPDataloader">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.data.psp_dataloader.</code><code class="sig-name descname">PSPDataloader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/psp_dataloader.html#PSPDataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.psp_dataloader.PSPDataloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flowtorch.data.dataloader.Dataloader" title="flowtorch.data.dataloader.Dataloader"><code class="xref py py-class docutils literal notranslate"><span class="pre">flowtorch.data.dataloader.Dataloader</span></code></a></p>
+<p>Load iPSP data and meta data.</p>
+<p>iPSP data comes as an HDF5 file with datasets organized in
+different zones. Each zone has additional meta data related
+to flow conditions and camera setting. The active zone may be
+switched by seeting the <cite>zone</cite> attribute.</p>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">PSPDataloader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">PSPDataloader</span><span class="p">(</span><span class="s2">&quot;0226.hdf5&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">zone_names</span>
+<span class="go">[&#39;Zone0000&#39;, &#39;Zone0001&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">[&#39;AngleAttackAlpha&#39;, &#39;DateOfRecording&#39;, &#39;Mach&#39;, ...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;Mach&quot;</span><span class="p">]</span>
+<span class="go">(0.903, &#39;Mach number&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">zone_info</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">[&#39;ExposureTime&#39;, &#39;NumberImages&#39;, &#39;PSPDeviceName&#39;, &#39;SamplingFrequency&#39;, &#39;ZoneName&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">zone</span>
+<span class="go">Zone0000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">zone</span> <span class="o">=</span> <span class="s2">&quot;Zone0001&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">zone_info</span><span class="p">[</span><span class="s2">&quot;ZoneName&quot;</span><span class="p">]</span>
+<span class="go">HTP</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">(</span><span class="s2">&quot;Cp&quot;</span><span class="p">,</span> <span class="n">loader</span><span class="o">.</span><span class="n">write_times</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cp</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">torch.Size([250, 75, 10])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="flowtorch.data.psp_dataloader.PSPDataloader.field_names">
+<em class="property">property </em><code class="sig-name descname">field_names</code><a class="headerlink" href="#flowtorch.data.psp_dataloader.PSPDataloader.field_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary containing availale fields</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dictionary with write times as keys and
+field names as values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[str, List[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.psp_dataloader.PSPDataloader.info">
+<em class="property">property </em><code class="sig-name descname">info</code><a class="headerlink" href="#flowtorch.data.psp_dataloader.PSPDataloader.info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.psp_dataloader.PSPDataloader.load_snapshot">
+<code class="sig-name descname">load_snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">field_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>List<span class="p">[</span>torch.Tensor<span class="p">]</span><span class="p">, </span>torch.Tensor<span class="p">]</span><a class="reference internal" href="_modules/flowtorch/data/psp_dataloader.html#PSPDataloader.load_snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.psp_dataloader.PSPDataloader.load_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load one or more snapshots of one or more fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field_name</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – name of the field to load</p></li>
+<li><p><strong>time</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – snapshot time</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>field values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[List[Tensor], Tensor]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.psp_dataloader.PSPDataloader.vertices">
+<em class="property">property </em><code class="sig-name descname">vertices</code><a class="headerlink" href="#flowtorch.data.psp_dataloader.PSPDataloader.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the vertices at which field values are defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>coordinates of vertices</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.psp_dataloader.PSPDataloader.weights">
+<em class="property">property </em><code class="sig-name descname">weights</code><a class="headerlink" href="#flowtorch.data.psp_dataloader.PSPDataloader.weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the weights for field values.</p>
+<p>In a standard finite volume method, the weights are
+the cell volumes. For other methods, the definition
+of the weight is described in the Dataloader implementation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>weight for field values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.psp_dataloader.PSPDataloader.write_times">
+<em class="property">property </em><code class="sig-name descname">write_times</code><a class="headerlink" href="#flowtorch.data.psp_dataloader.PSPDataloader.write_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Available write times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of available write times</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.psp_dataloader.PSPDataloader.zone">
+<em class="property">property </em><code class="sig-name descname">zone</code><a class="headerlink" href="#flowtorch.data.psp_dataloader.PSPDataloader.zone" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.psp_dataloader.PSPDataloader.zone_info">
+<em class="property">property </em><code class="sig-name descname">zone_info</code><a class="headerlink" href="#flowtorch.data.psp_dataloader.PSPDataloader.zone_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.psp_dataloader.PSPDataloader.zone_names">
+<em class="property">property </em><code class="sig-name descname">zone_names</code><a class="headerlink" href="#flowtorch.data.psp_dataloader.PSPDataloader.zone_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flowtorch.data.vtk_dataloader">
+<span id="flowtorch-data-vtk-dataloader"></span><h2>flowtorch.data.vtk_dataloader<a class="headerlink" href="#module-flowtorch.data.vtk_dataloader" title="Permalink to this headline">¶</a></h2>
+<p>Class and tools to read Visualization Toolkit (<a class="reference external" href="https://vtk.org/">VTK</a>) data.</p>
+<dl class="py class">
+<dt id="flowtorch.data.vtk_dataloader.VTKDataloader">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.data.vtk_dataloader.</code><code class="sig-name descname">VTKDataloader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">vtk_reader</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>vtkmodules.vtkIOLegacy.vtkUnstructuredGridReader<span class="p">, </span>vtkmodules.vtkIOXML.vtkXMLUnstructuredGridReader<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">prefix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">suffix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/vtk_dataloader.html#VTKDataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.vtk_dataloader.VTKDataloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flowtorch.data.dataloader.Dataloader" title="flowtorch.data.dataloader.Dataloader"><code class="xref py py-class docutils literal notranslate"><span class="pre">flowtorch.data.dataloader.Dataloader</span></code></a></p>
+<p>Load unstructured VTK files and time series.</p>
+<p>The loader assumes that snapshots are stored in individual VTK files.
+Currently, only unstructured mesh data are supported.</p>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DATASETS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">VTKDataloader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="n">DATASETS</span><span class="p">[</span><span class="s2">&quot;vtk_cylinder_re200_flexi&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">VTKDataloader</span><span class="o">.</span><span class="n">from_flexi</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;Cylinder_Re200_Solution_&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">write_times</span>
+<span class="go">[&quot;0000000&quot;, &quot;0000005&quot;, &quot;0000300&quot;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">field_names</span>
+<span class="go">{&#39;0000000&#39;: [&#39;Density&#39;, &#39;MomentumX&#39;, &#39;MomentumY&#39;, &#39;MomentumZ&#39;]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">density</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">(</span><span class="s2">&quot;Density&quot;</span><span class="p">,</span> <span class="n">loader</span><span class="o">.</span><span class="n">write_times</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">density</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">torch.Size([729000, 3])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DATASETS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">VTKDataloader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="n">DATASETS</span><span class="p">[</span><span class="s2">&quot;vtk_su2_airfoil_2D&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">VTKDataloader</span><span class="o">.</span><span class="n">from_su2</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;flow_&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">([</span><span class="s2">&quot;Pressure&quot;</span><span class="p">,</span> <span class="s2">&quot;Velocity&quot;</span><span class="p">],</span> <span class="n">loader</span><span class="o">.</span><span class="n">write_times</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">U</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">torch.Size([214403, 3])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="flowtorch.data.vtk_dataloader.VTKDataloader.field_names">
+<em class="property">property </em><code class="sig-name descname">field_names</code><a class="headerlink" href="#flowtorch.data.vtk_dataloader.VTKDataloader.field_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary containing availale fields</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dictionary with write times as keys and
+field names as values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[str, List[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.vtk_dataloader.VTKDataloader.from_flexi">
+<em class="property">classmethod </em><code class="sig-name descname">from_flexi</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">prefix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">suffix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'.000000000.vtu'</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/vtk_dataloader.html#VTKDataloader.from_flexi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.vtk_dataloader.VTKDataloader.from_flexi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create loader instance from VTK files generated by <a class="reference external" href="https://www.flexi-project.org/">Flexi</a>.</p>
+<p>Flexi supports the output of field and surface data as unstructured
+XML-based VTK files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – path to folder containing VTK files</p></li>
+<li><p><strong>prefix</strong> (<em>str</em><em>, </em><em>optional</em>) – part of file name before time value, defaults to “”</p></li>
+<li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – part of file name after time value, defaults to “.000000000.vtu”</p></li>
+<li><p><strong>dtype</strong> (<em>str</em><em>, </em><em>optional</em>) – tensor type, defaults to DEFAULT_DTYPE</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.vtk_dataloader.VTKDataloader.from_su2">
+<em class="property">classmethod </em><code class="sig-name descname">from_su2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">prefix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">suffix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'.vtk'</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/vtk_dataloader.html#VTKDataloader.from_su2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.vtk_dataloader.VTKDataloader.from_su2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create loader instance from VTK files generated by <a class="reference external" href="https://su2code.github.io/">SU2</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – path to folder containing VTK files</p></li>
+<li><p><strong>prefix</strong> (<em>str</em><em>, </em><em>optional</em>) – part of file name before time value, defaults to “”</p></li>
+<li><p><strong>suffix</strong> (<em>str</em><em>, </em><em>optional</em>) – part of file name after time value, defaults to “.vtk”</p></li>
+<li><p><strong>dtype</strong> (<em>str</em><em>, </em><em>optional</em>) – tensor type, defaults to DEFAULT_DTYPE</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.vtk_dataloader.VTKDataloader.load_snapshot">
+<code class="sig-name descname">load_snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">field_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>List<span class="p">[</span>torch.Tensor<span class="p">]</span><span class="p">, </span>torch.Tensor<span class="p">]</span><a class="reference internal" href="_modules/flowtorch/data/vtk_dataloader.html#VTKDataloader.load_snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.vtk_dataloader.VTKDataloader.load_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load one or more snapshots of one or more fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field_name</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – name of the field to load</p></li>
+<li><p><strong>time</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – snapshot time</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>field values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[List[Tensor], Tensor]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.vtk_dataloader.VTKDataloader.vertices">
+<em class="property">property </em><code class="sig-name descname">vertices</code><a class="headerlink" href="#flowtorch.data.vtk_dataloader.VTKDataloader.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the vertices at which field values are defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>coordinates of vertices</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.vtk_dataloader.VTKDataloader.weights">
+<em class="property">property </em><code class="sig-name descname">weights</code><a class="headerlink" href="#flowtorch.data.vtk_dataloader.VTKDataloader.weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the weights for field values.</p>
+<p>In a standard finite volume method, the weights are
+the cell volumes. For other methods, the definition
+of the weight is described in the Dataloader implementation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>weight for field values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.vtk_dataloader.VTKDataloader.write_times">
+<em class="property">property </em><code class="sig-name descname">write_times</code><a class="headerlink" href="#flowtorch.data.vtk_dataloader.VTKDataloader.write_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Available write times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of available write times</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flowtorch.data.csv_dataloader">
+<span id="flowtorch-data-csv-dataloader"></span><h2>flowtorch.data.csv_dataloader<a class="headerlink" href="#module-flowtorch.data.csv_dataloader" title="Permalink to this headline">¶</a></h2>
+<p>Dataloader and accompanying tools to work with CSV files.</p>
+<p>A lot of scientific data is exchanged as comma separated value (CSV) files.
+While there are many Python packages available to read such data, one has
+to understand how the data is organized in the CSV file before being able
+to use the readers properly. Moreover, time series data sometimes come as
+individual files in a single folder or as time folders with the respective
+snapshot data inside that folder. This subpackages simplifies access to
+common CSV-based time series data by trying to figure out appropriate reader
+settings automatically.</p>
+<dl class="py class">
+<dt id="flowtorch.data.csv_dataloader.CSVDataloader">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.data.csv_dataloader.</code><code class="sig-name descname">CSVDataloader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">prefix</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">suffix</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">read_options</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">time_folders</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/csv_dataloader.html#CSVDataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.csv_dataloader.CSVDataloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flowtorch.data.dataloader.Dataloader" title="flowtorch.data.dataloader.Dataloader"><code class="xref py py-class docutils literal notranslate"><span class="pre">flowtorch.data.dataloader.Dataloader</span></code></a></p>
+<p>Load CSV files from different sources.</p>
+<p>This class allows to load generic CSV files based on Pandas’s <cite>load_csv</cite> function.
+Multiple specific formats are supported via class methods.</p>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DATASETS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">CSVDataloader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">davis_data</span> <span class="o">=</span> <span class="n">DATASETS</span><span class="p">[</span><span class="s2">&quot;csv_aoa8_beta0_xc100_stereopiv&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">CSVDataloader</span><span class="o">.</span><span class="n">from_davis</span><span class="p">(</span><span class="n">davis_data</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">times</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">write_times</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">times</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">[&#39;00001&#39;, &#39;00002&#39;, &#39;00003&#39;, &#39;00004&#39;, &#39;00005&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">field_names</span>
+<span class="go">{&#39;00001&#39;: [&#39;Vx&#39;, &#39;Vy&#39;, &#39;Vz&#39;]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Vx</span><span class="p">,</span> <span class="n">Vy</span><span class="p">,</span> <span class="n">Vz</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">([</span><span class="s1">&#39;Vx&#39;</span><span class="p">,</span> <span class="s1">&#39;Vy&#39;</span><span class="p">,</span> <span class="s1">&#39;Vz&#39;</span><span class="p">],</span> <span class="n">times</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Vx</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">torch.Size([3741, 5])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">foam_data</span> <span class="o">=</span> <span class="n">DATASETS</span><span class="p">[</span><span class="s2">&quot;csv_naca0012_alpha4_surface&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">CSVDataloader</span><span class="o">.</span><span class="n">from_foam_surface</span><span class="p">(</span><span class="n">foam_data</span><span class="p">,</span> <span class="s2">&quot;total(p)_coeff_airfoil.raw&quot;</span><span class="p">,</span> <span class="s2">&quot;cp&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">times</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">write_times</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">times</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">[&#39;0.001&#39;, &#39;0.002&#39;, &#39;0.003&#39;, &#39;0.004&#39;, &#39;0.005&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span><span class="o">.</span><span class="n">field_names</span>
+<span class="go">{&#39;0.001&#39;: [&#39;cp&#39;]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snapshots</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">(</span><span class="s2">&quot;cp&quot;</span><span class="p">,</span> <span class="n">times</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">snapshots</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">torch.Size([28892, 10])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">vertices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">torch.Size([28892, 3])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+<span class="go">tensor([0.0000e+00, 0.0000e+00, 4.1706e-18])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="flowtorch.data.csv_dataloader.CSVDataloader.field_names">
+<em class="property">property </em><code class="sig-name descname">field_names</code><a class="headerlink" href="#flowtorch.data.csv_dataloader.CSVDataloader.field_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary containing availale fields</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dictionary with write times as keys and
+field names as values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[str, List[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.csv_dataloader.CSVDataloader.from_davis">
+<em class="property">classmethod </em><code class="sig-name descname">from_davis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">prefix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">suffix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'.dat'</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/csv_dataloader.html#CSVDataloader.from_davis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.csv_dataloader.CSVDataloader.from_davis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create CSVDataloader instance for <a class="reference external" href="https://www.lavision.de/en/products/davis-software/">DaVis</a> output files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – path to location of time series data</p></li>
+<li><p><strong>prefix</strong> (<em>str</em>) – part of the file name before the time/snapshot number; e.g.,
+if the file name <em>B00001.dat</em>, the prefix is <em>B</em>; defaults to empty string</p></li>
+<li><p><strong>suffix</strong> (<em>str</em>) – part of the file name of the time/snapshot number; e.g.,
+if the file name is <em>B00001.dat</em>, the suffix is <em>.dat</em>; defaults to <em>.dat</em></p></li>
+<li><p><strong>dtype</strong> (<em>str</em>) – floating point precision; defaults to <cite>pt.float32</cite> (single precision)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.csv_dataloader.CSVDataloader.from_foam_surface">
+<em class="property">classmethod </em><code class="sig-name descname">from_foam_surface</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">file_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">field_name</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/csv_dataloader.html#CSVDataloader.from_foam_surface"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.csv_dataloader.CSVDataloader.from_foam_surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create CSVDataloader instance to load OpenFOAM surface sample data.</p>
+<p>The class method simplifies to load data generated by OpenFOAM’s
+<em>sampling</em> function object if the type is set to <em>surfaces</em> and the
+<em>surfaceFormat</em> is set to <em>raw</em>. The time series data are stored in
+individual time folders. The file name remains the same.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – path to location of time folders</p></li>
+<li><p><strong>file_name</strong> (<em>str</em>) – file name of individual CSV files, e.g.,
+<em>p_airfoil.raw</em></p></li>
+<li><p><strong>field_name</strong> (<em>str</em>) – each CSV contains only one field; this parameter
+allows to prescribe a descriptive access name; defaults to <cite>None</cite>,
+which chooses the generic field name <em>f</em>.</p></li>
+<li><p><strong>dtype</strong> (<em>str</em>) – floating point precision; defaults to <cite>pt.float32</cite> (single precision)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.csv_dataloader.CSVDataloader.load_snapshot">
+<code class="sig-name descname">load_snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">field_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>List<span class="p">[</span>torch.Tensor<span class="p">]</span><span class="p">, </span>torch.Tensor<span class="p">]</span><a class="reference internal" href="_modules/flowtorch/data/csv_dataloader.html#CSVDataloader.load_snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.csv_dataloader.CSVDataloader.load_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load one or more snapshots of one or more fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field_name</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – name of the field to load</p></li>
+<li><p><strong>time</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – snapshot time</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>field values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[List[Tensor], Tensor]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.csv_dataloader.CSVDataloader.vertices">
+<em class="property">property </em><code class="sig-name descname">vertices</code><a class="headerlink" href="#flowtorch.data.csv_dataloader.CSVDataloader.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the vertices at which field values are defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>coordinates of vertices</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.csv_dataloader.CSVDataloader.weights">
+<em class="property">property </em><code class="sig-name descname">weights</code><a class="headerlink" href="#flowtorch.data.csv_dataloader.CSVDataloader.weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the weights for field values.</p>
+<p>In a standard finite volume method, the weights are
+the cell volumes. For other methods, the definition
+of the weight is described in the Dataloader implementation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>weight for field values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.csv_dataloader.CSVDataloader.write_times">
+<em class="property">property </em><code class="sig-name descname">write_times</code><a class="headerlink" href="#flowtorch.data.csv_dataloader.CSVDataloader.write_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Available write times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of available write times</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flowtorch.data.tau_dataloader">
+<span id="flowtorch-data-tau-dataloader"></span><h2>flowtorch.data.tau_dataloader<a class="headerlink" href="#module-flowtorch.data.tau_dataloader" title="Permalink to this headline">¶</a></h2>
+<p>Direct access to TAU simulation data.</p>
+<p>The DRL (Deutsches Luft- und Raumfahrtzentrum) <a class="reference external" href="https://www.dlr.de/as/desktopdefault.aspx/tabid-395/526_read-694/">TAU</a> code saves
+snapshots in the NetCFD format. The <a class="reference internal" href="#flowtorch.data.tau_dataloader.TAUDataloader" title="flowtorch.data.tau_dataloader.TAUDataloader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TAUDataloader</span></code></a> is a
+wrapper around the NetCFD Python bindings to simplify the access
+to snapshot data.</p>
+<dl class="py class">
+<dt id="flowtorch.data.tau_dataloader.TAUDataloader">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.data.tau_dataloader.</code><code class="sig-name descname">TAUDataloader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">base_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">torch.float32</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/tau_dataloader.html#TAUDataloader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.tau_dataloader.TAUDataloader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flowtorch.data.dataloader.Dataloader" title="flowtorch.data.dataloader.Dataloader"><code class="xref py py-class docutils literal notranslate"><span class="pre">flowtorch.data.dataloader.Dataloader</span></code></a></p>
+<p>Load TAU simulation data.</p>
+<p>TAU simulations output results in several netCDF files, one for each write
+time. The mesh is stored in a separated file with the extension <em>.grd</em>.
+Currently, the loader only enables access to field data but not to boundaries.</p>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DATASETS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">TAUDataloader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="n">DATASETS</span><span class="p">[</span><span class="s2">&quot;tau_backward_facing_step&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">TAUDataloader</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">base_name</span><span class="o">=</span><span class="s2">&quot;sol.pval.unsteady_&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">times</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">write_times</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fields</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">field_names</span><span class="p">[</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fields</span>
+<span class="go">[&#39;density&#39;, &#39;x_velocity&#39;, &#39;y_velocity&#39;, ...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">density</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">(</span><span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="n">times</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">density</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">torch.Size([1119348, 10])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="flowtorch.data.tau_dataloader.TAUDataloader.field_names">
+<em class="property">property </em><code class="sig-name descname">field_names</code><a class="headerlink" href="#flowtorch.data.tau_dataloader.TAUDataloader.field_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary containing availale fields</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dictionary with write times as keys and
+field names as values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Dict[str, List[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.tau_dataloader.TAUDataloader.load_snapshot">
+<code class="sig-name descname">load_snapshot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">field_name</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">time</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>List<span class="p">[</span>torch.Tensor<span class="p">]</span><span class="p">, </span>torch.Tensor<span class="p">]</span><a class="reference internal" href="_modules/flowtorch/data/tau_dataloader.html#TAUDataloader.load_snapshot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.tau_dataloader.TAUDataloader.load_snapshot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load one or more snapshots of one or more fields.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>field_name</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – name of the field to load</p></li>
+<li><p><strong>time</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – snapshot time</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>field values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Union[List[Tensor], Tensor]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.tau_dataloader.TAUDataloader.vertices">
+<em class="property">property </em><code class="sig-name descname">vertices</code><a class="headerlink" href="#flowtorch.data.tau_dataloader.TAUDataloader.vertices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the vertices at which field values are defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>coordinates of vertices</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.tau_dataloader.TAUDataloader.weights">
+<em class="property">property </em><code class="sig-name descname">weights</code><a class="headerlink" href="#flowtorch.data.tau_dataloader.TAUDataloader.weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the weights for field values.</p>
+<p>In a standard finite volume method, the weights are
+the cell volumes. For other methods, the definition
+of the weight is described in the Dataloader implementation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>weight for field values</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.data.tau_dataloader.TAUDataloader.write_times">
+<em class="property">property </em><code class="sig-name descname">write_times</code><a class="headerlink" href="#flowtorch.data.tau_dataloader.TAUDataloader.write_times" title="Permalink to this definition">¶</a></dt>
+<dd><p>Available write times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of available write times</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flowtorch.data.selection_tools">
+<span id="flowtorch-data-selection-tools"></span><h2>flowtorch.data.selection_tools<a class="headerlink" href="#module-flowtorch.data.selection_tools" title="Permalink to this headline">¶</a></h2>
+<p>Helper tools for building data matrices.</p>
+<dl class="py function">
+<dt id="flowtorch.data.selection_tools.mask_box">
+<code class="sig-prename descclassname">flowtorch.data.selection_tools.</code><code class="sig-name descname">mask_box</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vertices</span><span class="p">:</span> <span class="n">torch.Tensor</span></em>, <em class="sig-param"><span class="n">lower</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">upper</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; torch.Tensor<a class="reference internal" href="_modules/flowtorch/data/selection_tools.html#mask_box"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.selection_tools.mask_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a boolean mask to select all vertices in a box.</p>
+<p>This function may be used in conjunction with torch.masked_select to select
+all field values in a box, e.g., when building data matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vertices</strong> (<em>pt.Tensor</em>) – tensor of vertices, where each column corresponds to a coordinate</p></li>
+<li><p><strong>lower</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – lower bounds of box; one value for each coordinate must be given</p></li>
+<li><p><strong>upper</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – upper bounds of box; one value for each coordinate must be given</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean mask that’s <em>True</em> for every vertex inside the box</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pt.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="flowtorch.data.selection_tools.mask_sphere">
+<code class="sig-prename descclassname">flowtorch.data.selection_tools.</code><code class="sig-name descname">mask_sphere</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vertices</span><span class="p">:</span> <span class="n">torch.Tensor</span></em>, <em class="sig-param"><span class="n">center</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">radius</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; torch.Tensor<a class="reference internal" href="_modules/flowtorch/data/selection_tools.html#mask_sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.selection_tools.mask_sphere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a boolean mask to select all vertices in a sphere.</p>
+<p>This function may be used in conjunction with torch.masked_select to select
+all field values within a sphere, e.g., when building data matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vertices</strong> (<em>pt.Tensor</em>) – tensor of vertices, where each column corresponds to a coordinate</p></li>
+<li><p><strong>center</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – the sphere’s center</p></li>
+<li><p><strong>radius</strong> (<em>float</em>) – the sphere’s radius</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean mask that’s <em>True</em> for every vertex inside the sphere</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pt.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-flowtorch.data.utils">
+<span id="flowtorch-data-utils"></span><h2>flowtorch.data.utils<a class="headerlink" href="#module-flowtorch.data.utils" title="Permalink to this headline">¶</a></h2>
+<p>Collection of utilities realted to data and dataloaders.</p>
+<dl class="py function">
+<dt id="flowtorch.data.utils.check_and_standardize_path">
+<code class="sig-prename descclassname">flowtorch.data.utils.</code><code class="sig-name descname">check_and_standardize_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">folder</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/utils.html#check_and_standardize_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.utils.check_and_standardize_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if path exists and remove trailing slash if present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – path to folder or file</p></li>
+<li><p><strong>folder</strong> (<em>bool</em>) – True if path points to folder; False if path points to file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>standardized path to file or folder</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="flowtorch.data.utils.check_list_or_str">
+<code class="sig-prename descclassname">flowtorch.data.utils.</code><code class="sig-name descname">check_list_or_str</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">arg_value</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>str<span class="p">]</span><span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">arg_name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/data/utils.html#check_list_or_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.utils.check_list_or_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if argument is of type list or string.</p>
+<p>If the input is a list, an additional check is performed to ensure that
+the list has at list one entry and that all entries are strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arg_value</strong> (<em>Union</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em>) – object to perform the check on</p></li>
+<li><p><strong>arg_name</strong> – additional argument name to provide informative error message</p></li>
+<li><p><strong>arg_name</strong> – str</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="flowtorch.data.utils.format_byte_size">
+<code class="sig-prename descclassname">flowtorch.data.utils.</code><code class="sig-name descname">format_byte_size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>float<span class="p">, </span>str<span class="p">]</span><a class="reference internal" href="_modules/flowtorch/data/utils.html#format_byte_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.data.utils.format_byte_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert number of bytes into human-readable format.</p>
+<p>The function is based on <cite>this &lt;https://stackoverflow.com/questions/12523586/python-format-size-application-converting-b-to-kb-mb-gb-tb&gt;</cite> Stackoverflow question.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> – size in bytes</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>converted size corresponding unit</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple(float, str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="flowtorch.analysis.html" class="btn btn-neutral float-right" title="flowtorch.analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="flowtorch.html" class="btn btn-neutral float-left" title="flowtorch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, flowTorch contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

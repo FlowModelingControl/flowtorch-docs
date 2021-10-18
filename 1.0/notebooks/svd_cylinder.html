@@ -1,0 +1,814 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>SVD of the flow past a circular cylinder &mdash; flowTorch 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="DMD of the flow past a circular cylinder" href="dmd_cylinder.html" />
+    <link rel="prev" title="An introduction to DMD" href="dmd_intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> flowTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_algebra_basics.html">Linear algebra with PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="svd_ht.html">Optimal hard threshold for singular values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipsp_explorer.html">PSP data explorer and loader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dmd_intro.html">An introduction to DMD</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SVD of the flow past a circular cylinder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Importing-libraries">Importing libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Assembling-the-data-matrix">Assembling the data matrix</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Inspecting-the-available-data">Inspecting the available data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Creating-a-mask">Creating a mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Loading-the-snapshots-and-extracting-the-mean">Loading the snapshots and extracting the mean</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Singular-value-decomposition">Singular value decomposition</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Singular-values">Singular values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Left-singular-vectors">Left singular vectors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Right-singular-vectors">Right singular vectors</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dmd_cylinder.html">DMD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cnm_cylinder.html">CNM of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dmd_naca0012_surface.html">SVD and DMD analysis of airfoil surface data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piv_analysis.html">Analyzing PIV data of a longitudinal vortex</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../flowtorch.html">flowtorch</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">flowTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>SVD of the flow past a circular cylinder</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/notebooks/svd_cylinder.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<p><img alt="CC" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></p>
+<p>This work is licensed under a <a class="reference external" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+<div class="section" id="SVD-of-the-flow-past-a-circular-cylinder">
+<h1>SVD of the flow past a circular cylinder<a class="headerlink" href="#SVD-of-the-flow-past-a-circular-cylinder" title="Permalink to this headline">¶</a></h1>
+<p>In this notebook, we perform a singular value decomposition (SVD) of the flow past a cylinder. The Reynolds number based on the cylinder’s diameter <span class="math notranslate nohighlight">\(d\)</span>, the average inlet velocity <span class="math notranslate nohighlight">\(U_m\)</span>, and the kinematic viscosity <span class="math notranslate nohighlight">\(\nu\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[Re = \frac{U_m d}{\nu} = 100.\]</div>
+<p>The simulation was conducted in <em>OpenFOAM</em>. The simulation domain is shown in the sketch below. All dimensions are given in terms of cylinder diameters. The sketch is taken from Darshan Thummar’s <a class="reference external" href="https://zenodo.org/record/4897961#.YLuzdzqxVH4">report on active flow control</a> (figure 2.1).</p>
+<p><img alt="28d7fb6d42a948cb8ec5609a1441ea5f" class="no-scaled-link" src="../_images/cylinder_domain.svg" width="800" /></p>
+<p>The goal of this tutorial is to demonstrate: - how to assemble a data matrix based on a selected subset of a scalar field time series - how to use the SVD to extract coherent structures from the <strong>vorticity</strong> field</p>
+<div class="section" id="Importing-libraries">
+<h2>Importing libraries<a class="headerlink" href="#Importing-libraries" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">bisect</span>
+<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DATASETS</span>
+<span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">FOAMDataloader</span><span class="p">,</span> <span class="n">mask_box</span>
+<span class="kn">from</span> <span class="nn">flowtorch.analysis</span> <span class="kn">import</span> <span class="n">SVD</span>
+
+<span class="c1"># increase resolution of plots</span>
+<span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.dpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">160</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Assembling-the-data-matrix">
+<h2>Assembling the data matrix<a class="headerlink" href="#Assembling-the-data-matrix" title="Permalink to this headline">¶</a></h2>
+<p>To create the data matrix, we will: - investigate the available fields and write times - create a mask to select a subset of the domain - load vorticity snapshots and apply the mask; each snapshot forms a column of the data matrix - subtract the temporal mean</p>
+<div class="section" id="Inspecting-the-available-data">
+<h3>Inspecting the available data<a class="headerlink" href="#Inspecting-the-available-data" title="Permalink to this headline">¶</a></h3>
+<p>Without the time ‘0’, the data cosists of 400 snapshots. Except for the zero folder, all time folders contain pressure, vorticity, surface flux (phi), and velocity.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">path</span> <span class="o">=</span> <span class="n">DATASETS</span><span class="p">[</span><span class="s2">&quot;of_cylinder2D_binary&quot;</span><span class="p">]</span>
+<span class="n">loader</span> <span class="o">=</span> <span class="n">FOAMDataloader</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">write_times</span>
+<span class="n">fields</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">field_names</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of available snapshots: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First five write times: &quot;</span><span class="p">,</span> <span class="n">times</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fields available at t=</span><span class="si">{</span><span class="n">times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">: &quot;</span><span class="p">,</span> <span class="n">fields</span><span class="p">[</span><span class="n">times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Number of available snapshots: 401
+First five write times:  [&#39;0&#39;, &#39;0.025&#39;, &#39;0.05&#39;, &#39;0.075&#39;, &#39;0.1&#39;]
+Fields available at t=10:  [&#39;p&#39;, &#39;vorticity&#39;, &#39;phi&#39;, &#39;U&#39;]
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Creating-a-mask">
+<h3>Creating a mask<a class="headerlink" href="#Creating-a-mask" title="Permalink to this headline">¶</a></h3>
+<p>The full computational domain extends 22 diameters in <span class="math notranslate nohighlight">\(x\)</span>-direction. For the present flow analysis, we reduce the spatial domain to <span class="math notranslate nohighlight">\(1d\)</span> before and <span class="math notranslate nohighlight">\(7.5d\)</span> after the cylinder’s center. The physical diameter in the simulation is <span class="math notranslate nohighlight">\(d=0.1m\)</span>. Therefore, we create a rectangular mask extending from <span class="math notranslate nohighlight">\(x_{min}=0.1m\)</span> to <span class="math notranslate nohighlight">\(x_{max}=0.75m\)</span>. The <span class="math notranslate nohighlight">\(y\)</span>-bounds should be large enough to include the entire domain. The <span class="math notranslate nohighlight">\(z\)</span>-direction is discarded since the simulation is
+only 2D.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># load vertices and discard z-coordinate</span>
+<span class="n">vertices</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">vertices</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">mask_box</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">lower</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">upper</span><span class="o">=</span><span class="p">[</span><span class="mf">0.75</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Could not find precomputed cell centers and volumes.
+Computing cell geometry from scratch (slow, not recommended for large meshes).
+To compute cell centers and volumes in OpenFOAM, run:
+
+postProcess -func &#34;writeCellCentres&#34; -constant -time none
+postProcess -func &#34;writeCellVolumes&#34; -constant -time none
+</pre></div></div>
+</div>
+<p>When loading the vertices, the <em>loader</em> prints a warning message stating that we did not precompute cell centers and volumes. For small meshes, say less than <span class="math notranslate nohighlight">\(10^5\)</span> cells, the computation can be performed without any problems in <em>flowTorch</em>. However, for larger meshes, it is much more efficient to use the dedicated <em>OpenFOAM</em> function objects. The mask is a 1D boolean tensor whose elements are <code class="docutils literal notranslate"><span class="pre">True</span></code> if the corresponding vertex is located within the specified bounds. Summing up the
+mask’s elements yields the number of selected vertices (<code class="docutils literal notranslate"><span class="pre">True</span></code> and <code class="docutils literal notranslate"><span class="pre">False</span></code> are cast to 1 and 0, respectively).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Selected vertices: </span><span class="si">{</span><span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Selected vertices: 7190/13678
+</pre></div></div>
+</div>
+<p>We can visualize the selected vertices using a simple scatter plot. For larger meshes and 3D data, it is more convinient to save the mask in the <em>flowTorch</em> HDF5 format and to visualize it in <em>ParaView</em>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">every</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># use only every 4th vertex</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">vertices</span><span class="p">[::</span><span class="n">every</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vertices</span><span class="p">[::</span><span class="n">every</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">mask</span><span class="p">[::</span><span class="n">every</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">,</span> <span class="s1">&#39;box&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.41</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_svd_cylinder_9_0.png" src="../_images/notebooks_svd_cylinder_9_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Loading-the-snapshots-and-extracting-the-mean">
+<h3>Loading the snapshots and extracting the mean<a class="headerlink" href="#Loading-the-snapshots-and-extracting-the-mean" title="Permalink to this headline">¶</a></h3>
+<p>The vortex shedding starts approximately at <span class="math notranslate nohighlight">\(t=1.5s\)</span> and is fully developed after <span class="math notranslate nohighlight">\(t\approx 4s\)</span>. To build the data matrix, we use the remaining 241 snapshots <span class="math notranslate nohighlight">\(t\ge 4.0s\)</span>. The vorticity is a vectorial field. However, since the simulation is 2D, only the <span class="math notranslate nohighlight">\(z\)</span>-component contains non-zero entries. Therefore, the resulting data matrix has the dimension <strong>number of selected vertices</strong> x <strong>number of snapshots</strong>. It is common to perform the SVD analysis only on the fluctuating
+component of the data. Therefore, we extract the temporal mean of the vorticity. However, we could perform the same analysis without this step and would get only slightly different modes (mode zero would become the steady component and all other modes would be shifted by one).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">window_times</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span> <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">times</span> <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">4.0</span><span class="p">]</span>
+<span class="n">data_matrix</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="nb">len</span><span class="p">(</span><span class="n">window_times</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">time</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">window_times</span><span class="p">):</span>
+    <span class="c1"># load the vorticity vector field, take the z-component [:, 2], and apply the mask</span>
+    <span class="n">data_matrix</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">masked_select</span><span class="p">(</span><span class="n">loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">(</span><span class="s2">&quot;vorticity&quot;</span><span class="p">,</span> <span class="n">time</span><span class="p">)[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+
+<span class="c1"># subtract the temporal mean</span>
+<span class="n">data_matrix</span> <span class="o">-=</span> <span class="n">pt</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data_matrix</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Singular-value-decomposition">
+<h2>Singular value decomposition<a class="headerlink" href="#Singular-value-decomposition" title="Permalink to this headline">¶</a></h2>
+<p>In the last part of this tutorial, we compute the SVD of the data matrix and visualize the right/left singular vectors and the singular values. The SVD object automatically performs a so-called rank-truncation. The rank can be prescribed when the SVD object is created. Otherwise, the rank is estimated automatically; see <a class="reference external" href="https://ieeexplore.ieee.org/document/6846297">M. Gavish and D. L. Donoho (2014)</a> or the tutorial on <a class="reference internal" href="svd_ht.html"><span class="doc">Optimal hard threshold for singular values</span></a> for more
+information. For now, we use the full rank by setting the <em>rank</em> parameter to a value that is equal to or larger than the number of snapshots we used.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">svd</span> <span class="o">=</span> <span class="n">SVD</span><span class="p">(</span><span class="n">data_matrix</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">svd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+SVD of a 7190x241 data matrix
+Selected/optimal rank: 241/97
+data type: torch.float32 (4b)
+truncated SVD size: 6.8326Mb
+</pre></div></div>
+</div>
+<div class="section" id="Singular-values">
+<h3>Singular values<a class="headerlink" href="#Singular-values" title="Permalink to this headline">¶</a></h3>
+<p>The singular values indicate the importance of the corresponding left and right singular vectors in the factorization of the data matrix. It is common practice to plot the relative contribution of each singular value to the full factorization. Another common mean of visualization is the cumulative contribution of the first <span class="math notranslate nohighlight">\(n\)</span> singular values to the full data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">s</span> <span class="o">=</span> <span class="n">svd</span><span class="o">.</span><span class="n">s</span>
+<span class="n">s_sum</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="c1"># relative contribution</span>
+<span class="n">s_rel</span> <span class="o">=</span> <span class="p">[</span><span class="n">s_i</span> <span class="o">/</span> <span class="n">s_sum</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">for</span> <span class="n">s_i</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]</span>
+<span class="c1"># cumulative contribution</span>
+<span class="n">s_cum</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="n">s_sum</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+<span class="c1"># find out how many singular values we need to reach at least 99 percent</span>
+<span class="n">i_99</span> <span class="o">=</span> <span class="n">bisect</span><span class="o">.</span><span class="n">bisect_right</span><span class="p">(</span><span class="n">s_cum</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">s_rel</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;edge&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">s_cum</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">105</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;individual contribution in %&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;cumulative contribution in %&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">i_99</span><span class="p">,</span> <span class="n">i_99</span><span class="p">],</span> <span class="p">[</span><span class="n">s_cum</span><span class="p">[</span><span class="n">i_99</span><span class="p">],</span> <span class="n">s_cum</span><span class="p">[</span><span class="n">i_99</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C3&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i_99</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="s2">&quot;first </span><span class="si">{:d}</span><span class="s2"> singular values yield </span><span class="si">{:1.2f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i_99</span><span class="p">,</span> <span class="n">s_cum</span><span class="p">[</span><span class="n">i_99</span><span class="p">]))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_svd_cylinder_16_0.png" src="../_images/notebooks_svd_cylinder_16_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Left-singular-vectors">
+<h3>Left singular vectors<a class="headerlink" href="#Left-singular-vectors" title="Permalink to this headline">¶</a></h3>
+<p>In the context of proper orthogonal decomposition (POD), the left singular vectors would be called <strong>POD modes</strong>. Each column of the <em>U</em> tensor has the same size as a masked snapshot used to assemble the data matrix. Moreover, the modes are automatically ordered according to their contribution, meaning that the first column/mode contains more information (more variance) than the second one and so on. Since the data is 2D, we can visualize the modes using a <strong>contour plot</strong>. For a cleaner
+visualization, it is recommended to use <em>ParaView</em> instead. The modes are very similar to those depicted in section 2.3.2 of <a class="reference external" href="https://epubs.siam.org/doi/book/10.1137/1.9781611974508">Dynamic Mode Decomposition: Data-Driven Modeling of Complex Systems</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">masked_select</span><span class="p">(</span><span class="n">vertices</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">masked_select</span><span class="p">(</span><span class="n">vertices</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axarr</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">axarr</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">tricontourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">svd</span><span class="o">.</span><span class="n">U</span><span class="p">[:,</span> <span class="n">count</span><span class="p">],</span> <span class="n">levels</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">)</span>
+        <span class="n">axarr</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">tricontour</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">svd</span><span class="o">.</span><span class="n">U</span><span class="p">[:,</span> <span class="n">count</span><span class="p">],</span> <span class="n">levels</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+        <span class="n">axarr</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">))</span>
+        <span class="n">axarr</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">,</span> <span class="s1">&#39;box&#39;</span><span class="p">)</span>
+        <span class="c1"># add 1 for the POD mode number since we subtracted the mean</span>
+        <span class="n">axarr</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mode </span><span class="si">{</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_svd_cylinder_18_0.png" src="../_images/notebooks_svd_cylinder_18_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Right-singular-vectors">
+<h3>Right singular vectors<a class="headerlink" href="#Right-singular-vectors" title="Permalink to this headline">¶</a></h3>
+<p>The right singular vectors reflect the temporal evolution of the corresponding left singular vectors. We can plot each column of the <em>V</em> matrix over time. Multiplying the left singular vectors with the corresponding singular values yields the so-called <strong>POD mode coefficients</strong>, which are depicted below.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">times_num</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">window_times</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axarr</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">axarr</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times_num</span><span class="p">,</span> <span class="n">svd</span><span class="o">.</span><span class="n">V</span><span class="p">[:,</span> <span class="n">count</span><span class="p">]</span><span class="o">*</span><span class="n">svd</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">count</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;coeff. mode </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">axarr</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">times_num</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">times_num</span><span class="p">))</span>
+        <span class="n">axarr</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+        <span class="c1"># add 1 for the POD mode number since we subtracted the mean</span>
+        <span class="n">axarr</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mode coeff. </span><span class="si">{</span><span class="n">count</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axarr</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$t$ in $s$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_svd_cylinder_20_0.png" src="../_images/notebooks_svd_cylinder_20_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="dmd_cylinder.html" class="btn btn-neutral float-right" title="DMD of the flow past a circular cylinder" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dmd_intro.html" class="btn btn-neutral float-left" title="An introduction to DMD" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, flowTorch contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

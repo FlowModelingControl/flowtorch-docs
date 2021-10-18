@@ -1,0 +1,586 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>flowtorch.rom.cnm &mdash; flowTorch 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> flowTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/linear_algebra_basics.html">Linear algebra with PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_ht.html">Optimal hard threshold for singular values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/ipsp_explorer.html">PSP data explorer and loader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_intro.html">An introduction to DMD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_cylinder.html">SVD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_cylinder.html">DMD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/cnm_cylinder.html">CNM of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_naca0012_surface.html">SVD and DMD analysis of airfoil surface data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/piv_analysis.html">Analyzing PIV data of a longitudinal vortex</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../flowtorch.html">flowtorch</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">flowTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>flowtorch.rom.cnm</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for flowtorch.rom.cnm</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Implementation of cluster-based network modeling (CNM).</span>
+
+<span class="sd">A reference implementation by Daniel Fernex is available on</span>
+<span class="sd">Github_. Theoretical concepts are covered in the accompanying</span>
+<span class="sd">publication_.</span>
+
+<span class="sd">.. _Github: https://github.com/fernexda/cnm</span>
+<span class="sd">.. _publication: https://advances.sciencemag.org/content/7/25/eabf5006</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># standard library packages</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
+<span class="c1"># third party packages</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KDTree</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">InterpolatedUnivariateSpline</span>
+<span class="c1"># flowtorch packages</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">ROM</span><span class="p">,</span> <span class="n">Encoder</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">check_larger_than</span><span class="p">,</span> <span class="n">check_int_larger_than</span><span class="p">,</span>
+                    <span class="n">remove_sequential_duplicates</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="CNM"><a class="viewcode-back" href="../../../flowtorch.rom.html#flowtorch.rom.cnm.CNM">[docs]</a><span class="k">class</span> <span class="nc">CNM</span><span class="p">(</span><span class="n">ROM</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Cluster-based network modeling implementation.</span>
+
+<span class="sd">    In contrast to the original implementation_, the clustering, the</span>
+<span class="sd">    computation of transition probabilities, and the propagation in</span>
+<span class="sd">    time are condensed in a single class. The class also relies on</span>
+<span class="sd">    Numpy and Scikit-Learn for K-means, KD-tree, and interpolation.</span>
+<span class="sd">    These components might be replaced with PyTorch implementations</span>
+<span class="sd">    in future releases.</span>
+
+<span class="sd">    The cluster attribute has a member called labels. Each label corresponds</span>
+<span class="sd">    to the cluster id associated with each sample of the input data. Since</span>
+<span class="sd">    the input data are sorted according to the time at which they were sampled,</span>
+<span class="sd">    we can interpret the labels as a sequence of visited clusters over time</span>
+<span class="sd">    However, if two or more consecutive snapshots belong to the same cluster,</span>
+<span class="sd">    we are only interested in the next state in the sequence that is different</span>
+<span class="sd">    from the current cluster because we want to model the temporal behavior as</span>
+<span class="sd">    a transition between cluster centroids. Therefore, sequential duplicates</span>
+<span class="sd">    must be removed.</span>
+
+<span class="sd">    .. _implementation: https://github.com/fernexda/cnm/tree/main/cnm</span>
+
+<span class="sd">    :param dt: time step between two snapshots</span>
+<span class="sd">    :type dt: float</span>
+<span class="sd">    :param n_clusters: number of clusters; must be larger than one</span>
+<span class="sd">    :type n_clusters: int, optional</span>
+<span class="sd">    :param model_order: number of past cluster to consider when predicting</span>
+<span class="sd">        the next cluster</span>
+<span class="sd">    :type model_order: int, optional</span>
+<span class="sd">    :param Q: transition probabilities</span>
+<span class="sd">    :type Q: Dict[str, np.ndarray]</span>
+<span class="sd">    :param T: transition times</span>
+<span class="sd">    :type T: Dict[str, float]</span>
+<span class="sd">    :param times: times at which cluster centroids were visited</span>
+<span class="sd">    :type times: List[float]</span>
+<span class="sd">    :param visited_clusters: clusters visited during the temporal evolution</span>
+<span class="sd">    :type visited_clusters: List[int]</span>
+<span class="sd">    :param cluster_centers: centroids of clusters</span>
+<span class="sd">    :type cluster_centers: np.ndarray</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; from flowtorch.rom import SVDEncoder, CNM</span>
+<span class="sd">    ... assemble data matrix</span>
+<span class="sd">    &gt;&gt;&gt; encoder = SVDEncoder(rank=20)</span>
+<span class="sd">    &gt;&gt;&gt; info = encoder.train(data_matrix)</span>
+<span class="sd">    &gt;&gt;&gt; reduced_state = encoder.encode(data_matrix)</span>
+<span class="sd">    &gt;&gt;&gt; cnm = CNM(reduced_state, encoder, n_clusters=20, model_order=4)</span>
+<span class="sd">    &gt;&gt;&gt; prediction = cnm.predict(data_matrix[:, :5], end_time=1.0, step_size=0.1)</span>
+<span class="sd">    &gt;&gt;&gt; reduced_prediction = cnm.predict_reduced(reduced_state[:, :5], 1.0, 0.1)</span>
+<span class="sd">    &gt;&gt;&gt; full_prediction = encoder.decode(reduced_prediction)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_state</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">encoder</span><span class="p">:</span> <span class="n">Encoder</span><span class="p">,</span>
+                 <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">n_clusters</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">model_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                 <span class="n">cluster_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}):</span>
+        <span class="c1"># the base class performs compatibility checks of the input data</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CNM</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">reduced_state</span><span class="p">,</span> <span class="n">encoder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_clusters</span> <span class="o">=</span> <span class="n">n_clusters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_order</span> <span class="o">=</span> <span class="n">model_order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">reduced_state</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="p">,</span> <span class="o">**</span><span class="n">cluster_config</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+            <span class="n">reduced_state</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>  <span class="c1"># batch dimension comes first in Scikit-Learn</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sequence</span> <span class="o">=</span> <span class="n">remove_sequential_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">labels_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transition_prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_transition_prob</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transition_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_transition_time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_times</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_visited_clusters</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_compute_transition_prob</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Compute the transition probabilities between clusters.</span>
+
+<span class="sd">        :raises Exception: if the model order is shorter than or equal to the</span>
+<span class="sd">            cluster sequence found in the initial dataset</span>
+<span class="sd">        :return: cluster sequence of length `self.model_order` as key and</span>
+<span class="sd">            transition probabilities for each potential next cluster as value;</span>
+<span class="sd">            the probabilities are stored as 2D arrays, where the first column</span>
+<span class="sd">            corresponds to the id of the next cluster and the second column</span>
+<span class="sd">            contains the associated probability</span>
+<span class="sd">        :rtype: Dict[str, np.ndarray]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_order</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sequence</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Could not compute transition probabilities: &quot;</span> <span class="o">+</span>
+                            <span class="sa">f</span><span class="s2">&quot;length of cluster sequence (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_sequence</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">) must be higher &quot;</span> <span class="o">+</span>
+                            <span class="sa">f</span><span class="s2">&quot;than chosen model order (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_order</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+        <span class="n">visited_clusters</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sequence</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">model_order</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_order</span><span class="p">)</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">next_cluster</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sequence</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model_order</span><span class="p">:]:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">visited_clusters</span><span class="p">))</span>
+            <span class="n">prob</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_cluster</span><span class="p">)</span>
+            <span class="n">visited_clusters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_cluster</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">next_clusters</span> <span class="ow">in</span> <span class="n">prob</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">unique</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">next_clusters</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">prob</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">unique</span><span class="p">,</span> <span class="n">counts</span><span class="o">/</span><span class="n">counts</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">return</span> <span class="n">prob</span>
+
+    <span class="k">def</span> <span class="nf">_compute_transition_time</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Compute transition time between cluster centroids.</span>
+
+<span class="sd">        This function first checks the list of cluster labels for sequential duplicates</span>
+<span class="sd">        as explained in this post_. Then the transition time from the past clusters to</span>
+<span class="sd">        the next cluster is computed. The main idea is that if a cluster in the training</span>
+<span class="sd">        data sequence is duplicated, possibly several times, then the transition time</span>
+<span class="sd">        from and to that cluster must be higher. For example, if the labels are</span>
+<span class="sd">        [0, 0, 1, 3, 0, ...], then the sequence of unique clusters is [0, 1, 3, 0, ...]</span>
+<span class="sd">        and the number of sequential occurrences is [2, 1, 1, ...]. For a model order of</span>
+<span class="sd">        two (considering two clusters to compute the next one), the transion time for the</span>
+<span class="sd">        sequence &#39;0,1,3&#39; (having been in 0 then 1, and now going to 3) is half of the</span>
+<span class="sd">        time spent in cluster one plus half of the time spent in cluster, which is</span>
+<span class="sd">        0.5 * (1 + 1) * dt. It might happen that certain transitions occur multiple times</span>
+<span class="sd">        with different transition times. Therefore, the final transition time is computed</span>
+<span class="sd">        as the average of all observered transition times for a given sequence.</span>
+
+<span class="sd">        .. _post: https://stackoverflow.com/questions/39340345/how-to-count-consecutive-duplicates-in-a-python-list</span>
+
+<span class="sd">        :return: dictionary with the sequence of past clusters plus next cluster as key</span>
+<span class="sd">            and the average transition time as value</span>
+<span class="sd">        :rtype: Dict[str, float]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">seq_duplicates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">group</span><span class="p">)</span>
+             <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groupby</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">labels_</span><span class="p">)]</span>
+        <span class="p">)</span>
+        <span class="n">transition</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sequence</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_order</span><span class="p">):</span>
+            <span class="n">ip_order</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_order</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sequence</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">ip_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]))</span>
+            <span class="n">transition</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">*</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">seq_duplicates</span><span class="p">[</span><span class="n">ip_order</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span><span class="n">ip_order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">transition</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="k">def</span> <span class="nf">_find_closest_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Find the label of the nearest cluster.</span>
+
+<span class="sd">        If there are two nearest clusters with the same distance, the KDTree</span>
+<span class="sd">        returns the index of the first cluster that was found.</span>
+
+<span class="sd">        :param label: label of the cluster from which to compute the distance</span>
+<span class="sd">        :type label: int</span>
+<span class="sd">        :return: label of the nearest cluster</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span> <span class="o">=</span> <span class="n">KDTree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cluster_centers</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cluster_centers</span><span class="p">[</span><span class="n">label</span><span class="p">,</span> <span class="p">:],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">ind</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_find_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">history</span><span class="p">:</span> <span class="n">deque</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">deque</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Find an alternative history based on a suggested history.</span>
+
+<span class="sd">        This method is used in two places:</span>
+<span class="sd">        1) to create an initial history if the initial reduced state provided</span>
+<span class="sd">           fewer cluster labels than needed for the given model order</span>
+<span class="sd">        2) to create an alternative history if the trajectory ended up in a</span>
+<span class="sd">           dead end cluster (a cluster for which no transition probabilities</span>
+<span class="sd">           are known); it is assumed that the last cluster of the trajectory</span>
+<span class="sd">           was replaced with the label of the nearest neighboring cluster</span>
+
+<span class="sd">        The following strategy is used to find the most similar trajectory to</span>
+<span class="sd">        the one provided as input:</span>
+<span class="sd">        - use as much of the given trajectory is possible and find matching</span>
+<span class="sd">          histories in the list of available histories</span>
+<span class="sd">        - if no trajectory is found, the process is repeated is shorter segment</span>
+<span class="sd">          of the trajectory; this process continues until at least on potential</span>
+<span class="sd">          history is found</span>
+<span class="sd">        - if multiple possible histories are found that are equally similar to</span>
+<span class="sd">          the input trajectory, the final history is sampled at random </span>
+
+<span class="sd">        :param history: trajectroy to replace or complete</span>
+<span class="sd">        :type history: deque</span>
+<span class="sd">        :return: a trajectory as similar as possible to the input for which a</span>
+<span class="sd">            transition probability is available </span>
+<span class="sd">        :rtype: deque</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_order</span><span class="p">:</span>
+            <span class="n">test_history</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">history</span><span class="p">)[</span><span class="n">count</span><span class="p">:]))</span>
+            <span class="n">possible_histories</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transition_prob</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span>
+                                  <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">test_history</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">possible_histories</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">select_key</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">possible_histories</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">deque</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">select_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_order</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">_find_initial_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_reduced_state</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">deque</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Find a sensible initial history for a given reduced state.</span>
+
+<span class="sd">        :param initial_reduced_state: initial reduced state or initial sequence</span>
+<span class="sd">            of reduced state vectors; if a sequence is given, each column must</span>
+<span class="sd">            form one reduced state vector</span>
+<span class="sd">        :type initial_reduced_state: np.ndarray</span>
+<span class="sd">        :return: initial trajectory of cluster labels with as many elements as</span>
+<span class="sd">            required by the model order</span>
+<span class="sd">        :rtype: deque</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">initial_reduced_state</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">initial_reduced_state</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+                <span class="n">initial_reduced_state</span><span class="o">.</span><span class="n">T</span>
+            <span class="p">)</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">remove_sequential_duplicates</span><span class="p">(</span><span class="n">label</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_order</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">history</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_order</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">history</span>
+
+    <span class="k">def</span> <span class="nf">_sample_next_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">history</span><span class="p">:</span> <span class="n">deque</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">deque</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Sample next cluster and corresponding transition time.</span>
+
+<span class="sd">        In the key resulting from the current history is not present in the</span>
+<span class="sd">        list of available transition probabilities, the last cluster label</span>
+<span class="sd">        in the given history is replaced with the label of the nearest cluster,</span>
+<span class="sd">        and a new history is searched.</span>
+
+<span class="sd">        :param history: current history/past/trajectory</span>
+<span class="sd">        :type history: deque</span>
+<span class="sd">        :return: the history with the new cluster appended and the transition time</span>
+<span class="sd">        :rtype: Tuple[deque, float]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">history</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transition_prob</span><span class="p">:</span>
+            <span class="n">last_cluster</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_closest_cluster</span><span class="p">(</span><span class="n">last_cluster</span><span class="p">))</span>
+            <span class="n">history</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_history</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">history</span><span class="p">)))</span>
+        <span class="n">next_cluster</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_transition_prob</span><span class="p">[</span><span class="n">key</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_transition_prob</span><span class="p">[</span><span class="n">key</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">key</span> <span class="o">+=</span> <span class="s2">&quot;,</span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">next_cluster</span><span class="p">)</span>
+        <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_cluster</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">history</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transition_time</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_interpolate_trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_size</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Add interpolated clusters to overall trajectory.</span>
+
+<span class="sd">        :param step_size: time step size at which to place clusters</span>
+<span class="sd">        :type step_size: float</span>
+<span class="sd">        :raises ValueError: if the trajectory has fewer than two clusters</span>
+<span class="sd">        :return: trajectory with interpolated clusters</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;At least two predictions must be available &quot;</span> <span class="o">+</span>
+                             <span class="s2">&quot;to interpolate a trajectory&quot;</span><span class="p">)</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="o">*</span><span class="n">step_size</span><span class="p">,</span> <span class="n">step_size</span><span class="p">)</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">reduced_state_size</span><span class="p">,</span> <span class="n">times</span><span class="o">.</span><span class="n">size</span><span class="p">),</span>
+                              <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="n">reduced_state_size</span><span class="p">):</span>
+            <span class="n">spline</span> <span class="o">=</span> <span class="n">InterpolatedUnivariateSpline</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_times</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_centers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">visited_clusters</span><span class="p">][:,</span> <span class="n">dim</span><span class="p">],</span>
+                <span class="n">k</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">times</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">prediction</span><span class="p">[</span><span class="n">dim</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">spline</span><span class="p">(</span><span class="n">times</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">prediction</span>
+
+<div class="viewcode-block" id="CNM.predict_reduced"><a class="viewcode-back" href="../../../flowtorch.rom.html#flowtorch.rom.cnm.CNM.predict_reduced">[docs]</a>    <span class="k">def</span> <span class="nf">predict_reduced</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">end_time</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                        <span class="n">step_size</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Advance given reduced state in time.</span>
+
+<span class="sd">        :param initial_state: initial reduced state vector or sequence of</span>
+<span class="sd">            reduced state vectors; the state vectors must form the columns</span>
+<span class="sd">            of the input tensor is a sequence is given</span>
+<span class="sd">        :type initial_state: pt.Tensor</span>
+<span class="sd">        :param end_time: time at which to step the simulation; the simulation</span>
+<span class="sd">            time always starts at zero</span>
+<span class="sd">        :type end_time: float</span>
+<span class="sd">        :param step_size: time step size to advance simulation time; note that</span>
+<span class="sd">            the sampling of the next cluster is independent of the step size;</span>
+<span class="sd">            the step size is only used to interpolate states inbetween the</span>
+<span class="sd">            sampled clusters</span>
+<span class="sd">        :type step_size: float</span>
+<span class="sd">        :return: temporal evolution of the given reduced state vector; each</span>
+<span class="sd">            column forms a temporal snapshot</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_initial_history</span><span class="p">(</span><span class="n">initial_state</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_visited_clusters</span> <span class="o">=</span> <span class="p">[</span><span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_times</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">end_time</span><span class="p">:</span>
+            <span class="n">history</span><span class="p">,</span> <span class="n">trans_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_next_cluster</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">trans_time</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_visited_clusters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpolate_trajectory</span><span class="p">(</span><span class="n">step_size</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dt</span>
+
+    <span class="nd">@dt</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">dt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">check_larger_than</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;dt&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dt</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">n_clusters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_clusters</span>
+
+    <span class="nd">@n_clusters</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">n_clusters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">check_int_larger_than</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;n_clusters&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_clusters</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">model_order</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model_order</span>
+
+    <span class="nd">@model_order</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">model_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">check_int_larger_than</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;model_order&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_model_order</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cluster_centers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">cluster_centers_</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">visited_clusters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visited_clusters</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">times</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_times</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Q</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transition_prob</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transition_time</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, flowTorch contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

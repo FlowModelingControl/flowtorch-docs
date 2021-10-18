@@ -1,0 +1,511 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>flowtorch.analysis &mdash; flowTorch 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="flowtorch.rom" href="flowtorch.rom.html" />
+    <link rel="prev" title="flowtorch.data" href="flowtorch.data.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> flowTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/linear_algebra_basics.html">Linear algebra with PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/svd_ht.html">Optimal hard threshold for singular values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/ipsp_explorer.html">PSP data explorer and loader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/dmd_intro.html">An introduction to DMD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/svd_cylinder.html">SVD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/dmd_cylinder.html">DMD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/cnm_cylinder.html">CNM of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/dmd_naca0012_surface.html">SVD and DMD analysis of airfoil surface data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/piv_analysis.html">Analyzing PIV data of a longitudinal vortex</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Python API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="flowtorch.html">flowtorch</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="flowtorch.data.html">flowtorch.data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">flowtorch.analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.analysis.svd">flowtorch.analysis.svd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.analysis.dmd">flowtorch.analysis.dmd</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.analysis.psp_explorer">flowtorch.analysis.psp_explorer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="flowtorch.rom.html">flowtorch.rom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flowtorch.html#module-flowtorch.constants">flowtorch.constants</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">flowTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="flowtorch.html">flowtorch</a> &raquo;</li>
+        
+      <li>flowtorch.analysis</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/flowtorch.analysis.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="flowtorch-analysis">
+<h1>flowtorch.analysis<a class="headerlink" href="#flowtorch-analysis" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-flowtorch.analysis.svd">
+<span id="flowtorch-analysis-svd"></span><h2>flowtorch.analysis.svd<a class="headerlink" href="#module-flowtorch.analysis.svd" title="Permalink to this headline">¶</a></h2>
+<p>Classes and functions wrapping around <em>torch.linalg.svd</em>.</p>
+<dl class="py class">
+<dt id="flowtorch.analysis.svd.SVD">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.analysis.svd.</code><code class="sig-name descname">SVD</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_matrix</span><span class="p">:</span> <span class="n">torch.Tensor</span></em>, <em class="sig-param"><span class="n">rank</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/analysis/svd.html#SVD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.analysis.svd.SVD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Compute and analyze the SVD of a data matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>U</strong> (<em>pt.Tensor</em>) – left singular vectors</p></li>
+<li><p><strong>s</strong> (<em>pt.Tensor</em>) – singular values</p></li>
+<li><p><strong>s_rel</strong> (<em>pt.Tensor</em>) – singular values normalized with their sum in percent</p></li>
+<li><p><strong>s_cum</strong> (<em>pt.Tensor</em>) – cumulative normalized singular values in percent</p></li>
+<li><p><strong>V</strong> (<em>pt.Tensor</em>) – right singular values</p></li>
+<li><p><strong>rank</strong> (<em>int</em>) – rank used for truncation</p></li>
+<li><p><strong>opt_rank</strong> (<em>int</em>) – optimal rank according to SVHT</p></li>
+<li><p><strong>required_memory</strong> (<em>int</em>) – memory required to store the truncation U, s, and V</p></li>
+</ul>
+</dd>
+</dl>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DATASETS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">FOAMDataloader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.analysis</span> <span class="kn">import</span> <span class="n">SVD</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">FOAMDataloader</span><span class="p">(</span><span class="n">DATASETS</span><span class="p">[</span><span class="s2">&quot;of_cavity_ascii&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">loader</span><span class="o">.</span><span class="n">write_times</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">svd</span> <span class="o">=</span> <span class="n">SVD</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">svd</span><span class="p">)</span>
+<span class="go">SVD of a 400x5 data matrix</span>
+<span class="go">Selected/optimal rank: 5/2</span>
+<span class="go">data type: torch.float32 (4b)</span>
+<span class="go">truncated SVD size: 7.9297Kb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">svd</span><span class="o">.</span><span class="n">s_rel</span>
+<span class="go">tensor([9.9969e+01, 3.0860e-02, 3.0581e-04, 7.8097e-05, 3.2241e-05])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">svd</span><span class="o">.</span><span class="n">s_cum</span>
+<span class="go">tensor([ 99.9687,  99.9996,  99.9999, 100.0000, 100.0000])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">svd</span><span class="o">.</span><span class="n">U</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">torch.Size([400, 5])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="flowtorch.analysis.svd.SVD.U">
+<em class="property">property </em><code class="sig-name descname">U</code><a class="headerlink" href="#flowtorch.analysis.svd.SVD.U" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.svd.SVD.V">
+<em class="property">property </em><code class="sig-name descname">V</code><a class="headerlink" href="#flowtorch.analysis.svd.SVD.V" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.svd.SVD.opt_rank">
+<em class="property">property </em><code class="sig-name descname">opt_rank</code><a class="headerlink" href="#flowtorch.analysis.svd.SVD.opt_rank" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.svd.SVD.rank">
+<em class="property">property </em><code class="sig-name descname">rank</code><a class="headerlink" href="#flowtorch.analysis.svd.SVD.rank" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.svd.SVD.reconstruct">
+<code class="sig-name descname">reconstruct</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rank</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; torch.Tensor<a class="reference internal" href="_modules/flowtorch/analysis/svd.html#SVD.reconstruct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.analysis.svd.SVD.reconstruct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconstruct the data matrix for a given rank.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rank</strong> (<em>int</em><em>, </em><em>optional</em>) – rank used to compute a truncated reconstruction</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>reconstruction of the input data matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pt.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.svd.SVD.required_memory">
+<em class="property">property </em><code class="sig-name descname">required_memory</code><a class="headerlink" href="#flowtorch.analysis.svd.SVD.required_memory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the memory size in bytes of the truncated SVD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>cumulative size of truncated U, s, and V tensors in bytes</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.svd.SVD.s">
+<em class="property">property </em><code class="sig-name descname">s</code><a class="headerlink" href="#flowtorch.analysis.svd.SVD.s" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.svd.SVD.s_cum">
+<em class="property">property </em><code class="sig-name descname">s_cum</code><a class="headerlink" href="#flowtorch.analysis.svd.SVD.s_cum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.svd.SVD.s_rel">
+<em class="property">property </em><code class="sig-name descname">s_rel</code><a class="headerlink" href="#flowtorch.analysis.svd.SVD.s_rel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flowtorch.analysis.dmd">
+<span id="flowtorch-analysis-dmd"></span><h2>flowtorch.analysis.dmd<a class="headerlink" href="#module-flowtorch.analysis.dmd" title="Permalink to this headline">¶</a></h2>
+<p>Classes and functions to compute the dynamic mode decomposition (DMD) of a data matrix.</p>
+<dl class="py class">
+<dt id="flowtorch.analysis.dmd.DMD">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.analysis.dmd.</code><code class="sig-name descname">DMD</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_matrix</span><span class="p">:</span> <span class="n">torch.Tensor</span></em>, <em class="sig-param"><span class="n">dt</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">rank</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/analysis/dmd.html#DMD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.analysis.dmd.DMD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class computing the exact DMD of a data matrix.</p>
+<p>Currently, no advanced mode selection algorithms are implemented.
+The mode amplitudes are computed using the first snapshot.</p>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DATASETS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">FOAMDataloader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.analysis</span> <span class="kn">import</span> <span class="n">DMD</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="n">DATASETS</span><span class="p">[</span><span class="s2">&quot;of_cavity_binary&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">FOAMDataloader</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data_matrix</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">loader</span><span class="o">.</span><span class="n">write_times</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dmd</span> <span class="o">=</span> <span class="n">DMD</span><span class="p">(</span><span class="n">data_matrix</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dmd</span><span class="o">.</span><span class="n">frequency</span>
+<span class="go">tensor([0., 5., 0.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dmd</span><span class="o">.</span><span class="n">growth_rate</span>
+<span class="go">tensor([-2.3842e-06, -4.2345e+01, -1.8552e+01])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dmd</span><span class="o">.</span><span class="n">amplitude</span>
+<span class="go">tensor([10.5635+0.j, -0.0616+0.j, -0.0537+0.j])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="flowtorch.analysis.dmd.DMD.amplitude">
+<em class="property">property </em><code class="sig-name descname">amplitude</code><a class="headerlink" href="#flowtorch.analysis.dmd.DMD.amplitude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.dmd.DMD.dynamics">
+<em class="property">property </em><code class="sig-name descname">dynamics</code><a class="headerlink" href="#flowtorch.analysis.dmd.DMD.dynamics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.dmd.DMD.eigvals">
+<em class="property">property </em><code class="sig-name descname">eigvals</code><a class="headerlink" href="#flowtorch.analysis.dmd.DMD.eigvals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.dmd.DMD.eigvecs">
+<em class="property">property </em><code class="sig-name descname">eigvecs</code><a class="headerlink" href="#flowtorch.analysis.dmd.DMD.eigvecs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.dmd.DMD.frequency">
+<em class="property">property </em><code class="sig-name descname">frequency</code><a class="headerlink" href="#flowtorch.analysis.dmd.DMD.frequency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.dmd.DMD.growth_rate">
+<em class="property">property </em><code class="sig-name descname">growth_rate</code><a class="headerlink" href="#flowtorch.analysis.dmd.DMD.growth_rate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.dmd.DMD.modes">
+<em class="property">property </em><code class="sig-name descname">modes</code><a class="headerlink" href="#flowtorch.analysis.dmd.DMD.modes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.dmd.DMD.partial_reconstruction">
+<code class="sig-name descname">partial_reconstruction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mode_indices</span><span class="p">:</span> <span class="n">Set<span class="p">[</span>int<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; torch.Tensor<a class="reference internal" href="_modules/flowtorch/analysis/dmd.html#DMD.partial_reconstruction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.analysis.dmd.DMD.partial_reconstruction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconstruct data matrix with limited number of modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mode_indices</strong> (<em>Set</em><em>[</em><em>int</em><em>]</em>) – mode indices to keep</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>reconstructed data matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pt.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.dmd.DMD.reconstruction">
+<em class="property">property </em><code class="sig-name descname">reconstruction</code><a class="headerlink" href="#flowtorch.analysis.dmd.DMD.reconstruction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.dmd.DMD.required_memory">
+<em class="property">property </em><code class="sig-name descname">required_memory</code><a class="headerlink" href="#flowtorch.analysis.dmd.DMD.required_memory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the memory size in bytes of the DMD.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>cumulative size of SVD, eigen values/vectors, and
+DMD modes in bytes</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.dmd.DMD.svd">
+<em class="property">property </em><code class="sig-name descname">svd</code><a class="headerlink" href="#flowtorch.analysis.dmd.DMD.svd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flowtorch.analysis.psp_explorer">
+<span id="flowtorch-analysis-psp-explorer"></span><h2>flowtorch.analysis.psp_explorer<a class="headerlink" href="#module-flowtorch.analysis.psp_explorer" title="Permalink to this headline">¶</a></h2>
+<p>Module with classes and functions to explore and analyse iPSP data.</p>
+<dl class="py class">
+<dt id="flowtorch.analysis.psp_explorer.PSPExplorer">
+<em class="property">class </em><code class="sig-prename descclassname">flowtorch.analysis.psp_explorer.</code><code class="sig-name descname">PSPExplorer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/analysis/psp_explorer.html#PSPExplorer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.analysis.psp_explorer.PSPExplorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Explore iPSP data interactively.</p>
+<dl class="py method">
+<dt id="flowtorch.analysis.psp_explorer.PSPExplorer.interact">
+<code class="sig-name descname">interact</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">zone</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">field_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">times</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">mask</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">width</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1024</span></em>, <em class="sig-param"><span class="n">every</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">5</span></em>, <em class="sig-param"><span class="n">cmin</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">- 2</span></em>, <em class="sig-param"><span class="n">cmax</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em><span class="sig-paren">)</span> &#x2192; plotly.graph_objs._figure.Figure<a class="reference internal" href="_modules/flowtorch/analysis/psp_explorer.html#PSPExplorer.interact"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.analysis.psp_explorer.PSPExplorer.interact" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.psp_explorer.PSPExplorer.loader">
+<em class="property">property </em><code class="sig-name descname">loader</code><a class="headerlink" href="#flowtorch.analysis.psp_explorer.PSPExplorer.loader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.psp_explorer.PSPExplorer.mean">
+<code class="sig-name descname">mean</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">zone</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">field_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">times</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">mask</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">width</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1024</span></em>, <em class="sig-param"><span class="n">every</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">cmin</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">- 2</span></em>, <em class="sig-param"><span class="n">cmax</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em><span class="sig-paren">)</span> &#x2192; plotly.graph_objs._figure.Figure<a class="reference internal" href="_modules/flowtorch/analysis/psp_explorer.html#PSPExplorer.mean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.analysis.psp_explorer.PSPExplorer.mean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="flowtorch.analysis.psp_explorer.PSPExplorer.std">
+<code class="sig-name descname">std</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">zone</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">field_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">times</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">mask</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">width</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">1024</span></em>, <em class="sig-param"><span class="n">every</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">cmin</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">cmax</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.5</span></em><span class="sig-paren">)</span> &#x2192; plotly.graph_objs._figure.Figure<a class="reference internal" href="_modules/flowtorch/analysis/psp_explorer.html#PSPExplorer.std"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flowtorch.analysis.psp_explorer.PSPExplorer.std" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="flowtorch.rom.html" class="btn btn-neutral float-right" title="flowtorch.rom" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="flowtorch.data.html" class="btn btn-neutral float-left" title="flowtorch.data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, flowTorch contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1589 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Linear algebra with PyTorch &mdash; flowTorch 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Optimal hard threshold for singular values" href="svd_ht.html" />
+    <link rel="prev" title="Glossary" href="../overview/glossary.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> flowTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview/glossary.html">Glossary</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Linear algebra with PyTorch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#PyTorch-tensors">PyTorch tensors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Creating-tensors">Creating tensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Accessing-elements-in-a-tensor">Accessing elements in a tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Basic-tensor-operations">Basic tensor operations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Linear algebra with PyTorch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Scalar-product">Scalar product</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Cross-product">Cross product</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Outer-product">Outer product</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Matrix-multiplication">Matrix multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Identity-matrix">Identity matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Transpose-of-a-matrix">Transpose of a matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Symmetric-matrix">Symmetric matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Orthogonal-matrix">Orthogonal matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Orthonormal-matrix">Orthonormal matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Hermitian-matrix">Hermitian matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Unitary-matrix">Unitary matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Matrix-decompositions">Matrix decompositions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Eigen-decomposition">Eigen-decomposition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Singular-value-decomposition-(SVD)">Singular value decomposition (SVD)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="svd_ht.html">Optimal hard threshold for singular values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipsp_explorer.html">PSP data explorer and loader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dmd_intro.html">An introduction to DMD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="svd_cylinder.html">SVD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dmd_cylinder.html">DMD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cnm_cylinder.html">CNM of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dmd_naca0012_surface.html">SVD and DMD analysis of airfoil surface data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piv_analysis.html">Analyzing PIV data of a longitudinal vortex</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../flowtorch.html">flowtorch</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">flowTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Linear algebra with PyTorch</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/notebooks/linear_algebra_basics.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<p><img alt="CC" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></p>
+<p>This work is licensed under a <a class="reference external" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+<div class="section" id="Linear-algebra-with-PyTorch">
+<h1>Linear algebra with PyTorch<a class="headerlink" href="#Linear-algebra-with-PyTorch" title="Permalink to this headline">¶</a></h1>
+<p>This notebook introduces some frequently used linear Algebra and tensor operations in PyTorch. For a general introduction to important concepts of linear Algebra, refer to:</p>
+<blockquote>
+<div><p><a class="reference external" href="https://math.mit.edu/~gs/linearalgebra/">Introduction to linear Algebra</a> by Gilbert Strang</p>
+</div></blockquote>
+<p>The first version of this notebook was created by <strong>Mahdi Maktabi</strong> during his time as student assisant at TU Braunschweig’s <a class="reference external" href="https://www.tu-braunschweig.de/ism">Institute of Fluid Mechanics</a>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># import PyTorch and plotting libraries</span>
+<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">import</span> <span class="nn">visualization</span> <span class="k">as</span> <span class="nn">vis</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="PyTorch-tensors">
+<h2>PyTorch tensors<a class="headerlink" href="#PyTorch-tensors" title="Permalink to this headline">¶</a></h2>
+<p>PyTorch provides a <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html">tensor</a> type to define <span class="math notranslate nohighlight">\(n\)</span>-dimensional arrays. Each element in a tensor must be of the same type. Working with PyTorch tensors has a very similar look and feel to working with Numpy arrays. flowTorch uses PyTorch tensors as data structure for field data.</p>
+<div class="section" id="Creating-tensors">
+<h3>Creating tensors<a class="headerlink" href="#Creating-tensors" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># creating a vector of length 10 initialized with zeros</span>
+<span class="n">origin</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">origin</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([0., 0., 0., 0., 0., 0., 0., 0., 0., 0.])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># the two most important tensor attributes: size and dtype</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dimension: &quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Datatype: &quot;</span><span class="p">,</span> <span class="n">origin</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Dimension:  torch.Size([10])
+Datatype:  torch.float32
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># create a 2D tensor with 3 rows and two columns filled with ones</span>
+<span class="n">ones</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">ones</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[1., 1.],
+        [1., 1.],
+        [1., 1.]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># 1D tensor with 5 linearly spaced values between zero and ten</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([ 0.0000,  2.5000,  5.0000,  7.5000, 10.0000])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># creating a tensor from a Python list</span>
+<span class="n">X_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">]</span>
+<span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">X_list</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Created tensor of shape &quot;</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+<span class="n">X</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Created tensor of shape  torch.Size([4, 3])
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[ 0,  1,  2],
+        [ 3,  4,  5],
+        [ 6,  7,  8],
+        [ 9, 10, 11]])
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Accessing-elements-in-a-tensor">
+<h3>Accessing elements in a tensor<a class="headerlink" href="#Accessing-elements-in-a-tensor" title="Permalink to this headline">¶</a></h3>
+<p>PyTorch tensors support element access via the typical square-bracket syntax. Also slicing is supported.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># accessing the element in the fourth row and thrid column</span>
+<span class="n">X</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(11)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># accessing the first column</span>
+<span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([0, 3, 6, 9])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># accessing the second row</span>
+<span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([3, 4, 5])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># accessing the first two elements in the second column</span>
+<span class="n">X</span><span class="p">[:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([1, 4])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># accessing the last two column of the thrid row</span>
+<span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([7, 8])
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Basic-tensor-operations">
+<h3>Basic tensor operations<a class="headerlink" href="#Basic-tensor-operations" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># elementwise addition of a scalar value</span>
+<span class="c1"># X += 2 is shorthand for X = X + 2</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">X</span> <span class="o">+=</span> <span class="mi">2</span>
+<span class="n">X</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[2., 2., 2.],
+        [2., 2., 2.]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># elementwise multiplication with a scalar value</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">X</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">Y</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[4., 4., 4.],
+        [4., 4., 4.]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># elementwise subtraction of two tensors with the same shape</span>
+<span class="n">X</span> <span class="o">-</span> <span class="n">Y</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[-2., -2., -2.],
+        [-2., -2., -2.]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># elementwise multiplication of two tensors with the same shape</span>
+<span class="n">X</span> <span class="o">*</span> <span class="n">Y</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[8., 8., 8.],
+        [8., 8., 8.]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># subtracting a 1D tensor from each row</span>
+<span class="n">ones</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">Y</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape of 1D tensor: &quot;</span><span class="p">,</span> <span class="n">ones</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+<span class="n">Y</span> <span class="o">-</span> <span class="n">ones</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Shape of 1D tensor:  torch.Size([1, 3])
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[3., 3., 3.],
+        [3., 3., 3.]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># subtracting a 1D tensor from each column</span>
+<span class="n">twos</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">Y</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape of 1D tensor: &quot;</span><span class="p">,</span> <span class="n">twos</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+<span class="n">Y</span> <span class="o">-</span> <span class="n">twos</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Shape of 1D tensor:  torch.Size([2, 1])
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[2., 2., 2.],
+        [2., 2., 2.]])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># transpose (swapping rows and columns in 2D)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Shape of Y/Y.T: &quot;</span><span class="p">,</span> <span class="n">Y</span><span class="o">.</span><span class="n">size</span><span class="p">(),</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">Y</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+<span class="n">Y</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Shape of Y/Y.T:  torch.Size([2, 3]) / torch.Size([3, 2])
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([[4., 4.],
+        [4., 4.],
+        [4., 4.]])
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Linear algebra with PyTorch<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Scalar-product">
+<h3>Scalar product<a class="headerlink" href="#Scalar-product" title="Permalink to this headline">¶</a></h3>
+<p>The scalar or dot product between two vectors <span class="math notranslate nohighlight">\(\mathbf{a}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> of length <span class="math notranslate nohighlight">\(N\)</span> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\langle \mathbf{a}, \mathbf{b} \rangle := \sum\limits_{i=1}^{N} a_i b_i.\]</div>
+<p>The dot product has couple of useful properties; see section 1.2 in <a class="reference external" href="https://math.mit.edu/~gs/linearalgebra/">Introduction to linear algebra</a>.</p>
+<p>The dot product of a vector with itself is equal to the squared length/magnitude <span class="math notranslate nohighlight">\(\langle \mathbf{a}, \mathbf{a} \rangle = \left\|\mathbf{a}\right\|^2\)</span></p>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{a} = [1, 2, 2]^T\)</span>, <span class="math notranslate nohighlight">\(\langle \mathbf{a}, \mathbf{a} \rangle = 1^2 + 2^2 + 2^2 = 9\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">])</span>
+<span class="n">len_a</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="n">len_a</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(9.)
+</pre></div></div>
+</div>
+<p>The cosine of the angle enclosed by two vectors of unit length is equal to their dot-product:</p>
+<div class="math notranslate nohighlight">
+\[{\displaystyle \varphi =\arccos{\frac {\langle \mathbf{a} ,{\mathbf {b}\rangle}}{\left\|{\mathbf {a}}\right\|\left\|{\mathbf {b}}\right\|}}}\]</div>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\(\mathbf {a} = [1,1,1]^T,\ \mathbf {b} = [4,2,2]^T\)</span></p>
+<p><span class="math notranslate nohighlight">\(\left\|{\mathbf {a}}\right\| = {\sqrt {{{1}^2}+{{1}^2}+{{1}^2}}} = 1.7321\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\left\|{\mathbf {b}}\right\| = {\sqrt {{{4}^2}+{{2}^2}+{{2}^2}}} = 4.8990\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(\langle \mathbf{a}, \mathbf{b} \rangle = 1\cdot 4+1\cdot 2+1\cdot 2 = 8\)</span></p>
+<p><span class="math notranslate nohighlight">\({\displaystyle \varphi =\arccos {\frac {8}{1.7321\cdot 4.8990}=0.3398}}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">])</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+<span class="n">angle</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="c1"># angle in radians</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.3398</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0E-3</span><span class="p">)</span>
+<span class="n">angle</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(0.3398)
+</pre></div></div>
+</div>
+<p>To find a unit vector with the same direction as a given vector, we divide by the vector’s magnitude:</p>
+<div class="math notranslate nohighlight">
+\[{\displaystyle \mathbf{u} = {\frac { \mathbf{a} }{\left\|{\mathbf {a}}\right\|}}}\]</div>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{a} = [3,6,1]^T\)</span>, <span class="math notranslate nohighlight">\(\left\|{\mathbf{a}}\right\| = \sqrt {46}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\left\|{\mathbf {u}}\right\|\)</span> = <span class="math notranslate nohighlight">\({\sqrt {(\frac {3}{\sqrt {46}})^{2}+(\frac {6}{\sqrt {46} })^{2}+(\frac {1}{\sqrt {46} })^{2}}}=1\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># using the div-function is equivalent to elementwise division of a tensor by a scalar in this example</span>
+<span class="c1"># e.g., b = a / pt.norm(a) yields the same result</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="n">a_length</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">a_length</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0E-3</span><span class="p">)</span>
+<span class="n">a_length</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(1.0000)
+</pre></div></div>
+</div>
+<p>Two vectors are orthogonal if their dot product is zero.</p>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{a}=[3, 0]^T\)</span>, <span class="math notranslate nohighlight">\(\mathbf{b}=[0, 2]^T\)</span></p>
+<p><span class="math notranslate nohighlight">\({\displaystyle \varphi =\arccos {\frac {{3\cdot 0 + 0\cdot 2}}{\sqrt {2}\cdot{\sqrt {3}}}=90^{\circ} }}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">])</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="n">angle</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">90.</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0E-4</span><span class="p">)</span>
+<span class="n">angle</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(90.)
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Cross-product">
+<h3>Cross product<a class="headerlink" href="#Cross-product" title="Permalink to this headline">¶</a></h3>
+<p>The cross product between two three-dimensional vectors <span class="math notranslate nohighlight">\(\mathbf{a}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{a}\times\mathbf{b} = \sum\limits_{i,j,k=1}^{3} a_i b_j \epsilon_{ijk} \mathbf{e}_k,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon_{ijk}\)</span> is the <a class="reference external" href="https://en.wikipedia.org/wiki/Levi-Civita_symbol">Levi-Civita symbol</a>, and <span class="math notranslate nohighlight">\(\mathbf{e}_k\)</span> is the <span class="math notranslate nohighlight">\(k\)</span>-th unit vector.</p>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{a}=[1, 2, 3]^T\)</span>, <span class="math notranslate nohighlight">\(\mathbf{b}=[3, 2, 1]^T\)</span></p>
+<p><span class="math notranslate nohighlight">\({\mathbf{a}}\times{\mathbf{b}}=\begin{bmatrix}1 \\ 2 \\ 3 \end{bmatrix}\times\begin{bmatrix}3 \\ 2 \\ 1 \end{bmatrix}=\begin{bmatrix}2\cdot1 - 3\cdot2 \\3\cdot3 - 1\cdot1 \\1\cdot2 - 2\cdot3\end{bmatrix}\,=\begin{bmatrix}-4 \\ 8 \\ -4\end{bmatrix}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="o">-</span><span class="mf">4.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.</span><span class="p">]))</span>
+<span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor([-4.,  8., -4.])
+</pre></div></div>
+</div>
+<p>The cross product may be used to compute the angle between two vectors:</p>
+<div class="math notranslate nohighlight">
+\[{\displaystyle \varphi =\arcsin {\frac {\left\| \mathbf{a} \times \mathbf {b}\right\|}{ \left\|{\mathbf {a}}\right\| \left\|{\mathbf {b}}\right\|}}}\]</div>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\(\mathbf {a} = [1,-2,3]^T,\mathbf{b} = [-4,5,6]^T\)</span></p>
+<p><span class="math notranslate nohighlight">\(\left\|{\mathbf {a}}\right\|= {\sqrt {{{1}^2}+{{-2}^2}+{{3}^2}}} = \sqrt {14}\)</span>, <span class="math notranslate nohighlight">\(\left\|{\mathbf {b}}\right\|= {\sqrt {{{-4}^2}+{{5}^2}+{{6}^2}}} = \sqrt {77}\)</span></p>
+<p><span class="math notranslate nohighlight">\({\displaystyle \left\|\mathbf {a\times b}\right\| ={\begin{vmatrix} \mathbf i&amp; \mathbf j&amp; \mathbf k \\1&amp;-2&amp;3\\-4&amp;5&amp;6\\\end{vmatrix}}}\)</span> <span class="math notranslate nohighlight">\({\displaystyle {\begin{aligned} =(-27)\mathbf {i} -(18)\mathbf {j} +(-3)\mathbf {k}={\sqrt {{{(-27)}^2}+{{(-18)}^2}+{{(-3)}^2}}=3{\sqrt{118}}}\end{aligned}}}\)</span></p>
+<p><span class="math notranslate nohighlight">\({ \varphi =\arccos {\frac {3\sqrt{118}}{\sqrt {14}\sqrt {77}}=83.0023^\circ}}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="o">-</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">])</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+<span class="n">angle</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">83.0023</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0E-4</span><span class="p">)</span>
+<span class="n">angle</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(83.0023)
+</pre></div></div>
+</div>
+<p>The magnitude of the cross product yields the area of the parallelogram spanned by two vectors <span class="math notranslate nohighlight">\(\mathbf {a}\)</span> and <span class="math notranslate nohighlight">\(\mathbf {b}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[A = {\displaystyle \left\|\mathbf {a} \times \mathbf {b} \right\|=\left\|\mathbf {a} \right\|\left\|\mathbf {b} \right\| \sin \varphi .}\]</div>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\(\mathbf {a} = [1,1,1]^T\)</span>, <span class="math notranslate nohighlight">\(\mathbf {b} = [1,1,2]^T\)</span></p>
+<p><span class="math notranslate nohighlight">\(\mathbf{c}=\mathbf{a}\times\mathbf{b} = [1, -1, 0]^T\)</span>, <span class="math notranslate nohighlight">\(\left\|\mathbf{c}\right\|=\sqrt{2}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">])</span>
+<span class="n">c_mag</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">c_mag</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">1.4142</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0E-4</span><span class="p">)</span>
+<span class="n">c_mag</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+tensor(1.4142)
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Outer-product">
+<h3>Outer product<a class="headerlink" href="#Outer-product" title="Permalink to this headline">¶</a></h3>
+<p>The outer product of two vectors is a matrix. If the two vectors have dimensions <span class="math notranslate nohighlight">\(m\)</span> and <span class="math notranslate nohighlight">\(n\)</span>, their outer product is an <span class="math notranslate nohighlight">\(m\times n\)</span> matrix. Consider the vectors <span class="math notranslate nohighlight">\(\mathbf{a}=[a_{1},a_{2},\dots ,a_{m}]^T\)</span> and <span class="math notranslate nohighlight">\(\mathbf{b} =[b_{1},b_{2},\dots ,b_{n}]^T\)</span>. Their outer product, denoted by <span class="math notranslate nohighlight">\(\mathbf{a}\otimes \mathbf{b}\)</span>, is obtained by multiplying each element of <span class="math notranslate nohighlight">\(\mathbf{a}\)</span> with each element of <span class="math notranslate nohighlight">\(\mathbf{b}\)</span> as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{C} = \mathbf {a} \otimes \mathbf {b} ={\begin{bmatrix}a_{1}b_{1}&amp;a_{1}b_{2}&amp;\dots &amp;a_{1}b_{n}\\a_{2}b_{1}&amp;a_{2}b_{2}&amp;\dots &amp;a_{2}b_{n}\\\vdots &amp;\vdots &amp;\ddots &amp;\vdots \\a_{m}b_{1}&amp;a_{m}b_{2}&amp;\dots &amp;a_{m}b_{n}\end{bmatrix}}\end{split}\]</div>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}0 \\ 1 \\ 2 \end{bmatrix}\begin{bmatrix}1&amp;2&amp;3 \end{bmatrix}=\begin{bmatrix}0&amp;0&amp;0\\1&amp;2&amp;3 \\2&amp;4&amp;6\end{bmatrix}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">a</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]))</span>
+<span class="n">vis</span><span class="o">.</span><span class="n">plot_matrices_as_heatmap</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">C</span><span class="p">],</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$a$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$b$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$C$&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_basics_37_0.png" src="../_images/notebooks_linear_algebra_basics_37_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Matrix-multiplication">
+<h3>Matrix multiplication<a class="headerlink" href="#Matrix-multiplication" title="Permalink to this headline">¶</a></h3>
+<p>The product of two matrices <span class="math notranslate nohighlight">\(\mathbf{C} = \mathbf{AB}\)</span> creates a new matrix with the same number of rows as <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> and the same number of columns as <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>. The number of columns of matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> must be equal to the number of row of matrix <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}{\begin{bmatrix}c_{11}&amp;c_{12}&amp;\cdots &amp;c_{1p}\\c_{21}&amp;c_{22}&amp;\cdots &amp;c_{2p}\\\vdots &amp;\vdots &amp;\ddots &amp;\vdots \\c_{m1}&amp;c_{m2}&amp;\cdots &amp;c_{mp}\\\end{bmatrix}}= {\begin{bmatrix}a_{11}&amp;a_{12}&amp;\cdots &amp;a_{1n}\\a_{21}&amp;a_{22}&amp;\cdots &amp;a_{2n}\\\vdots &amp;\vdots &amp;\ddots &amp;\vdots \\a_{m1}&amp;a_{m2}&amp;\cdots &amp;a_{mn}\\\end{bmatrix}}{\begin{bmatrix}b_{11}&amp;b_{12}&amp;\cdots &amp;b_{1p}\\b_{21}&amp;b_{22}&amp;\cdots &amp;b_{2p}\\\vdots &amp;\vdots &amp;\ddots &amp;\vdots \\b_{n1}&amp;b_{n2}&amp;\cdots &amp;b_{np}\\\end{bmatrix}}\end{split}\]</div>
+<p>The coeffients of the resulting matrix are computed as follows:</p>
+<div class="math notranslate nohighlight">
+\[c_{ij}=a_{i1}b_{1j}+a_{i2}b_{2j}+\cdots +a_{ik}b_{kj}=\sum _{k=1}^{n}a_{ik}b_{kj}\]</div>
+<p>Example:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}{\mathbf{A}}{\mathbf{B}}=\begin{bmatrix}0&amp;1&amp;2 \\ 3&amp;4&amp;5 \\ 6&amp;7&amp;8 \end{bmatrix}\begin{bmatrix}0&amp;1&amp;2 \\ 3&amp;4&amp;5 \\ 6&amp;7&amp;8 \end{bmatrix}=\begin{bmatrix}15&amp;18&amp;21\\42&amp;54&amp;66 \\69&amp;90&amp;111 \end{bmatrix}\end{split}\]</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]]</span>
+<span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+    <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]]</span>
+<span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">21</span><span class="p">],[</span><span class="mi">42</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">66</span><span class="p">],[</span><span class="mi">69</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">111</span><span class="p">]]))</span>
+<span class="n">vis</span><span class="o">.</span><span class="n">plot_matrices_as_heatmap</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">],</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$A$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$B$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$C$&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_basics_40_0.png" src="../_images/notebooks_linear_algebra_basics_40_0.png" />
+</div>
+</div>
+<p>Example 2:</p>
+<p><span class="math notranslate nohighlight">\({\mathbf{A}}{\mathbf{B}}=\begin{bmatrix}0&amp;1&amp;2 \\ 3&amp;4&amp;5 \\ 6&amp;7&amp;8 \end{bmatrix}\begin{bmatrix}0 \\ 3 \\ 6 \end{bmatrix}=\begin{bmatrix}15\\14\\23 \end{bmatrix}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+    <span class="p">[[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">,</span> <span class="mf">5.</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">6.</span><span class="p">,</span> <span class="mf">7.</span><span class="p">,</span> <span class="mf">8.</span><span class="p">]]</span>
+<span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">6.</span><span class="p">]])</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+
+<span class="c1"># instead of the mm function we can also use the @ opertaor</span>
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">A</span> <span class="o">@</span> <span class="n">B</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">15.</span><span class="p">,</span> <span class="mf">42.</span><span class="p">,</span> <span class="mf">69.</span><span class="p">])</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">vis</span><span class="o">.</span><span class="n">plot_matrices_as_heatmap</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">],</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$A$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$B$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$C$&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_basics_42_0.png" src="../_images/notebooks_linear_algebra_basics_42_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Identity-matrix">
+<h3>Identity matrix<a class="headerlink" href="#Identity-matrix" title="Permalink to this headline">¶</a></h3>
+<p>The identity matrix is a square matrix with a value of one on the diagonal and zero elsewhere.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}I={\begin{bmatrix}1&amp;0&amp;0&amp;\cdots &amp;0\\0&amp;1&amp;0&amp;\cdots &amp;0\\0&amp;0&amp;1&amp;\cdots &amp;0\\\vdots &amp;\vdots &amp;\vdots &amp;\ddots &amp;\vdots \\0&amp;0&amp;0&amp;\cdots &amp;1\end{bmatrix}}\end{split}\]</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ones</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">identity</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">ones</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">identity</span><span class="p">)</span>
+<span class="n">vis</span><span class="o">.</span><span class="n">plot_matrices_as_heatmap</span><span class="p">([</span><span class="n">identity</span><span class="p">],</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$I$&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_basics_44_0.png" src="../_images/notebooks_linear_algebra_basics_44_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Transpose-of-a-matrix">
+<h3>Transpose of a matrix<a class="headerlink" href="#Transpose-of-a-matrix" title="Permalink to this headline">¶</a></h3>
+<p>The transpose of a matrix is obtained by swaping its rows and columns.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{A}=
+\begin{bmatrix}
+a_{11} &amp; \dots &amp; a_{1n} \\
+\vdots &amp;       &amp; \vdots \\
+a_{m1} &amp; \dots &amp; a_{mn}
+\end{bmatrix},\quad
+\mathbf{A}^T=
+\begin{bmatrix}
+a_{11} &amp; \dots &amp; a_{m1} \\
+\vdots &amp;       &amp; \vdots \\
+a_{1n} &amp; \dots &amp; a_{mn}
+\end{bmatrix}\end{split}\]</div>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\(\begin{bmatrix}1&amp;3&amp;5\\2&amp;4&amp;6\end{bmatrix}^T=\begin{bmatrix}1&amp;2\\3&amp;4\\5&amp;6\end{bmatrix}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+    <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span>
+<span class="p">)</span>
+<span class="n">AT</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+    <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span>
+<span class="p">)</span>
+
+<span class="k">assert</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">T</span> <span class="o">-</span> <span class="n">AT</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="n">vis</span><span class="o">.</span><span class="n">plot_matrices_as_heatmap</span><span class="p">([</span><span class="n">A</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">],</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$A$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$A^T$&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_basics_46_0.png" src="../_images/notebooks_linear_algebra_basics_46_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Symmetric-matrix">
+<h3>Symmetric matrix<a class="headerlink" href="#Symmetric-matrix" title="Permalink to this headline">¶</a></h3>
+<p>A symmetric matrix is a square matrix that is equal to its transpose: <span class="math notranslate nohighlight">\(\mathbf{A} = \mathbf{A}^T\)</span>. The matrix coefficients are symmetric with respect to the diagonal.</p>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\({\begin{bmatrix}1&amp;2&amp;6\\2&amp;3&amp;4\\6&amp;4&amp;5\end{bmatrix}}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+    <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]]</span>
+<span class="p">)</span>
+<span class="n">AT</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">AT</span><span class="p">)</span>
+<span class="n">vis</span><span class="o">.</span><span class="n">plot_matrices_as_heatmap</span><span class="p">([</span><span class="n">A</span><span class="p">],</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$A$&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_basics_48_0.png" src="../_images/notebooks_linear_algebra_basics_48_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Orthogonal-matrix">
+<h3>Orthogonal matrix<a class="headerlink" href="#Orthogonal-matrix" title="Permalink to this headline">¶</a></h3>
+<p>A matrix is orthogonal if its column vectors form an orthogonal basis. The column vectors are orthogonal if:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle\mathbf{q}_i, \mathbf{q}_j\rangle=
+\begin{cases}
+  0 &amp; \text{if} ~i\neq j \\
+  \neq 0 &amp; \text{if}~i=j
+\end{cases}\end{split}\]</div>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\({\mathbf{Q}}{\mathbf{Q^{T}}}=\begin{bmatrix}1&amp;-2&amp;2 \\ 2&amp;-1&amp;-2 \\ 2&amp;2&amp;1 \end{bmatrix}\begin{bmatrix} 1&amp;2&amp;2 \\ -2&amp;-1&amp;2 \\ 2&amp;-2&amp;1 \end{bmatrix}=\begin{bmatrix}9&amp;0&amp;0\\0&amp;9&amp;0 \\0&amp;0&amp;9 \end{bmatrix}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Q</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+    <span class="p">[[</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span>  <span class="mf">2.0</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span>  <span class="mf">2.0</span><span class="p">,</span>  <span class="mf">1.0</span><span class="p">]]</span>
+<span class="p">)</span>
+<span class="n">QT</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">O</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">QT</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="mi">9</span><span class="p">,</span> <span class="n">O</span><span class="p">)</span>
+<span class="n">vis</span><span class="o">.</span><span class="n">plot_matrices_as_heatmap</span><span class="p">([</span><span class="n">Q</span><span class="p">,</span> <span class="n">QT</span><span class="p">,</span> <span class="n">O</span><span class="p">],</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$Q$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$Q^T$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$O$&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_basics_50_0.png" src="../_images/notebooks_linear_algebra_basics_50_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Orthonormal-matrix">
+<h3>Orthonormal matrix<a class="headerlink" href="#Orthonormal-matrix" title="Permalink to this headline">¶</a></h3>
+<p>The vectors <span class="math notranslate nohighlight">\(\mathbf{q}_i\)</span> are orthonormal if:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle\mathbf{q}_i, \mathbf{q}_j\rangle={\begin{cases}0&amp;{\text{if}}~i\neq j\quad\text{(orthogonal vectors)} \\1&amp;{\text{if}~i=j\quad\text{(unit vectors: $|\mathbf{q}_i|$ = 1)}}\end{cases}}\end{split}\]</div>
+<p>A matrix <span class="math notranslate nohighlight">\(\mathbf{Q}\)</span> with orthonormal column vectors satisfies the relation <span class="math notranslate nohighlight">\(\mathbf{Q}^T\mathbf{Q} = \mathbf{Q}\mathbf{Q}^T = \mathbf{I}\)</span>.</p>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\({\mathbf{Q}^T}{\mathbf{Q}}=\begin{bmatrix}{\frac {1}{\sqrt{2}}}&amp;{\frac {1}{\sqrt{6}}}&amp;{\frac {1}{\sqrt{3}}}\\{\frac {-1}{\sqrt{2}}}&amp;{\frac {1}{\sqrt{6}}}&amp;{\frac {1}{\sqrt{3}}}\\0&amp;{\frac {-2}{\sqrt{6}}}&amp;{\frac {1}{\sqrt{3}}}\end{bmatrix}\begin{bmatrix}{\frac {1}{\sqrt{2}}}&amp;{\frac {-1}{\sqrt{2}}}&amp;0\\{\frac {1}{\sqrt{6}}}&amp;{\frac {1}{\sqrt{6}}}&amp;{\frac {-2}{\sqrt{6}}}\\{\frac {1}{\sqrt{3}}}&amp;{\frac {1}{\sqrt{3}}}&amp;{\frac {1}{\sqrt{3}}}\end{bmatrix}=\begin{bmatrix}1&amp;0&amp;0\\0&amp;1&amp;0 \\0&amp;0&amp;1 \end{bmatrix}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Q</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+    <span class="p">[[</span><span class="mf">1.</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mf">1.</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="mf">1.</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)],</span>
+     <span class="p">[</span><span class="o">-</span><span class="mf">1.</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mf">1.</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="mf">1.</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)],</span>
+     <span class="p">[</span><span class="mf">0.</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="o">-</span><span class="mf">2.</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">6</span><span class="p">),</span> <span class="mf">1.</span><span class="o">/</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)]]</span>
+<span class="p">)</span>
+<span class="n">QT</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">I</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">QT</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">I</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0E-6</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">QT</span><span class="p">),</span> <span class="n">pt</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">QT</span><span class="p">,</span> <span class="n">Q</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0E-6</span><span class="p">)</span>
+<span class="n">vis</span><span class="o">.</span><span class="n">plot_matrices_as_heatmap</span><span class="p">([</span><span class="n">Q</span><span class="p">,</span> <span class="n">QT</span><span class="p">,</span> <span class="n">I</span><span class="p">],</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$Q$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$Q^T$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$I$&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_basics_52_0.png" src="../_images/notebooks_linear_algebra_basics_52_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Hermitian-matrix">
+<h3>Hermitian matrix<a class="headerlink" href="#Hermitian-matrix" title="Permalink to this headline">¶</a></h3>
+<p>A Hermitian matrix is a complex matrix that is equal to its conjugate transpose:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{A}=\overline{\mathbf{A}}^T\]</div>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\({\mathbf{A} = \begin{bmatrix}1&amp;3-{\mathrm {j}}&amp;4\\3+{\mathrm {j}}&amp;-2&amp;-6+{\mathrm {j}}\\4&amp;-6-{\mathrm {j}}&amp;5\end{bmatrix},} \quad {\overline{\mathbf{A}} = \begin{bmatrix}1&amp;3+{\mathrm {j}}&amp;4\\3-{\mathrm {j}}&amp;-2&amp;-6-{\mathrm {j}}\\4&amp;-6+{\mathrm {j}}&amp;5\end{bmatrix}}\)</span></p>
+<p><span class="math notranslate nohighlight">\({\mathbf{A}=\overline{\mathbf{A}}^T= \begin{bmatrix}1&amp;3-{\mathrm {j}}&amp;4\\3+{\mathrm {j}}&amp;-2&amp;-6+{\mathrm {j}}\\4&amp;-6-{\mathrm {j}}&amp;5\end{bmatrix}}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+    <span class="p">[[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">3.</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="p">,</span> <span class="mf">4.</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">3.</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">4.</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mf">5.</span><span class="p">]]</span>
+<span class="p">)</span>
+<span class="n">AH</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">AH</span><span class="p">)</span>
+<span class="n">vis</span><span class="o">.</span><span class="n">plot_matrices_as_heatmap</span><span class="p">([</span><span class="n">A</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">imag</span><span class="p">],</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$Re(A)$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$Im(A)$&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_basics_54_0.png" src="../_images/notebooks_linear_algebra_basics_54_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Unitary-matrix">
+<h3>Unitary matrix<a class="headerlink" href="#Unitary-matrix" title="Permalink to this headline">¶</a></h3>
+<p>A unitary matrix is a complex square matrix whose column vectors form an orthonormal basis. The matrix product of a unitary matrix with its conjugate transpose, denoted by <span class="math notranslate nohighlight">\(\dagger\)</span>, yields the identity matrix:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{Q}\mathbf{Q}^\dagger = \mathbf{I}\]</div>
+<p>Example:</p>
+<p><span class="math notranslate nohighlight">\({\mathbf{Q}={\frac {1}{2}}\begin{bmatrix}1+i&amp;1-i\\1-i&amp;1+i\end{bmatrix}},\quad {\mathbf{Q}\mathbf{Q}^\dagger={\frac {1}{4}}\begin{bmatrix}1+i&amp;1-i\\1-i&amp;1+i\end{bmatrix}}{\begin{bmatrix}1-i&amp;1+i\\1+i&amp;1-i\end{bmatrix}}=\begin{bmatrix}1&amp;0\\0&amp;1 \end{bmatrix}= \mathbf{I}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Q</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+    <span class="p">[[(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">],</span>
+     <span class="p">[(</span><span class="mi">1</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">]]</span>
+<span class="p">)</span>
+<span class="n">QH</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+<span class="n">I</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">QH</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">cfloat</span><span class="p">))</span>
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">QH</span><span class="p">,</span> <span class="n">Q</span><span class="p">))</span>
+<span class="n">vis</span><span class="o">.</span><span class="n">plot_matrices_as_heatmap</span><span class="p">([</span><span class="n">I</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">I</span><span class="o">.</span><span class="n">imag</span><span class="p">],</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$Re(I)$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$Im(I)$&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_basics_56_0.png" src="../_images/notebooks_linear_algebra_basics_56_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Matrix-decompositions">
+<h2>Matrix decompositions<a class="headerlink" href="#Matrix-decompositions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Eigen-decomposition">
+<h3>Eigen-decomposition<a class="headerlink" href="#Eigen-decomposition" title="Permalink to this headline">¶</a></h3>
+<p>The eigen-decomposition of a square matrix <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{A}=\mathbf{Q}\mathbf{\Lambda}\mathbf{Q}^{-1}\]</div>
+<p><span class="math notranslate nohighlight">\(\mathbf{Q}\)</span> is a square matrix formed by the eigenvecctors of <span class="math notranslate nohighlight">\(\mathbf{A}\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{\Lambda}\)</span> is a diagonal matrix whose diagonal elements are the corresponding eigenvalues.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+    <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="mf">2.0</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.0</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span>  <span class="mf">4.0</span><span class="p">]]</span>
+<span class="p">)</span>
+
+<span class="c1"># the eigen decomposition returns complex tensors; to compare them with</span>
+<span class="c1"># the original tensor, we remove the imaginary part</span>
+<span class="n">val</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">real</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+<span class="n">invQ</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">invQ</span><span class="p">),</span> <span class="n">pt</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0E-3</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">L</span><span class="p">)</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">invQ</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0E-2</span><span class="p">)</span>
+<span class="n">vis</span><span class="o">.</span><span class="n">plot_matrices_as_heatmap</span><span class="p">([</span><span class="n">Q</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">invQ</span><span class="p">],</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$Q$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\Lambda$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$Q^{-1}$&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_basics_58_0.png" src="../_images/notebooks_linear_algebra_basics_58_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Singular-value-decomposition-(SVD)">
+<h3>Singular value decomposition (SVD)<a class="headerlink" href="#Singular-value-decomposition-(SVD)" title="Permalink to this headline">¶</a></h3>
+<p>The SVD is a factorization of a real or complex matrix that generalizes the eigen-decomposition of a square matrix to any <span class="math notranslate nohighlight">\({ m\times n}\)</span> matrix:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{A} = \mathbf{U}\mathbf{\Sigma}\mathbf{V}^\dagger\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{U}\)</span>: is a <span class="math notranslate nohighlight">\(m \times m\)</span> unitary matrix; the columns of <span class="math notranslate nohighlight">\(\mathbf{U}\)</span> are called left singular vectors</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{\Sigma}\)</span> is a <span class="math notranslate nohighlight">\(m\times n\)</span> matrix containing a diagonal matrix of dimension <span class="math notranslate nohighlight">\(\mathrm{min}(m, n)\)</span>; the diagonal elements are called singular values</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{V}^\dagger\)</span> is a <span class="math notranslate nohighlight">\(n\times n\)</span> unitary matrix; the columns of <span class="math notranslate nohighlight">\(\mathbf{V}^\dagger\)</span> are called right singular vectors</p></li>
+</ul>
+<p>example:</p>
+<p><span class="math notranslate nohighlight">\(\mathbf{A}\)</span>=<span class="math notranslate nohighlight">\(\begin{bmatrix}1&amp;2 \\ 3&amp;4 \\ 5&amp;6 \end{bmatrix}\)</span>=<span class="math notranslate nohighlight">\(\begin{bmatrix}-0.23&amp;0.88&amp;0.41\\-0.52&amp;0.24&amp;-0.82\\-0.82&amp;-0.4&amp;0.41 \end{bmatrix}\begin{bmatrix}9.53&amp;0\\0&amp;0.51\\0&amp;0 \end{bmatrix}\begin{bmatrix}-0.62&amp;-0.78\\-0.78&amp;0.62 \end{bmatrix}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+    <span class="p">[[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">]]</span>
+<span class="p">)</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">VH</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">some</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">S</span><span class="p">[:</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">pt</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">VH</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">VH</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">),</span> <span class="n">pt</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1.0e-6</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">pt</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">U</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">mm</span><span class="p">(</span><span class="n">VH</span><span class="p">)))</span>
+<span class="n">vis</span><span class="o">.</span><span class="n">plot_matrices_as_heatmap</span><span class="p">([</span><span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">VH</span><span class="p">],</span> <span class="p">[</span><span class="sa">r</span><span class="s2">&quot;$U$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$\Sigma$&quot;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;$V^H$&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_linear_algebra_basics_60_0.png" src="../_images/notebooks_linear_algebra_basics_60_0.png" />
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="svd_ht.html" class="btn btn-neutral float-right" title="Optimal hard threshold for singular values" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../overview/glossary.html" class="btn btn-neutral float-left" title="Glossary" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, flowTorch contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
