@@ -1,0 +1,440 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>flowtorch.analysis.psp_explorer &mdash; flowTorch 1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> flowTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/linear_algebra_basics.html">Linear algebra with PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_ht.html">Optimal hard threshold for singular values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/ipsp_explorer.html">PSP data explorer and loader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_intro.html">An introduction to DMD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_cylinder.html">SVD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_cylinder.html">DMD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/cnm_cylinder.html">CNM of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_naca0012_surface.html">SVD and DMD analysis of airfoil surface data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/piv_analysis.html">Analyzing PIV data of a longitudinal vortex</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../flowtorch.html">flowtorch</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">flowTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>flowtorch.analysis.psp_explorer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for flowtorch.analysis.psp_explorer</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Module with classes and functions to explore and analyse iPSP data.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># standard library packages</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="c1"># third party packages</span>
+<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">from</span> <span class="nn">plotly.subplots</span> <span class="kn">import</span> <span class="n">make_subplots</span>
+<span class="c1"># flowtorch packages</span>
+<span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">PSPDataloader</span>
+
+
+<div class="viewcode-block" id="PSPExplorer"><a class="viewcode-back" href="../../../flowtorch.analysis.html#flowtorch.analysis.psp_explorer.PSPExplorer">[docs]</a><span class="k">class</span> <span class="nc">PSPExplorer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Explore iPSP data interactively.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an instance from the path to an iPSP file.</span>
+
+<span class="sd">        :param file_path: path to iPSP file</span>
+<span class="sd">        :type file_path: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_path</span> <span class="o">=</span> <span class="n">file_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span> <span class="o">=</span> <span class="n">PSPDataloader</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_aspect_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="n">pt</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">vertices</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">-</span>
+                  <span class="n">pt</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">vertices</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]))</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="n">pt</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">vertices</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">-</span>
+                  <span class="n">pt</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">vertices</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        <span class="n">dz</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="n">pt</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">vertices</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">-</span>
+                  <span class="n">pt</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">vertices</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]))</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">dy</span><span class="o">/</span><span class="n">dx</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="n">dz</span><span class="o">/</span><span class="n">dx</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_create_time_slider</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a time slider to select snapshots.</span>
+
+<span class="sd">        :param times: list of write times</span>
+<span class="sd">        :type times: List[str]</span>
+<span class="sd">        :return: slider dictionary</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">steps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)):</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">method</span><span class="o">=</span><span class="s2">&quot;update&quot;</span><span class="p">,</span>
+                <span class="n">args</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;visible&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)},</span>
+                      <span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Selected time: </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">times</span><span class="p">[</span><span class="n">i</span><span class="p">])}],</span>
+                <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">step</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;visible&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+        <span class="n">slider</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">active</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">pad</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
+            <span class="n">steps</span><span class="o">=</span><span class="n">steps</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">slider</span>
+
+    <span class="k">def</span> <span class="nf">_create_surface_trace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">vertices</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+                              <span class="n">weights</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">every</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">cmin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">cmax</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">go</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">vertices</span><span class="p">[::</span><span class="n">every</span><span class="p">,</span> <span class="p">::</span><span class="n">every</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">vertices</span><span class="p">[::</span><span class="n">every</span><span class="p">,</span> <span class="p">::</span><span class="n">every</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">z</span><span class="o">=</span><span class="n">vertices</span><span class="p">[::</span><span class="n">every</span><span class="p">,</span> <span class="p">::</span><span class="n">every</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+            <span class="n">surfacecolor</span><span class="o">=</span><span class="n">field</span><span class="p">[::</span><span class="n">every</span><span class="p">,</span> <span class="p">::</span><span class="n">every</span><span class="p">]</span> <span class="o">*</span>
+            <span class="n">weights</span><span class="p">[::</span><span class="n">every</span><span class="p">,</span> <span class="p">::</span><span class="n">every</span><span class="p">],</span>
+            <span class="n">cmin</span><span class="o">=</span><span class="n">cmin</span><span class="p">,</span>
+            <span class="n">cmax</span><span class="o">=</span><span class="n">cmax</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_create_surface_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">:</span>
+        <span class="n">aspect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aspect_ratio</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">times</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sliders</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sliders</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_time_slider</span><span class="p">(</span><span class="n">times</span><span class="p">)]</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Layout</span><span class="p">(</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+            <span class="n">height</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="n">aspect</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]),</span>
+            <span class="n">scene</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;camera_eye&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+                <span class="s2">&quot;aspectratio&quot;</span><span class="p">:</span> <span class="n">aspect</span>
+            <span class="p">},</span>
+            <span class="n">sliders</span><span class="o">=</span><span class="n">sliders</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">layout</span>
+
+<div class="viewcode-block" id="PSPExplorer.interact"><a class="viewcode-back" href="../../../flowtorch.analysis.html#flowtorch.analysis.psp_explorer.PSPExplorer.interact">[docs]</a>    <span class="k">def</span> <span class="nf">interact</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zone</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">times</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                 <span class="n">mask</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="n">every</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+                 <span class="n">cmin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">cmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Show selected snapshots of an iPSP file as interactive surface plot.</span>
+
+<span class="sd">        :param zone: name of the zone to display</span>
+<span class="sd">        :type zone: str</span>
+<span class="sd">        :param field_name: name of the field to display</span>
+<span class="sd">        :type field_name: str</span>
+<span class="sd">        :param times: list of times instances to show</span>
+<span class="sd">        :type times: list</span>
+<span class="sd">        :param mask: if True, the data is masked using the mask provided</span>
+<span class="sd">            in the iPSP dataset, defaults to True</span>
+<span class="sd">        :type mask: bool, optional</span>
+<span class="sd">        :param width: width of the plot, defaults to 1024</span>
+<span class="sd">        :type width: int, optional</span>
+<span class="sd">        :param every: plot only every nth point, defaults to 5</span>
+<span class="sd">        :type every: int, optional</span>
+<span class="sd">        :param cmin: lower bound for color range, defaults to -2</span>
+<span class="sd">        :type cmin: float, optional</span>
+<span class="sd">        :param cmax: upper bound for color range, defaults to 0.5</span>
+<span class="sd">        :type cmax: float, optional</span>
+<span class="sd">        :return: interactive iPSP surface plot</span>
+<span class="sd">        :rtype: go.Figure</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">zone</span> <span class="o">=</span> <span class="n">zone</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">vertices</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">weights</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">mask</span><span class="p">:</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">times</span><span class="p">)</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_surface_layout</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">times</span><span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">times</span><span class="p">)):</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">fields</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">surface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_surface_trace</span><span class="p">(</span>
+                <span class="n">field</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">every</span><span class="p">,</span> <span class="n">cmin</span><span class="p">,</span> <span class="n">cmax</span><span class="p">)</span>
+            <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="PSPExplorer.mean"><a class="viewcode-back" href="../../../flowtorch.analysis.html#flowtorch.analysis.psp_explorer.PSPExplorer.mean">[docs]</a>    <span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zone</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">times</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+             <span class="n">mask</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+             <span class="n">cmin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">cmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Show temporal mean of an iPSP file as interactive surface plot.</span>
+
+<span class="sd">        :param zone: name of the zone to display</span>
+<span class="sd">        :type zone: str</span>
+<span class="sd">        :param field_name: name of the field to display</span>
+<span class="sd">        :type field_name: str</span>
+<span class="sd">        :param times: snapshot times over which to compute the mean</span>
+<span class="sd">        :type times: list</span>
+<span class="sd">        :param mask: if True, the data is masked using the mask provided</span>
+<span class="sd">            in the iPSP dataset, defaults to True</span>
+<span class="sd">        :type mask: bool, optional</span>
+<span class="sd">        :param width: width of the plot, defaults to 1024</span>
+<span class="sd">        :type width: int, optional</span>
+<span class="sd">        :param every: use only every nth point for plotting,</span>
+<span class="sd">            defaults to 5</span>
+<span class="sd">        :type every: int, optional</span>
+<span class="sd">        :param cmin: lower bound for color range, defaults to -2</span>
+<span class="sd">        :type cmin: float, optional</span>
+<span class="sd">        :param cmax: upper bound for color range, defaults to 0.5</span>
+<span class="sd">        :type cmax: float, optional</span>
+<span class="sd">        :return: interactive iPSP surface plot showing the temporal mean</span>
+<span class="sd">        :rtype: go.Figure</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">zone</span> <span class="o">=</span> <span class="n">zone</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">vertices</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">weights</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">mask</span><span class="p">:</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">times</span><span class="p">)</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_surface_layout</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
+        <span class="n">surface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_surface_trace</span><span class="p">(</span>
+            <span class="n">mean</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">every</span><span class="p">,</span> <span class="n">cmin</span><span class="p">,</span> <span class="n">cmax</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+<div class="viewcode-block" id="PSPExplorer.std"><a class="viewcode-back" href="../../../flowtorch.analysis.html#flowtorch.analysis.psp_explorer.PSPExplorer.std">[docs]</a>    <span class="k">def</span> <span class="nf">std</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zone</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">times</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+            <span class="n">mask</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">cmin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Show temporal standard deviation as interactive surface plot.</span>
+
+<span class="sd">        :param zone: name of the zone to display</span>
+<span class="sd">        :type zone: str</span>
+<span class="sd">        :param field_name: name of the field to display</span>
+<span class="sd">        :type field_name: str</span>
+<span class="sd">        :param times: snapshot times over which to compute the standard</span>
+<span class="sd">            deviation</span>
+<span class="sd">        :type times: list</span>
+<span class="sd">        :param mask: if True, the data is masked using the mask provided</span>
+<span class="sd">            in the iPSP dataset, defaults to True</span>
+<span class="sd">        :type mask: bool, optional</span>
+<span class="sd">        :param width: width of the plot, defaults to 1024</span>
+<span class="sd">        :type width: int, optional</span>
+<span class="sd">        :param every: use only every nth point for plotting,</span>
+<span class="sd">            defaults to 5</span>
+<span class="sd">        :type every: int, optional</span>
+<span class="sd">        :param cmin: lower bound for color range, defaults to -2</span>
+<span class="sd">        :type cmin: float, optional</span>
+<span class="sd">        :param cmax: upper bound for color range, defaults to 0.5</span>
+<span class="sd">        :type cmax: float, optional</span>
+<span class="sd">        :return: interactive iPSP surface plot</span>
+<span class="sd">        :rtype: go.Figure</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">zone</span> <span class="o">=</span> <span class="n">zone</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">vertices</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">weights</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">mask</span><span class="p">:</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">times</span><span class="p">)</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_surface_layout</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
+        <span class="n">surface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_surface_trace</span><span class="p">(</span>
+            <span class="n">std</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">every</span><span class="p">,</span> <span class="n">cmin</span><span class="p">,</span> <span class="n">cmax</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fig</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">loader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PSPDataloader</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the `PSPdataloader` instance used to access data.</span>
+
+<span class="sd">        This propertie allows accessing the loader&#39;s metadata via</span>
+<span class="sd">        the explorer without having to create a new loader instance.</span>
+
+<span class="sd">        :return: PSP dataloader instance</span>
+<span class="sd">        :rtype: PSPDataloader</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loader</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, flowTorch contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

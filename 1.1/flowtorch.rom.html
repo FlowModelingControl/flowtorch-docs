@@ -1,0 +1,747 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>flowtorch.rom &mdash; flowTorch 1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="flowtorch.analysis" href="flowtorch.analysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> flowTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/linear_algebra_basics.html">Linear algebra with PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/svd_ht.html">Optimal hard threshold for singular values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/ipsp_explorer.html">PSP data explorer and loader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/dmd_intro.html">An introduction to DMD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/svd_cylinder.html">SVD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/dmd_cylinder.html">DMD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/cnm_cylinder.html">CNM of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/dmd_naca0012_surface.html">SVD and DMD analysis of airfoil surface data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/piv_analysis.html">Analyzing PIV data of a longitudinal vortex</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="flowtorch.html">flowtorch</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="flowtorch.data.html">flowtorch.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flowtorch.analysis.html">flowtorch.analysis</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">flowtorch.rom</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.rom.base">flowtorch.rom.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.rom.cnm">flowtorch.rom.cnm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.rom.svd_encoder">flowtorch.rom.svd_encoder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-flowtorch.rom.utils">flowtorch.rom.utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="flowtorch.html#module-flowtorch.constants">flowtorch.constants</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">flowTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="flowtorch.html">flowtorch</a> &raquo;</li>
+        
+      <li>flowtorch.rom</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/flowtorch.rom.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="flowtorch-rom">
+<h1>flowtorch.rom<a class="headerlink" href="#flowtorch-rom" title="Permalink to this heading">¶</a></h1>
+<div class="section" id="module-flowtorch.rom.base">
+<span id="flowtorch-rom-base"></span><h2>flowtorch.rom.base<a class="headerlink" href="#module-flowtorch.rom.base" title="Permalink to this heading">¶</a></h2>
+<p>Definition of a common interface for all reduced-order models (ROMs).</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flowtorch.rom.base.Encoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flowtorch.rom.base.</span></span><span class="sig-name descname"><span class="pre">Encoder</span></span><a class="reference internal" href="_modules/flowtorch/rom/base.html#Encoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.base.Encoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract base class for dimensionality reduction algorithms.</p>
+<p>This base class should be used when defineing new algorithms
+for dimensionality reduction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>trained</strong> (<em>bool</em>) – True if the encoder was trained/set up</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="flowtorch.rom.base.Encoder.decode">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduced_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="_modules/flowtorch/rom/base.html#Encoder.decode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.base.Encoder.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map the reduced state back to the full state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>reduced_state</strong> – snapshot or sequence of snapshots in reduced
+state space; if there is one more dimension than in
+<cite>reduced_state_shape</cite>, the last dimension is considered as
+time/batch dimension</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>snapshot or sequence of snapshots in full state space</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowtorch.rom.base.Encoder.encode">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">full_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="_modules/flowtorch/rom/base.html#Encoder.encode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.base.Encoder.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map the full to the reduced state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – snapshot or sequence of snapshots; if the input has
+one more dimension as the state (<cite>state_shape</cite>), the last
+dimension is considered as time/batch dimension</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>snapshot or sequence of snapshots in reduced state space</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.base.Encoder.reduced_state_size">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reduced_state_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#flowtorch.rom.base.Encoder.reduced_state_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size of the reduced state vector.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.base.Encoder.state_shape">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">state_shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Size</span></em><a class="headerlink" href="#flowtorch.rom.base.Encoder.state_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shape of the full state tensor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowtorch.rom.base.Encoder.train">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">full_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/flowtorch/rom/base.html#Encoder.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.base.Encoder.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a mapping from the full to the reduced state space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>full_state</strong> – time series data; the size of the last dimension
+equals the number of snapshots (batch dimension)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>information about the training process</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.base.Encoder.trained">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trained</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#flowtorch.rom.base.Encoder.trained" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the training state</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if training was completed</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flowtorch.rom.base.ROM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flowtorch.rom.base.</span></span><span class="sig-name descname"><span class="pre">ROM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduced_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flowtorch.rom.base.Encoder" title="flowtorch.rom.base.Encoder"><span class="pre">Encoder</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/rom/base.html#ROM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.base.ROM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract base class for reduced-order models.</p>
+<p>This base class should be used when defining new ROMs.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.base.ROM.encoder">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">encoder</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#flowtorch.rom.base.Encoder" title="flowtorch.rom.base.Encoder"><span class="pre">Encoder</span></a></em><a class="headerlink" href="#flowtorch.rom.base.ROM.encoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return encoder instance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowtorch.rom.base.ROM.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="_modules/flowtorch/rom/base.html#ROM.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.base.ROM.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict the evolution of a given initial full state vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial_state</strong> (<em>Tensor</em>) – state from which to start</p></li>
+<li><p><strong>end_time</strong> (<em>float</em>) – when to stop the simulation; the corresponding
+start time is always assumed to be zero</p></li>
+<li><p><strong>step_size</strong> (<em>float</em>) – time step size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>evolution of the full state vector; the last dimension
+corresponds to the time/batch dimension</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowtorch.rom.base.ROM.predict_reduced">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict_reduced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="_modules/flowtorch/rom/base.html#ROM.predict_reduced"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.base.ROM.predict_reduced" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict the evolution of a given initial reduced state vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial_state</strong> (<em>Tensor</em>) – initial reduced state vector</p></li>
+<li><p><strong>end_time</strong> (<em>float</em>) – when to stop the simulation; the corresponding
+start time is always assumed to be zero</p></li>
+<li><p><strong>step_size</strong> (<em>float</em>) – time step size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>evolution of the reduced state vector; the last dimension
+corresponds to the time/batch dimension</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flowtorch.rom.cnm">
+<span id="flowtorch-rom-cnm"></span><h2>flowtorch.rom.cnm<a class="headerlink" href="#module-flowtorch.rom.cnm" title="Permalink to this heading">¶</a></h2>
+<p>Implementation of cluster-based network modeling (CNM).</p>
+<p>A reference implementation by Daniel Fernex is available on
+<a class="reference external" href="https://github.com/fernexda/cnm">Github</a>. Theoretical concepts are covered in the accompanying
+<a class="reference external" href="https://advances.sciencemag.org/content/7/25/eabf5006">publication</a>.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flowtorch.rom.cnm.CNM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flowtorch.rom.cnm.</span></span><span class="sig-name descname"><span class="pre">CNM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduced_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flowtorch.rom.base.Encoder" title="flowtorch.rom.base.Encoder"><span class="pre">Encoder</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_clusters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/rom/cnm.html#CNM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.cnm.CNM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flowtorch.rom.base.ROM" title="flowtorch.rom.base.ROM"><code class="xref py py-class docutils literal notranslate"><span class="pre">ROM</span></code></a></p>
+<p>Cluster-based network modeling implementation.</p>
+<p>In contrast to the original <a class="reference external" href="https://github.com/fernexda/cnm/tree/main/cnm">implementation</a>, the clustering, the
+computation of transition probabilities, and the propagation in
+time are condensed in a single class. The class also relies on
+Numpy and Scikit-Learn for K-means, KD-tree, and interpolation.
+These components might be replaced with PyTorch implementations
+in future releases.</p>
+<p>The cluster attribute has a member called labels. Each label corresponds
+to the cluster id associated with each sample of the input data. Since
+the input data are sorted according to the time at which they were sampled,
+we can interpret the labels as a sequence of visited clusters over time
+However, if two or more consecutive snapshots belong to the same cluster,
+we are only interested in the next state in the sequence that is different
+from the current cluster because we want to model the temporal behavior as
+a transition between cluster centroids. Therefore, sequential duplicates
+must be removed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dt</strong> (<em>float</em>) – time step between two snapshots</p></li>
+<li><p><strong>n_clusters</strong> (<em>int</em><em>, </em><em>optional</em>) – number of clusters; must be larger than one</p></li>
+<li><p><strong>model_order</strong> (<em>int</em><em>, </em><em>optional</em>) – number of past cluster to consider when predicting
+the next cluster</p></li>
+<li><p><strong>Q</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>np.ndarray</em><em>]</em>) – transition probabilities</p></li>
+<li><p><strong>T</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – transition times</p></li>
+<li><p><strong>times</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – times at which cluster centroids were visited</p></li>
+<li><p><strong>visited_clusters</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – clusters visited during the temporal evolution</p></li>
+<li><p><strong>cluster_centers</strong> (<em>np.ndarray</em>) – centroids of clusters</p></li>
+</ul>
+</dd>
+</dl>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.rom</span> <span class="kn">import</span> <span class="n">SVDEncoder</span><span class="p">,</span> <span class="n">CNM</span>
+<span class="gp">... </span><span class="n">assemble</span> <span class="n">data</span> <span class="n">matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encoder</span> <span class="o">=</span> <span class="n">SVDEncoder</span><span class="p">(</span><span class="n">rank</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data_matrix</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reduced_state</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">data_matrix</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cnm</span> <span class="o">=</span> <span class="n">CNM</span><span class="p">(</span><span class="n">reduced_state</span><span class="p">,</span> <span class="n">encoder</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">model_order</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prediction</span> <span class="o">=</span> <span class="n">cnm</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data_matrix</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="n">end_time</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">step_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reduced_prediction</span> <span class="o">=</span> <span class="n">cnm</span><span class="o">.</span><span class="n">predict_reduced</span><span class="p">(</span><span class="n">reduced_state</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">full_prediction</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">reduced_prediction</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.cnm.CNM.Q">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Q</span></span><a class="headerlink" href="#flowtorch.rom.cnm.CNM.Q" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.cnm.CNM.T">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">T</span></span><a class="headerlink" href="#flowtorch.rom.cnm.CNM.T" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.cnm.CNM.cluster_centers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cluster_centers</span></span><a class="headerlink" href="#flowtorch.rom.cnm.CNM.cluster_centers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.cnm.CNM.dt">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dt</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#flowtorch.rom.cnm.CNM.dt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.cnm.CNM.model_order">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_order</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#flowtorch.rom.cnm.CNM.model_order" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.cnm.CNM.n_clusters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_clusters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#flowtorch.rom.cnm.CNM.n_clusters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowtorch.rom.cnm.CNM.predict_reduced">
+<span class="sig-name descname"><span class="pre">predict_reduced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="_modules/flowtorch/rom/cnm.html#CNM.predict_reduced"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.cnm.CNM.predict_reduced" title="Permalink to this definition">¶</a></dt>
+<dd><p>Advance given reduced state in time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial_state</strong> (<em>pt.Tensor</em>) – initial reduced state vector or sequence of
+reduced state vectors; the state vectors must form the columns
+of the input tensor is a sequence is given</p></li>
+<li><p><strong>end_time</strong> (<em>float</em>) – time at which to step the simulation; the simulation
+time always starts at zero</p></li>
+<li><p><strong>step_size</strong> (<em>float</em>) – time step size to advance simulation time; note that
+the sampling of the next cluster is independent of the step size;
+the step size is only used to interpolate states inbetween the
+sampled clusters</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>temporal evolution of the given reduced state vector; each
+column forms a temporal snapshot</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pt.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.cnm.CNM.times">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">times</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#flowtorch.rom.cnm.CNM.times" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.cnm.CNM.visited_clusters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visited_clusters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#flowtorch.rom.cnm.CNM.visited_clusters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flowtorch.rom.svd_encoder">
+<span id="flowtorch-rom-svd-encoder"></span><h2>flowtorch.rom.svd_encoder<a class="headerlink" href="#module-flowtorch.rom.svd_encoder" title="Permalink to this heading">¶</a></h2>
+<p>Encoder based on the singular value decomposition (SVD).</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flowtorch.rom.svd_encoder.SVDEncoder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flowtorch.rom.svd_encoder.</span></span><span class="sig-name descname"><span class="pre">SVDEncoder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/rom/svd_encoder.html#SVDEncoder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.svd_encoder.SVDEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flowtorch.rom.base.Encoder" title="flowtorch.rom.base.Encoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">Encoder</span></code></a></p>
+<p>SVD-based dimensionality reduction for ROM.</p>
+<p>Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DATASETS</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">FOAMDataloader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">flowtorch.rom</span> <span class="kn">import</span> <span class="n">SVDEncoder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">FOAMDataloader</span><span class="p">(</span><span class="n">DATASETS</span><span class="p">[</span><span class="s2">&quot;of_cylinder2D_binary&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="n">loader</span><span class="o">.</span><span class="n">write_times</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">11</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">torch.Size([13678, 10]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">encoder</span> <span class="o">=</span> <span class="n">SVDEncoder</span><span class="p">(</span><span class="n">rank</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reduced_state</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reduced_state</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">torch.Size([10, 10]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">full_state</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">reduced_state</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">full_state</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">torch.Size([13678, 10]</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="flowtorch.rom.svd_encoder.SVDEncoder.decode">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduced_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="_modules/flowtorch/rom/svd_encoder.html#SVDEncoder.decode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.svd_encoder.SVDEncoder.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the full projection onto the POD modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>reduced_state</strong> (<em>pt.Tensor</em>) – 1D or 2D tensor, in which each column
+holds the mode coefficients of a given state; if the input
+has two dimensions, the second dimension is considered as the
+batch dimension</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>full state vector in the subspace spanned by the POD modes</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pt.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowtorch.rom.svd_encoder.SVDEncoder.encode">
+<span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">full_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tensor</span></span></span><a class="reference internal" href="_modules/flowtorch/rom/svd_encoder.html#SVDEncoder.encode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.svd_encoder.SVDEncoder.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Project one or multiple state vectors onto the POD modes.</p>
+<p>This function computes the scalar projections of one or more
+state vectors onto each POD mode. The result is vector (single state)
+or a matrix (sequence of states) of scalar projections, in which the
+row index corresponds to the associated POD mode and the column index
+corresponds to the associated snapshot in the sequence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>full_state</strong> (<em>pt.Tensor</em>) – [description]</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – [description]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>[description]</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pt.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.svd_encoder.SVDEncoder.reduced_state_size">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reduced_state_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#flowtorch.rom.svd_encoder.SVDEncoder.reduced_state_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the size of the reduced state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>size of the reduced state.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="flowtorch.rom.svd_encoder.SVDEncoder.state_shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">state_shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Size</span></em><a class="headerlink" href="#flowtorch.rom.svd_encoder.SVDEncoder.state_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the size of the full state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>size of the full state</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>pt.Size</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flowtorch.rom.svd_encoder.SVDEncoder.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/flowtorch/rom/svd_encoder.html#SVDEncoder.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.svd_encoder.SVDEncoder.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the POD modes of a given data matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pt.Tensor</em>) – data matrix containing a sequence of snapshots,
+where each snapshot corresponds to a column vector of the
+data matrix</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>empty dictionary since there is no real training process</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-flowtorch.rom.utils">
+<span id="flowtorch-rom-utils"></span><h2>flowtorch.rom.utils<a class="headerlink" href="#module-flowtorch.rom.utils" title="Permalink to this heading">¶</a></h2>
+<p>Collection of utilities for reduced-order modeling.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="flowtorch.rom.utils.check_int_larger_than">
+<span class="sig-prename descclassname"><span class="pre">flowtorch.rom.utils.</span></span><span class="sig-name descname"><span class="pre">check_int_larger_than</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/rom/utils.html#check_int_larger_than"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.utils.check_int_larger_than" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if input is an integer larger than a given lower limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>int</em>) – input value to check</p></li>
+<li><p><strong>limit</strong> (<em>int</em>) – the value must be larger than the limit</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – name of the parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if the argument is not an integer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowtorch.rom.utils.check_larger_than">
+<span class="sig-prename descclassname"><span class="pre">flowtorch.rom.utils.</span></span><span class="sig-name descname"><span class="pre">check_larger_than</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flowtorch/rom/utils.html#check_larger_than"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.utils.check_larger_than" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a scalar value is larger than a given lower limit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>float</em><em>]</em>) – scalar value to check</p></li>
+<li><p><strong>value</strong> – lower limit to check against</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – name of the parameter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if the argument is less than or equal
+to the lower limit</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowtorch.rom.utils.log_time">
+<span class="sig-prename descclassname"><span class="pre">flowtorch.rom.utils.</span></span><span class="sig-name descname"><span class="pre">log_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/flowtorch/rom/utils.html#log_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.utils.log_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Measure and log a function’s execution time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>Callable</em>) – function to be executed; the function is expected
+to return a dictionary</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary returned by the wrapped function with additional
+entry for execution time</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="flowtorch.rom.utils.remove_sequential_duplicates">
+<span class="sig-prename descclassname"><span class="pre">flowtorch.rom.utils.</span></span><span class="sig-name descname"><span class="pre">remove_sequential_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/flowtorch/rom/utils.html#remove_sequential_duplicates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flowtorch.rom.utils.remove_sequential_duplicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get sequence of integers without sequential duplicates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sequence</strong> (<em>np.ndarray</em>) – input sequence to check</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sequence without sequential duplicates</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="flowtorch.analysis.html" class="btn btn-neutral float-left" title="flowtorch.analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, flowTorch contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

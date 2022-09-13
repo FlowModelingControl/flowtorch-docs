@@ -1,0 +1,509 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>flowtorch.data.tecplot_dataloader &mdash; flowTorch 1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> flowTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/linear_algebra_basics.html">Linear algebra with PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_ht.html">Optimal hard threshold for singular values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/ipsp_explorer.html">PSP data explorer and loader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_intro.html">An introduction to DMD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_cylinder.html">SVD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_cylinder.html">DMD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/cnm_cylinder.html">CNM of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_naca0012_surface.html">SVD and DMD analysis of airfoil surface data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/piv_analysis.html">Analyzing PIV data of a longitudinal vortex</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../flowtorch.html">flowtorch</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">flowTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>flowtorch.data.tecplot_dataloader</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for flowtorch.data.tecplot_dataloader</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Read Tecplot data via the ParaView module.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># standard library packages</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="c1"># third party packages</span>
+<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">from</span> <span class="nn">paraview</span> <span class="kn">import</span> <span class="n">servermanager</span> <span class="k">as</span> <span class="n">sm</span>
+<span class="kn">from</span> <span class="nn">paraview.vtk.numpy_interface</span> <span class="kn">import</span> <span class="n">dataset_adapter</span> <span class="k">as</span> <span class="n">dsa</span>
+<span class="kn">from</span> <span class="nn">paraview.simple</span> <span class="kn">import</span> <span class="n">VisItTecplotBinaryReader</span>
+<span class="c1"># flowtorch packages</span>
+<span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DEFAULT_DTYPE</span>
+<span class="kn">from</span> <span class="nn">.dataloader</span> <span class="kn">import</span> <span class="n">Dataloader</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">check_and_standardize_path</span><span class="p">,</span> <span class="n">check_list_or_str</span>
+
+
+<div class="viewcode-block" id="TecplotDataloader"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.tecplot_dataloader.TecplotDataloader">[docs]</a><span class="k">class</span> <span class="nc">TecplotDataloader</span><span class="p">(</span><span class="n">Dataloader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Dataloader for Tecplot binary format.</span>
+
+<span class="sd">    The dataloader wraps around `VisItTecplotBinaryReader` available</span>
+<span class="sd">    in the ParaView Python module. One level of blocks/zones is expected</span>
+<span class="sd">    under the root block/zone</span>
+
+<span class="sd">    Examples</span>
+
+<span class="sd">    &gt;&gt;&gt; from flowtorch import DATASETS</span>
+<span class="sd">    &gt;&gt;&gt; from flowtorch.data import TecplotDataloader</span>
+<span class="sd">    &gt;&gt;&gt; path = DATASETS[&quot;plt_naca2409_surface&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; loader = TecplotDataloader.from_tau(path, &quot;alfa16.surface.pval.unsteady_&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; loader.zone_names</span>
+<span class="sd">    [&quot;ls&quot;, &quot;te&quot;, &quot;us&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; loader.zone</span>
+<span class="sd">    &quot;le&quot;</span>
+<span class="sd">    &gt;&gt;&gt; loader.zone = &quot;us&quot;</span>
+<span class="sd">    &gt;&gt;&gt; times = loader.write_times</span>
+<span class="sd">    &gt;&gt;&gt; density = loader.load_snapshot(&quot;density&quot;, times)</span>
+<span class="sd">    &gt;&gt;&gt; density.shape</span>
+<span class="sd">    torch.Size([300, 3])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_names</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                 <span class="n">reader</span><span class="p">:</span> <span class="n">VisItTecplotBinaryReader</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_DTYPE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Default constructor function.</span>
+
+<span class="sd">        :param path: path to snapshot location</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :param file_names: names of available snapshots</span>
+<span class="sd">        :type file_names: Dict[str, str]</span>
+<span class="sd">        :param reader: ParaView reader for Tecplot binary format</span>
+<span class="sd">        :type reader: VisItTecplotBinaryReader</span>
+<span class="sd">        :param dtype: tensor data type, defaults to DEFAULT_DTYPE</span>
+<span class="sd">        :type dtype: str, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_names</span> <span class="o">=</span> <span class="n">file_names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span> <span class="o">=</span> <span class="n">reader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_zone_names</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_zone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zone_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="TecplotDataloader.from_tau"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.tecplot_dataloader.TecplotDataloader.from_tau">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_tau</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">base_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.plt&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_DTYPE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct TecplotDataloader from TAU snapshots.</span>
+
+<span class="sd">        :param path: path to snapshot location</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :param base_name: common basename of all snapshots, defaults to &quot;&quot;</span>
+<span class="sd">        :type base_name: str, optional</span>
+<span class="sd">        :param suffix: snapshot file suffix, defaults to &quot;.plt&quot;</span>
+<span class="sd">        :type suffix: str, optional</span>
+<span class="sd">        :param dtype: tensor data type, defaults to DEFAULT_DTYPE</span>
+<span class="sd">        :type dtype: str, optional</span>
+<span class="sd">        :raises FileNotFoundError: if no snapshots are found</span>
+<span class="sd">        :return: Tecplot dataloader object</span>
+<span class="sd">        :rtype: TecplotDataloader</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">check_and_standardize_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">file_paths</span> <span class="o">=</span> <span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">base_name</span><span class="si">}</span><span class="s2">i=*t=*&quot;</span><span class="p">)</span>
+        <span class="n">file_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">file_paths</span><span class="p">]</span>
+        <span class="n">write_times</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;t=&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">suffix</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                       <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">file_names</span><span class="p">]</span>
+        <span class="n">sorted_names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">write_times</span><span class="p">,</span> <span class="n">file_names</span><span class="p">),</span>
+                              <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">tup</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">tup</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">file_names</span> <span class="o">=</span> <span class="p">{</span><span class="n">time</span><span class="p">:</span> <span class="n">name</span> <span class="k">for</span> <span class="n">time</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">sorted_names</span><span class="p">}</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_names</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Could not find solution files in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_sol_path</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">file_names</span><span class="p">,</span> <span class="n">VisItTecplotBinaryReader</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_assemble_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Assemble path to a single snapshot.</span>
+
+<span class="sd">        :param time: snapshot write time</span>
+<span class="sd">        :type time: str</span>
+<span class="sd">        :return: snapshot path</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_names</span><span class="p">[</span><span class="n">time</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_parse_block_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">meta_data</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Extract block name from a reader&#39;s metadata.</span>
+
+<span class="sd">        :param meta_data: output of `GetMetaData()` as string</span>
+<span class="sd">        :type meta_data: str</span>
+<span class="sd">        :return: block name</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">meta_data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;NAME&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">_create_tecplot_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">VisItTecplotBinaryReader</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create instance of `VisItTecplotBinaryReader`.</span>
+
+<span class="sd">        :param time: snapshot write time</span>
+<span class="sd">        :type time: str</span>
+<span class="sd">        :return: reader for Tecplot binary data</span>
+<span class="sd">        :rtype: VisItTecplotBinaryReader</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="p">(</span>
+            <span class="n">registrationName</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_names</span><span class="p">[</span><span class="n">time</span><span class="p">],</span>
+            <span class="n">FileName</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_assemble_file_path</span><span class="p">(</span><span class="n">time</span><span class="p">)]</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_load_single_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Load a single snapshot of a single field.</span>
+
+<span class="sd">        :param field_name: name of field to load</span>
+<span class="sd">        :type field_name: str</span>
+<span class="sd">        :param time: snapshot write time</span>
+<span class="sd">        :type time: str</span>
+<span class="sd">        :return: snapshot of the requested field</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_tecplot_reader</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+        <span class="n">field_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_names</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">write_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">PointArrayStatus</span> <span class="o">=</span> <span class="n">field_names</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Fetch</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+        <span class="n">wrapper</span> <span class="o">=</span> <span class="n">dsa</span><span class="o">.</span><span class="n">WrapDataObject</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">GetBlock</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">GetBlock</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zone_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="p">)</span>
+        <span class="p">))</span>
+        <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">wrapper</span><span class="o">.</span><span class="n">PointData</span><span class="p">[</span><span class="n">field_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">field_name</span><span class="p">)])</span>
+
+    <span class="k">def</span> <span class="nf">_load_multiple_snapshots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">times</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Load multiple snapshots of a single field.</span>
+
+<span class="sd">        :param field_name: name of the field</span>
+<span class="sd">        :type field_name: str</span>
+<span class="sd">        :param times: list of write times to load</span>
+<span class="sd">        :type times: List[str]</span>
+<span class="sd">        :return: tensor holding multiple snapshots; the time dimension is always</span>
+<span class="sd">            the last dimension</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_load_single_snapshot</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span> <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">times</span><span class="p">],</span>
+            <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="TecplotDataloader.load_snapshot"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.tecplot_dataloader.TecplotDataloader.load_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">load_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                      <span class="n">field_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+                      <span class="n">time</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Load snapshots of single or multiple fields and write times.</span>
+
+<span class="sd">        :param field_name: single field name or list of field names</span>
+<span class="sd">        :type field_name: Union[List[str], str]</span>
+<span class="sd">        :param time: single write time of list of write times</span>
+<span class="sd">        :type time: Union[List[str], str]</span>
+<span class="sd">        :return: snapshot(s) of one or multiple fields</span>
+<span class="sd">        :rtype: Union[List[pt.Tensor], pt.Tensor]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_list_or_str</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="s2">&quot;field_name&quot;</span><span class="p">)</span>
+        <span class="n">check_list_or_str</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">)</span>
+        <span class="c1"># load multiple fields</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_load_multiple_snapshots</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">field_name</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_load_single_snapshot</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">field_name</span><span class="p">]</span>
+        <span class="c1"># load a single field</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_multiple_snapshots</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_single_snapshot</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">zone_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Names of available blocks/zones.</span>
+
+<span class="sd">        :return: block/zone names</span>
+<span class="sd">        :rtype: List[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zone_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Fetch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_tecplot_reader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">write_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">root_block</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">GetBlock</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_zone_names</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_parse_block_name</span><span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">root_block</span><span class="o">.</span><span class="n">GetMetaData</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+                <span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">root_block</span><span class="o">.</span><span class="n">GetNumberOfBlocks</span><span class="p">())</span>
+            <span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zone_names</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">zone</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Currently selected block/zone.</span>
+
+<span class="sd">        :return: block/zone name</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zone</span>
+
+    <span class="nd">@zone</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">zone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Select active block/zone.</span>
+
+<span class="sd">        The selected block remains unchanged if an invalid</span>
+<span class="sd">        block name is passed</span>
+
+<span class="sd">        :param value: name of block to select</span>
+<span class="sd">        :type value: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">zone_names</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_zone</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> not found. Available zones are:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zone_names</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">write_times</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Available snapshot write times</span>
+
+<span class="sd">        :return: list of available write times</span>
+<span class="sd">        :rtype: List[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_names</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">field_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;List of available field names.</span>
+
+<span class="sd">        The field names are only determined once for the</span>
+<span class="sd">        first available snapshot time.</span>
+
+<span class="sd">        :return: available fields at first write time</span>
+<span class="sd">        :rtype: Dict[str, List[str]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_tecplot_reader</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">time</span><span class="p">:</span> <span class="n">reader</span><span class="o">.</span><span class="n">GetProperty</span><span class="p">(</span><span class="s2">&quot;PointArrayInfo&quot;</span><span class="p">)[::</span><span class="mi">2</span><span class="p">]</span>
+        <span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Points in which field values are defined.</span>
+
+<span class="sd">        :return: list of points</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Fetch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_tecplot_reader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">write_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">wrapper</span> <span class="o">=</span> <span class="n">dsa</span><span class="o">.</span><span class="n">WrapDataObject</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">GetBlock</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">GetBlock</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zone_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="p">)</span>
+        <span class="p">))</span>
+        <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">wrapper</span><span class="o">.</span><span class="n">Points</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">weights</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Weight for POD/DMD analysis.</span>
+
+<span class="sd">        This function returns currently a list of ones, since</span>
+<span class="sd">        cell areas/volumes are not accessible via the reader.</span>
+
+<span class="sd">        :return: list of ones</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">Fetch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_tecplot_reader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">write_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">wrapper</span> <span class="o">=</span> <span class="n">dsa</span><span class="o">.</span><span class="n">WrapDataObject</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">GetBlock</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">GetBlock</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zone_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="p">)</span>
+        <span class="p">))</span>
+        <span class="c1"># volume or area are not contained in file; therefore, a tensor</span>
+        <span class="c1"># of ones is returned for now</span>
+        <span class="n">n_points</span> <span class="o">=</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">Points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, flowTorch contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,554 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>flowtorch.data.csv_dataloader &mdash; flowTorch 1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> flowTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/linear_algebra_basics.html">Linear algebra with PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_ht.html">Optimal hard threshold for singular values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/ipsp_explorer.html">PSP data explorer and loader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_intro.html">An introduction to DMD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_cylinder.html">SVD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_cylinder.html">DMD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/cnm_cylinder.html">CNM of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_naca0012_surface.html">SVD and DMD analysis of airfoil surface data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/piv_analysis.html">Analyzing PIV data of a longitudinal vortex</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../flowtorch.html">flowtorch</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">flowTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>flowtorch.data.csv_dataloader</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for flowtorch.data.csv_dataloader</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Dataloader and accompanying tools to work with CSV files.</span>
+
+<span class="sd">A lot of scientific data is exchanged as comma separated value (CSV) files.</span>
+<span class="sd">While there are many Python packages available to read such data, one has</span>
+<span class="sd">to understand how the data is organized in the CSV file before being able</span>
+<span class="sd">to use the readers properly. Moreover, time series data sometimes come as</span>
+<span class="sd">individual files in a single folder or as time folders with the respective</span>
+<span class="sd">snapshot data inside that folder. This subpackages simplifies access to</span>
+<span class="sd">common CSV-based time series data by trying to figure out appropriate reader</span>
+<span class="sd">settings automatically.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># standard library </span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">glob</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="c1"># third party packages</span>
+<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">read_csv</span><span class="p">,</span> <span class="n">DataFrame</span>
+<span class="c1"># flowtorch packages</span>
+<span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DEFAULT_DTYPE</span>
+<span class="kn">from</span> <span class="nn">.dataloader</span> <span class="kn">import</span> <span class="n">Dataloader</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">check_and_standardize_path</span><span class="p">,</span> <span class="n">check_list_or_str</span>
+
+<span class="n">VERTEX_KEY</span> <span class="o">=</span> <span class="s2">&quot;vertices&quot;</span>
+<span class="n">WEIGHT_KEY</span> <span class="o">=</span> <span class="s2">&quot;weights&quot;</span>
+<span class="n">FIELD_KEY</span> <span class="o">=</span> <span class="s2">&quot;fields&quot;</span>
+
+<span class="n">DAVIS_KEYS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">VERTEX_KEY</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">],</span>
+    <span class="n">WEIGHT_KEY</span><span class="p">:</span> <span class="s2">&quot;isValid&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">FOAM_SURFACE_KEYS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">VERTEX_KEY</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">],</span>
+    <span class="n">WEIGHT_KEY</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;area_x&quot;</span><span class="p">,</span> <span class="s2">&quot;area_y&quot;</span><span class="p">,</span> <span class="s2">&quot;area_z&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">PANDAS_SKIPROWS</span> <span class="o">=</span> <span class="s2">&quot;skiprows&quot;</span>
+<span class="n">PANDAS_SEP</span> <span class="o">=</span> <span class="s2">&quot;sep&quot;</span>
+<span class="n">PANDAS_HEADER</span> <span class="o">=</span> <span class="s2">&quot;header&quot;</span>
+<span class="n">PANDAS_NAMES</span> <span class="o">=</span> <span class="s2">&quot;names&quot;</span>
+<span class="n">PANDAS_ARGS</span> <span class="o">=</span> <span class="p">(</span><span class="n">PANDAS_SKIPROWS</span><span class="p">,</span> <span class="n">PANDAS_SEP</span><span class="p">,</span> <span class="n">PANDAS_HEADER</span><span class="p">,</span> <span class="n">PANDAS_NAMES</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_davis_header</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Find column names in DaVis header line.</span>
+
+<span class="sd">    :param header: header line containing column names</span>
+<span class="sd">    :type header: str</span>
+<span class="sd">    :return: list of column names</span>
+<span class="sd">    :rtype: List[str]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;&quot;([^&quot;]*)&quot;&#39;</span><span class="p">,</span> <span class="n">header</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_foam_surface_header</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Find column names in OpenFOAM *surfaces* output file.</span>
+
+<span class="sd">    :param header: header line containing column names</span>
+<span class="sd">    :type header: str</span>
+<span class="sd">    :return: list of column names</span>
+<span class="sd">    :rtype: List[str]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">header</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)))</span>
+
+
+<div class="viewcode-block" id="CSVDataloader"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.csv_dataloader.CSVDataloader">[docs]</a><span class="k">class</span> <span class="nc">CSVDataloader</span><span class="p">(</span><span class="n">Dataloader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load CSV files from different sources.</span>
+
+<span class="sd">    This class allows to load generic CSV files based on Pandas&#39;s `load_csv` function.</span>
+<span class="sd">    Multiple specific formats are supported via class methods.</span>
+
+<span class="sd">    Examples</span>
+
+<span class="sd">    &gt;&gt;&gt; from flowtorch import DATASETS</span>
+<span class="sd">    &gt;&gt;&gt; from flowtorch.data import CSVDataloader</span>
+<span class="sd">    &gt;&gt;&gt; davis_data = DATASETS[&quot;csv_aoa8_beta0_xc100_stereopiv&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; loader = CSVDataloader.from_davis(davis_data, &quot;B&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; times = loader.write_times</span>
+<span class="sd">    &gt;&gt;&gt; times[:5]</span>
+<span class="sd">    [&#39;00001&#39;, &#39;00002&#39;, &#39;00003&#39;, &#39;00004&#39;, &#39;00005&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; loader.field_names</span>
+<span class="sd">    {&#39;00001&#39;: [&#39;Vx&#39;, &#39;Vy&#39;, &#39;Vz&#39;]}</span>
+<span class="sd">    &gt;&gt;&gt; Vx, Vy, Vz = loader.load_snapshot([&#39;Vx&#39;, &#39;Vy&#39;, &#39;Vz&#39;], times[:5])</span>
+<span class="sd">    &gt;&gt;&gt; Vx.shape</span>
+<span class="sd">    torch.Size([3741, 5])</span>
+
+<span class="sd">    &gt;&gt;&gt; foam_data = DATASETS[&quot;csv_naca0012_alpha4_surface&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; loader = CSVDataloader.from_foam_surface(foam_data, &quot;total(p)_coeff_airfoil.raw&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; times = loader.write_times</span>
+<span class="sd">    &gt;&gt;&gt; times[:5]</span>
+<span class="sd">    [&#39;0.001&#39;, &#39;0.002&#39;, &#39;0.003&#39;, &#39;0.004&#39;, &#39;0.005&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; loader.field_names</span>
+<span class="sd">    {&#39;0.001&#39;: [&#39;total(p)_coeff&#39;]}</span>
+<span class="sd">    &gt;&gt;&gt; snapshots = loader.load_snapshot(&quot;total(p)_coeff&quot;, times[:10])</span>
+<span class="sd">    &gt;&gt;&gt; snapshots.shape</span>
+<span class="sd">    torch.Size([28892, 10])</span>
+<span class="sd">    &gt;&gt;&gt; vertices = loader.vertices</span>
+<span class="sd">    &gt;&gt;&gt; vertices.shape</span>
+<span class="sd">    torch.Size([28892, 3])</span>
+<span class="sd">    &gt;&gt;&gt; vertices[0, :]</span>
+<span class="sd">    tensor([0.0000e+00, 0.0000e+00, 4.1706e-18])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">read_options</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                 <span class="n">time_folders</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_DTYPE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a CSVDataloader instance from files or folders.</span>
+
+<span class="sd">        :param path: path to folder with CSV files or folder with time-subfolders</span>
+<span class="sd">            containing individual CSV files</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :param prefix: part of the file name before the time value; used to</span>
+<span class="sd">            find CSV files</span>
+<span class="sd">        :type prefix: str</span>
+<span class="sd">        :param suffix: part of the file name after the time value</span>
+<span class="sd">        :type suffix: str</span>
+<span class="sd">        :param read_options: dictionary holding options for `pandas.read_csv`</span>
+<span class="sd">        :type read_options: dict</span>
+<span class="sd">        :param time_folders: `True` if CSV files are located in individual folders</span>
+<span class="sd">            for each write time</span>
+<span class="sd">        :type time_folders: bool</span>
+<span class="sd">        :param dtype: tensor type, defaults to single precision `torch.float32`</span>
+<span class="sd">        :type dtype: str</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">check_and_standardize_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span> <span class="o">=</span> <span class="n">prefix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span> <span class="o">=</span> <span class="n">suffix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_options</span> <span class="o">=</span> <span class="n">read_options</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_time_folders</span> <span class="o">=</span> <span class="n">time_folders</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_times</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_determine_write_times</span><span class="p">()</span>
+
+<div class="viewcode-block" id="CSVDataloader.from_davis"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.csv_dataloader.CSVDataloader.from_davis">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_davis</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.dat&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_DTYPE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create CSVDataloader instance for DaVis_ output files.</span>
+
+<span class="sd">        .. _DaVis: https://www.lavision.de/en/products/davis-software/</span>
+
+<span class="sd">        :param path: path to location of time series data</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :param prefix: part of the file name before the time/snapshot number; e.g.,</span>
+<span class="sd">            if the file name *B00001.dat*, the prefix is *B*; defaults to empty string</span>
+<span class="sd">        :type prefix: str</span>
+<span class="sd">        :param suffix: part of the file name of the time/snapshot number; e.g.,</span>
+<span class="sd">            if the file name is *B00001.dat*, the suffix is *.dat*; defaults to *.dat*</span>
+<span class="sd">        :type suffix: str</span>
+<span class="sd">        :param dtype: floating point precision; defaults to `pt.float32` (single precision)</span>
+<span class="sd">        :type dtype: str</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_name</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">*</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">davis_file</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">davis_file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;VARIABLES&quot;</span><span class="p">):</span>
+                    <span class="n">column_names</span> <span class="o">=</span> <span class="n">_parse_davis_header</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="k">break</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">DAVIS_KEYS</span><span class="p">[</span><span class="n">VERTEX_KEY</span><span class="p">])</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">column_names</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: DaVis files do not contain vertices&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">([</span><span class="n">DAVIS_KEYS</span><span class="p">[</span><span class="n">WEIGHT_KEY</span><span class="p">]])</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">column_names</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: DaVis files do not contain isValid mask&quot;</span><span class="p">)</span>
+        <span class="n">read_options</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">PANDAS_SKIPROWS</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+            <span class="n">PANDAS_HEADER</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">PANDAS_SEP</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="p">,</span>
+            <span class="n">PANDAS_NAMES</span><span class="p">:</span> <span class="n">column_names</span><span class="p">,</span>
+            <span class="n">VERTEX_KEY</span><span class="p">:</span> <span class="n">DAVIS_KEYS</span><span class="p">[</span><span class="n">VERTEX_KEY</span><span class="p">],</span>
+            <span class="n">WEIGHT_KEY</span><span class="p">:</span> <span class="n">DAVIS_KEYS</span><span class="p">[</span><span class="n">WEIGHT_KEY</span><span class="p">],</span>
+            <span class="n">FIELD_KEY</span><span class="p">:</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">column_names</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span>
+                <span class="n">DAVIS_KEYS</span><span class="p">[</span><span class="n">VERTEX_KEY</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">DAVIS_KEYS</span><span class="p">[</span><span class="n">WEIGHT_KEY</span><span class="p">]]]</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">read_options</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CSVDataloader.from_foam_surface"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.csv_dataloader.CSVDataloader.from_foam_surface">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_foam_surface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">header</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_DTYPE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create CSVDataloader instance to load OpenFOAM surface sample data.</span>
+
+<span class="sd">        The class method simplifies to load data generated by OpenFOAM&#39;s</span>
+<span class="sd">        *sampling* function object if the type is set to *surfaces* and the</span>
+<span class="sd">        *surfaceFormat* is set to *raw*. The time series data are stored in</span>
+<span class="sd">        individual time folders. The file name remains the same.</span>
+
+<span class="sd">        :param path: path to location of time folders</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :param file_name: file name of individual CSV files, e.g.,</span>
+<span class="sd">            *p_airfoil.raw*</span>
+<span class="sd">        :type file_name: str</span>
+<span class="sd">        :param header: line number in which to find the column names (starting from 0);</span>
+<span class="sd">            defaults to 1</span>
+<span class="sd">        :type header: int, optional</span>
+<span class="sd">        :param dtype: floating point precision; defaults to `pt.float32` (single precision)</span>
+<span class="sd">        :type dtype: str</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">folders</span> <span class="o">=</span> <span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">/*&quot;</span><span class="p">)</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">folder</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">folders</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="nb">float</span>
+        <span class="p">)</span>
+        <span class="n">filepath</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">file_name</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">surface</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">surface</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">column_names</span> <span class="o">=</span> <span class="n">_parse_foam_surface_header</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="n">header</span><span class="p">])</span>
+
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">FOAM_SURFACE_KEYS</span><span class="p">[</span><span class="n">WEIGHT_KEY</span><span class="p">]</span> <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="n">key</span> <span class="ow">in</span> <span class="n">column_names</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">FOAM_SURFACE_KEYS</span><span class="p">[</span><span class="n">WEIGHT_KEY</span><span class="p">]])</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">read_options</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">PANDAS_SKIPROWS</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">header</span><span class="o">+</span><span class="mi">1</span><span class="p">)),</span>
+            <span class="n">PANDAS_HEADER</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">PANDAS_SEP</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="p">,</span>
+            <span class="n">PANDAS_NAMES</span><span class="p">:</span> <span class="n">column_names</span><span class="p">,</span>
+            <span class="n">VERTEX_KEY</span><span class="p">:</span> <span class="n">FOAM_SURFACE_KEYS</span><span class="p">[</span><span class="n">VERTEX_KEY</span><span class="p">],</span>
+            <span class="n">WEIGHT_KEY</span><span class="p">:</span> <span class="n">weight</span><span class="p">,</span>
+            <span class="n">FIELD_KEY</span><span class="p">:</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">column_names</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span>
+                <span class="n">FOAM_SURFACE_KEYS</span><span class="p">[</span><span class="n">VERTEX_KEY</span><span class="p">]</span> <span class="o">+</span> <span class="n">FOAM_SURFACE_KEYS</span><span class="p">[</span><span class="n">WEIGHT_KEY</span><span class="p">]]</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">read_options</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_build_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Build the file path for a given time instance.</span>
+
+<span class="sd">        :param time: snapshot time</span>
+<span class="sd">        :type time: str</span>
+<span class="sd">        :return: path to snapshot</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_folders</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span><span class="si">}{</span><span class="n">time</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_load_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataFrame</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Load a single CSV snapshot.</span>
+
+<span class="sd">        :param time: snapshot time</span>
+<span class="sd">        :type time: str</span>
+<span class="sd">        :return: content of the CSV file stored in a DataFrame</span>
+<span class="sd">        :rtype: DataFrame</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_build_file_path</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_options</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">PANDAS_ARGS</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_determine_write_times</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Find available snapshot times.</span>
+
+<span class="sd">        Depending on the storage format, the write times are</span>
+<span class="sd">        determined from the folder names or the file names.</span>
+
+<span class="sd">        :return: list of snapshot/write times</span>
+<span class="sd">        :rtype: List[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_folders</span><span class="p">:</span>
+            <span class="n">folders</span> <span class="o">=</span> <span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">/*&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">folder</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">folders</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="nb">float</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_file_path</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prefix</span><span class="p">):</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_suffix</span><span class="p">)]</span>
+                 <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="nb">float</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="CSVDataloader.load_snapshot"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.csv_dataloader.CSVDataloader.load_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">load_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                      <span class="n">field_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+                      <span class="n">time</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+        <span class="n">check_list_or_str</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="s2">&quot;field_name&quot;</span><span class="p">)</span>
+        <span class="n">check_list_or_str</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">)</span>
+        <span class="c1"># load multiple fields</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">snapshots</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_load_csv</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">time</span><span class="p">]</span>
+                <span class="k">return</span> <span class="p">[</span>
+                    <span class="n">pt</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+                        <span class="p">[</span><span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">snapshot</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+                         <span class="k">for</span> <span class="n">snapshot</span> <span class="ow">in</span> <span class="n">snapshots</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span>
+                    <span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">field_name</span>
+                <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">snapshot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_csv</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">[</span>
+                    <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">snapshot</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">field_name</span>
+                <span class="p">]</span>
+        <span class="c1"># load single field</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">snapshots</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_load_csv</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">time</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">snapshot</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+                     <span class="k">for</span> <span class="n">snapshot</span> <span class="ow">in</span> <span class="n">snapshots</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">snapshot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_csv</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                    <span class="n">snapshot</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+                <span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">write_times</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_write_times</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">field_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">write_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_options</span><span class="p">[</span><span class="n">FIELD_KEY</span><span class="p">]}</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="n">snapshot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_write_times</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+            <span class="n">snapshot</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_options</span><span class="p">[</span><span class="n">VERTEX_KEY</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">weights</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="n">weight_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_options</span><span class="p">[</span><span class="n">WEIGHT_KEY</span><span class="p">]</span>
+        <span class="n">snapshot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_write_times</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">weight_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weight_key</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                    <span class="n">snapshot</span><span class="p">[</span><span class="n">weight_key</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                    <span class="n">snapshot</span><span class="p">[</span><span class="n">weight_key</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="n">snapshot</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_options</span><span class="p">[</span><span class="n">FIELD_KEY</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span>
+            <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, flowTorch contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

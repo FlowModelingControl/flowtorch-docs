@@ -1,0 +1,503 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>flowtorch.analysis.dmd &mdash; flowTorch 1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> flowTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/linear_algebra_basics.html">Linear algebra with PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_ht.html">Optimal hard threshold for singular values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/ipsp_explorer.html">PSP data explorer and loader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_intro.html">An introduction to DMD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_cylinder.html">SVD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_cylinder.html">DMD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/cnm_cylinder.html">CNM of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_naca0012_surface.html">SVD and DMD analysis of airfoil surface data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/piv_analysis.html">Analyzing PIV data of a longitudinal vortex</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../flowtorch.html">flowtorch</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">flowTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>flowtorch.analysis.dmd</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for flowtorch.analysis.dmd</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Classes and functions to compute the dynamic mode decomposition (DMD) of a data matrix.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># standard library packages</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
+<span class="c1"># third party packages</span>
+<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">pi</span>
+<span class="c1"># flowtorch packages</span>
+<span class="kn">from</span> <span class="nn">.svd</span> <span class="kn">import</span> <span class="n">SVD</span>
+<span class="kn">from</span> <span class="nn">flowtorch.data.utils</span> <span class="kn">import</span> <span class="n">format_byte_size</span>
+
+
+<div class="viewcode-block" id="DMD"><a class="viewcode-back" href="../../../flowtorch.analysis.html#flowtorch.analysis.dmd.DMD">[docs]</a><span class="k">class</span> <span class="nc">DMD</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class computing the exact DMD of a data matrix.</span>
+
+<span class="sd">    Currently, no advanced mode selection algorithms are implemented.</span>
+<span class="sd">    The mode amplitudes are computed using the first snapshot.</span>
+
+<span class="sd">    Examples</span>
+
+<span class="sd">    &gt;&gt;&gt; from flowtorch import DATASETS</span>
+<span class="sd">    &gt;&gt;&gt; from flowtorch.data import FOAMDataloader</span>
+<span class="sd">    &gt;&gt;&gt; from flowtorch.analysis import DMD</span>
+<span class="sd">    &gt;&gt;&gt; path = DATASETS[&quot;of_cavity_binary&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; loader = FOAMDataloader(path)</span>
+<span class="sd">    &gt;&gt;&gt; data_matrix = loader.load_snapshot(&quot;p&quot;, loader.write_times)</span>
+<span class="sd">    &gt;&gt;&gt; dmd = DMD(data_matrix, dt=0.1, rank=3)</span>
+<span class="sd">    &gt;&gt;&gt; dmd.frequency</span>
+<span class="sd">    tensor([0., 5., 0.])</span>
+<span class="sd">    &gt;&gt;&gt; dmd.growth_rate</span>
+<span class="sd">    tensor([-2.3842e-06, -4.2345e+01, -1.8552e+01])</span>
+<span class="sd">    &gt;&gt;&gt; dmd.amplitude</span>
+<span class="sd">    tensor([10.5635+0.j, -0.0616+0.j, -0.0537+0.j])</span>
+<span class="sd">    &gt;&gt;&gt; dmd = DMD(data_matrix, dt=0.1, rank=3, robust=True)</span>
+<span class="sd">    &gt;&gt;&gt; dmd = DMD(data_matrix, dt=0.1, rank=3, robust={&quot;tol&quot;: 1.0e-5, &quot;verbose&quot; : True})</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_matrix</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">rank</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">robust</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">unitary</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">optimal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">tlsq</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create DMD instance based on data matrix and time step. </span>
+
+<span class="sd">        :param data_matrix: data matrix whose columns are formed by the individual snapshots</span>
+<span class="sd">        :type data_matrix: pt.Tensor</span>
+<span class="sd">        :param dt: time step between two snapshots </span>
+<span class="sd">        :type dt: float</span>
+<span class="sd">        :param rank: rank for SVD truncation, defaults to None</span>
+<span class="sd">        :type rank: int, optional</span>
+<span class="sd">        :param robust: data_matrix is split into low rank and sparse contributions</span>
+<span class="sd">            if True or if dictionary with options for Inexact ALM algorithm; the SVD</span>
+<span class="sd">            is computed only on the low rank matrix</span>
+<span class="sd">        :type robust: Union[bool,dict]</span>
+<span class="sd">        :param unitary: enforce the linear operator to be unitary; refer to piDMD_</span>
+<span class="sd">            by Peter Baddoo for more information</span>
+<span class="sd">        :type unitary: bool, optional</span>
+<span class="sd">        :param optimal: compute mode amplitudes based on a least-squares problem</span>
+<span class="sd">            as described in spDMD_ article by M. Janovic et al. (2014); in contrast</span>
+<span class="sd">            to the original spDMD implementation, the exact DMD modes are used in</span>
+<span class="sd">            the optimization problem as outlined in an article_ by R. Taylor</span>
+<span class="sd">        :type optimal: bool, optional</span>
+<span class="sd">        :param tlsq: de-biasing of the linear operator by solving a total least-squares</span>
+<span class="sd">            problem instead of a standard least-squares problem; the rank is selected</span>
+<span class="sd">            automatically or specified by the `rank` parameter; more information can be</span>
+<span class="sd">            found in the TDMD_ article by M. Hemati et al.</span>
+<span class="sd">        :type tlsq: bool, optional</span>
+
+
+<span class="sd">        .. _piDMD: https://github.com/baddoo/piDMD</span>
+<span class="sd">        .. _spDMD: https://hal-polytechnique.archives-ouvertes.fr/hal-00995141/document</span>
+<span class="sd">        .. _article: http://www.pyrunner.com/weblog/2016/08/03/spdmd-python/</span>
+<span class="sd">        .. _TDMD: http://cwrowley.princeton.edu/papers/Hemati-2017a.pdf</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span> <span class="o">=</span> <span class="n">data_matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dt</span> <span class="o">=</span> <span class="n">dt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unitary</span> <span class="o">=</span> <span class="n">unitary</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_optimal</span> <span class="o">=</span> <span class="n">optimal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tlsq</span> <span class="o">=</span> <span class="n">tlsq</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tlsq</span><span class="p">:</span>
+            <span class="n">svd</span> <span class="o">=</span> <span class="n">SVD</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:])),</span>
+                      <span class="n">rank</span><span class="p">,</span> <span class="n">robust</span><span class="p">)</span>
+            <span class="n">P</span> <span class="o">=</span> <span class="n">svd</span><span class="o">.</span><span class="n">V</span> <span class="o">@</span> <span class="n">svd</span><span class="o">.</span><span class="n">V</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">@</span> <span class="n">P</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">@</span> <span class="n">P</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_svd</span> <span class="o">=</span> <span class="n">SVD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">,</span> <span class="n">svd</span><span class="o">.</span><span class="n">rank</span><span class="p">)</span>
+            <span class="k">del</span> <span class="n">svd</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_svd</span> <span class="o">=</span> <span class="n">SVD</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">rank</span><span class="p">,</span> <span class="n">robust</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eigvals</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eigvecs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_mode_decomposition</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_amplitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_amplitudes</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_compute_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the approximate linear (DMD) operator.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unitary</span><span class="p">:</span>
+            <span class="n">Xp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_svd</span><span class="o">.</span><span class="n">U</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">_X</span>
+            <span class="n">Yp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_svd</span><span class="o">.</span><span class="n">U</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span>
+            <span class="n">U</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">VT</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">Yp</span> <span class="o">@</span> <span class="n">Xp</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">U</span> <span class="o">@</span> <span class="n">VT</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s_inv</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_svd</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_svd</span><span class="o">.</span><span class="n">U</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">_svd</span><span class="o">.</span><span class="n">V</span> <span class="o">@</span> <span class="n">s_inv</span>
+
+    <span class="k">def</span> <span class="nf">_compute_mode_decomposition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute reduced operator, eigen-decomposition, and DMD modes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">s_inv</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_svd</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">operator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_operator</span><span class="p">()</span>
+        <span class="n">val</span><span class="p">,</span> <span class="n">vec</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">_svd</span><span class="o">.</span><span class="n">V</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="o">@</span> <span class="n">s_inv</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">@</span> <span class="n">vec</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span><span class="p">,</span> <span class="n">vec</span><span class="p">,</span> <span class="n">phi</span>
+
+    <span class="k">def</span> <span class="nf">_compute_amplitudes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute amplitudes for exact DMD modes.</span>
+
+<span class="sd">        If *optimal* is False, the amplitudes are computed based on the first</span>
+<span class="sd">        snapshot in the data matrix; otherwise, a least-squares problem as</span>
+<span class="sd">        introduced by Janovic et al. is solved (refer to the documentation</span>
+<span class="sd">        in the constructor for more information).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_optimal</span><span class="p">:</span>
+            <span class="n">vander</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">vander</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eigvals</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">P</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modes</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">modes</span><span class="p">)</span> <span class="o">*</span> \
+                <span class="p">(</span><span class="n">vander</span> <span class="o">@</span> <span class="n">vander</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">vander</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">modes</span><span class="p">)</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modes</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span><span class="o">.</span><span class="n">solution</span>
+
+<div class="viewcode-block" id="DMD.partial_reconstruction"><a class="viewcode-back" href="../../../flowtorch.analysis.html#flowtorch.analysis.dmd.DMD.partial_reconstruction">[docs]</a>    <span class="k">def</span> <span class="nf">partial_reconstruction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode_indices</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Reconstruct data matrix with limited number of modes.</span>
+
+<span class="sd">        :param mode_indices: mode indices to keep</span>
+<span class="sd">        :type mode_indices: Set[int]</span>
+<span class="sd">        :return: reconstructed data matrix</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modes</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">mode_mask</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">complex64</span><span class="p">)</span>
+        <span class="n">mode_indices</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mode_indices</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="n">mode_mask</span><span class="p">[</span><span class="n">mode_indices</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">reconstruction</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modes</span> <span class="o">*</span> <span class="n">mode_mask</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">complex128</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">complex64</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">complex32</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">reconstruction</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">reconstruction</span><span class="o">.</span><span class="n">real</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DMD.top_modes"><a class="viewcode-back" href="../../../flowtorch.analysis.html#flowtorch.analysis.dmd.DMD.top_modes">[docs]</a>    <span class="k">def</span> <span class="nf">top_modes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">integral</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the indices of the first n most important modes.</span>
+
+<span class="sd">        Note that the conjugate complex modes for real data matrices are</span>
+<span class="sd">        not filtered out.</span>
+
+<span class="sd">        :param n: number of indices to return; defaults to 10</span>
+<span class="sd">        :type n: int</span>
+<span class="sd">        :param integral: if True, the modes are sorted according to their</span>
+<span class="sd">            integral contribution; defaults to False</span>
+<span class="sd">        :type integral: bool, optional</span>
+<span class="sd">        :return: indices of top n modes sorted by amplitude or integral</span>
+<span class="sd">            contribution</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">importance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">integral_contribution</span> <span class="k">if</span> <span class="n">integral</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">importance</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">importance</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">indices</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">required_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Compute the memory size in bytes of the DMD.</span>
+
+<span class="sd">        :return: cumulative size of SVD, eigen values/vectors, and</span>
+<span class="sd">            DMD modes in bytes</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_svd</span><span class="o">.</span><span class="n">required_memory</span> <span class="o">+</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_eigvals</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eigvals</span><span class="o">.</span><span class="n">nelement</span><span class="p">()</span> <span class="o">+</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_eigvecs</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eigvecs</span><span class="o">.</span><span class="n">nelement</span><span class="p">()</span> <span class="o">+</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_modes</span><span class="o">.</span><span class="n">element_size</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modes</span><span class="o">.</span><span class="n">nelement</span><span class="p">())</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">svd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SVD</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_svd</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">operator</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_operator</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">modes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">eigvals</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eigvals</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">eigvecs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eigvecs</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">frequency</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_eigvals</span><span class="p">)</span><span class="o">.</span><span class="n">imag</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dt</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">growth_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_eigvals</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dt</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">amplitude</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_amplitude</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span><span class="p">)</span> <span class="o">@</span> <span class="n">pt</span><span class="o">.</span><span class="n">vander</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eigvals</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">integral_contribution</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Integral contribution of individual modes according to J. Kou et al. 2017.</span>
+
+<span class="sd">        DOI: https://doi.org/10.1016/j.euromechflu.2016.11.015</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">modes</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">reconstruction</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Reconstruct an approximation of the training data.</span>
+
+<span class="sd">        :return: reconstructed training data</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">complex128</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">complex64</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">complex32</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_modes</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics</span><span class="p">)</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_modes</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">reconstruction_error</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Compute the reconstruction error.</span>
+
+<span class="sd">        :return: difference between reconstruction and data matrix</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reconstruction</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">projection_error</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Compute the difference between Y and AX.</span>
+
+<span class="sd">        :return: projection error</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">YH</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modes</span> <span class="o">@</span> <span class="n">pt</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eigvals</span><span class="p">))</span> <span class="o">@</span> \
+            <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modes</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modes</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span><span class="o">.</span><span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">complex128</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">complex64</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">complex32</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">YH</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">YH</span><span class="o">.</span><span class="n">real</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Y</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tlsq_error</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Compute the *noise* in X and Y.</span>
+
+<span class="sd">        :return: noise in X and Y</span>
+<span class="sd">        :rtype: Tuple[pt.Tensor, pt.Tensor]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tlsq</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: noise is only removed if tlsq=True&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dm</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Y</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="si">}</span><span class="s2">(data_matrix, rank=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_svd</span><span class="o">.</span><span class="n">rank</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ms</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SVD:&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">svd</span><span class="p">),</span> <span class="s2">&quot;LSQ:&quot;</span><span class="p">]</span>
+        <span class="n">size</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">format_byte_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">required_memory</span><span class="p">)</span>
+        <span class="n">ms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Overall DMD size: </span><span class="si">{:1.4f}{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">unit</span><span class="p">))</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ms</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, flowTorch contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

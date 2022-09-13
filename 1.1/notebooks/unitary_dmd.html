@@ -1,0 +1,966 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>DMD with unitary linear operator &mdash; flowTorch 1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> flowTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_algebra_basics.html">Linear algebra with PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="svd_ht.html">Optimal hard threshold for singular values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ipsp_explorer.html">PSP data explorer and loader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dmd_intro.html">An introduction to DMD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="svd_cylinder.html">SVD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dmd_cylinder.html">DMD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cnm_cylinder.html">CNM of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dmd_naca0012_surface.html">SVD and DMD analysis of airfoil surface data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piv_analysis.html">Analyzing PIV data of a longitudinal vortex</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../flowtorch.html">flowtorch</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">flowTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>DMD with unitary linear operator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/notebooks/unitary_dmd.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<p><img alt="CC" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></p>
+<p>This work is licensed under a <a class="reference external" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+<div class="section" id="DMD-with-unitary-linear-operator">
+<h1>DMD with unitary linear operator<a class="headerlink" href="#DMD-with-unitary-linear-operator" title="Permalink to this heading">¶</a></h1>
+<div class="section" id="Theory">
+<h2>Theory<a class="headerlink" href="#Theory" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference external" href="https://github.com/baddoo/piDMD">P. Baiddoo et al.</a> introduced several physically motived constraints for the DMD operator (the so-called physics-informed DMD). One particularly useful constraint is the unitary construction of the DMD operator <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> (refer to <a class="reference internal" href="dmd_intro.html"><span class="doc">this notebook</span></a> regarding the DMD basics). Unitary transformations are norm-preserving in the sense that:</p>
+<div class="math notranslate nohighlight">
+\[||\mathbf{Ax}||_2 = ||\mathbf{x}||_2\quad \text{given that}\quad \mathbf{A}^\ast\mathbf{A} = \mathbf{AA}^\ast = \mathbf{I}.\]</div>
+<p>Let’s that the state vector <span class="math notranslate nohighlight">\(\mathbf{x}_n\)</span> contains the velocity components of a flow field at time instance <span class="math notranslate nohighlight">\(n\)</span>. Then the inner product <span class="math notranslate nohighlight">\(\langle\mathbf{x}_n,\mathbf{x}_n\rangle\)</span> yields twice the flow’s kinetic energy in the considered domain at time instance <span class="math notranslate nohighlight">\(n\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[2K = \langle\mathbf{x}_n,\mathbf{x}_n\rangle = ||\mathbf{x}_n||_2^2.\]</div>
+<p>If <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> is unitary and advances <span class="math notranslate nohighlight">\(\mathbf{x}_n\)</span> to <span class="math notranslate nohighlight">\(\mathbf{x}_{n+1}\)</span>, then we know that the kinetic energy is conserved in a global (control volume) sense.</p>
+<p>The solution to the <a class="reference external" href="https://link.springer.com/content/pdf/10.1007/BF02289451.pdf">orthogonal Procrustus problem</a> tells us how to find <span class="math notranslate nohighlight">\(\mathbf{A}\)</span> in the least-squares sense:</p>
+<div class="math notranslate nohighlight">
+\[\underset{\mathbf{A}^\ast\mathbf{A}=\mathbf{I}}{\mathrm{argmin}}||\mathbf{X}^\prime - \mathbf{AX}||_2.\]</div>
+<p>Given the matrix <span class="math notranslate nohighlight">\(\mathbf{S} = \mathbf{X}^\prime\mathbf{X}^\ast\)</span> and its SVD <span class="math notranslate nohighlight">\(\mathbf{S} = \mathbf{U}_s\mathbf{\Sigma}_s \mathbf{V}_s^\ast\)</span>, the optimal unitary linear operator is:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{A} = \mathbf{U}_s\mathbf{V}_s^\ast.\]</div>
+<p>When computing the DMD of large state vectors, it is more practical to project both <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{X}^\prime\)</span> onto the first <span class="math notranslate nohighlight">\(r\)</span> left singular vectors of <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> before computing <span class="math notranslate nohighlight">\(\mathbf{S}\)</span>. Given the truncated SVD <span class="math notranslate nohighlight">\(\mathbf{X}\approx \mathbf{U}_r\mathbf{\Sigma}_r\mathbf{V}_r^\ast\)</span>, the projected data matrices are computed as:</p>
+<div class="math notranslate nohighlight">
+\[\tilde{\mathbf{X}} = \mathbf{U}_r^\ast \mathbf{X} \quad\text{and}\quad \tilde{\mathbf{X}}^\prime = \mathbf{U}_r^\ast \mathbf{X}^\prime .\]</div>
+</div>
+<div class="section" id="Examples">
+<h2>Examples<a class="headerlink" href="#Examples" title="Permalink to this heading">¶</a></h2>
+<div class="section" id="Flow-past-a-circular-cylinder">
+<h3>Flow past a circular cylinder<a class="headerlink" href="#Flow-past-a-circular-cylinder" title="Permalink to this heading">¶</a></h3>
+<p>Similar to the example presented in <a class="reference external" href="https://github.com/baddoo/piDMD">P. Baiddoo et al.</a>, we use snapshots from the flow past a cylinder at <span class="math notranslate nohighlight">\(Re=100\)</span> (refer to the <a class="reference internal" href="svd_cylinder.html"><span class="doc">SVD example</span></a> for the setup), contaminate the snapshots with some noise, and perform DMD with and without the unitary contraint. However, before looking at the DMD, we inspect the norm of differently composed state vector to see if the states’ norm is actually preserved.</p>
+<div class="section" id="Norm-of-state-vectors">
+<h4>Norm of state vectors<a class="headerlink" href="#Norm-of-state-vectors" title="Permalink to this heading">¶</a></h4>
+<p>First, we load snapshots of vorticity and velocity in the quasi-steady flow regime, add noise to the snapshots, and assemble different state vectors.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KernelDensity</span>
+<span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DATASETS</span>
+<span class="kn">from</span> <span class="nn">flowtorch.data</span> <span class="kn">import</span> <span class="n">FOAMDataloader</span><span class="p">,</span> <span class="n">CSVDataloader</span><span class="p">,</span> <span class="n">mask_box</span>
+<span class="kn">from</span> <span class="nn">flowtorch.analysis</span> <span class="kn">import</span> <span class="n">DMD</span>
+
+<span class="c1"># increase resolution of plots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.dpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">160</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">path</span> <span class="o">=</span> <span class="n">DATASETS</span><span class="p">[</span><span class="s2">&quot;of_cylinder2D_binary&quot;</span><span class="p">]</span>
+<span class="n">loader</span> <span class="o">=</span> <span class="n">FOAMDataloader</span><span class="p">(</span><span class="n">DATASETS</span><span class="p">[</span><span class="s2">&quot;of_cylinder2D_binary&quot;</span><span class="p">])</span>
+<span class="n">window_times</span> <span class="o">=</span> <span class="p">[</span><span class="n">time</span> <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">loader</span><span class="o">.</span><span class="n">write_times</span> <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">6.0</span><span class="p">]</span>
+<span class="n">times_num</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">window_times</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">vertices</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">vertices</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">weights</span>
+<span class="n">U</span><span class="p">,</span> <span class="n">vort</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_snapshot</span><span class="p">([</span><span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;vorticity&quot;</span><span class="p">],</span> <span class="n">window_times</span><span class="p">)</span>
+<span class="n">vort</span> <span class="o">=</span> <span class="n">vort</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Could not find precomputed cell centers and volumes.
+Computing cell geometry from scratch (slow, not recommended for large meshes).
+To compute cell centers and volumes in OpenFOAM, run:
+
+postProcess -func &#34;writeCellCentres&#34; -constant -time none
+postProcess -func &#34;writeCellVolumes&#34; -constant -time none
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">add_noise_to_data</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">noisy_data</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">val_range</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">data</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">*</span> <span class="n">level</span>
+            <span class="n">noisy_data</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">val_range</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">noisy_data</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">val_range</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">*</span> <span class="n">level</span>
+        <span class="k">return</span> <span class="n">data</span> <span class="o">+</span> <span class="n">val_range</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">vort_noisy</span> <span class="o">=</span> <span class="n">add_noise_to_data</span><span class="p">(</span><span class="n">vort</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+<span class="n">U_noisy</span> <span class="o">=</span> <span class="n">add_noise_to_data</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">x</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">add_field</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">every</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tricontourf</span><span class="p">(</span><span class="n">x</span><span class="p">[::</span><span class="n">every</span><span class="p">],</span> <span class="n">y</span><span class="p">[::</span><span class="n">every</span><span class="p">],</span> <span class="n">field</span><span class="p">[::</span><span class="n">every</span><span class="p">],</span> <span class="n">levels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;jet&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tricontour</span><span class="p">(</span><span class="n">x</span><span class="p">[::</span><span class="n">every</span><span class="p">],</span> <span class="n">y</span><span class="p">[::</span><span class="n">every</span><span class="p">],</span> <span class="n">field</span><span class="p">[::</span><span class="n">every</span><span class="p">],</span> <span class="n">levels</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">,</span> <span class="s1">&#39;box&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axarr</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">add_field</span><span class="p">(</span><span class="n">axarr</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vort</span><span class="p">[:,</span> <span class="n">count</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;clean, t=</span><span class="si">{</span><span class="n">window_times</span><span class="p">[</span><span class="n">count</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">add_field</span><span class="p">(</span><span class="n">axarr</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">vort_noisy</span><span class="p">[:,</span> <span class="n">count</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;noisy, t=</span><span class="si">{</span><span class="n">window_times</span><span class="p">[</span><span class="n">count</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">+=</span> <span class="mi">20</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Vorticity (plane normal component)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_unitary_dmd_7_0.png" src="../_images/notebooks_unitary_dmd_7_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axarr</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">add_field</span><span class="p">(</span><span class="n">axarr</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="n">count</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;clean, t=</span><span class="si">{</span><span class="n">window_times</span><span class="p">[</span><span class="n">count</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">add_field</span><span class="p">(</span><span class="n">axarr</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">U_noisy</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="n">count</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;noisy, t=</span><span class="si">{</span><span class="n">window_times</span><span class="p">[</span><span class="n">count</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">+=</span> <span class="mi">20</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Magnitude of velocity&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_unitary_dmd_8_0.png" src="../_images/notebooks_unitary_dmd_8_0.png" />
+</div>
+</div>
+<p>Next, we inspect how the following factors influence the state vectors’ norm:</p>
+<ul class="simple">
+<li><p>different fields, namely vorticity and velocity</p></li>
+<li><p>weighting of the state with the cell volume</p></li>
+<li><p>masking of the snapshots</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">x_max</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">vertices</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mf">0.05</span><span class="p">)</span>
+<span class="n">vort_norm</span><span class="p">,</span> <span class="n">vort_norm_weighted</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="n">vort_norm_noisy</span><span class="p">,</span> <span class="n">vort_norm_weighted_noisy</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="n">U_norm</span><span class="p">,</span> <span class="n">U_norm_weighted</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="n">U_norm_noisy</span><span class="p">,</span> <span class="n">U_norm_weighted_noisy</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">xm</span> <span class="ow">in</span> <span class="n">x_max</span><span class="p">:</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">mask_box</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="n">xm</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+    <span class="n">n_points</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="n">vort_m</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_points</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">window_times</span><span class="p">)))</span>
+    <span class="n">vort_m_noisy</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_points</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">window_times</span><span class="p">)))</span>
+    <span class="n">U_m</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">n_points</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">window_times</span><span class="p">)))</span>
+    <span class="n">U_m_noisy</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">n_points</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">window_times</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">window_times</span><span class="p">)):</span>
+        <span class="n">vort_m</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">masked_select</span><span class="p">(</span><span class="n">vort</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+        <span class="n">vort_m_noisy</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">masked_select</span><span class="p">(</span><span class="n">vort_noisy</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+        <span class="n">U_m</span><span class="p">[:</span><span class="n">n_points</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">masked_select</span><span class="p">(</span><span class="n">U</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+        <span class="n">U_m</span><span class="p">[</span><span class="n">n_points</span><span class="p">:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">masked_select</span><span class="p">(</span><span class="n">U</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+        <span class="n">U_m_noisy</span><span class="p">[:</span><span class="n">n_points</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">masked_select</span><span class="p">(</span><span class="n">U_noisy</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+        <span class="n">U_m_noisy</span><span class="p">[</span><span class="n">n_points</span><span class="p">:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">masked_select</span><span class="p">(</span><span class="n">U_noisy</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="n">weights_m</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">masked_select</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">vort_norm</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vort_m</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">vort_norm_weighted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vort_m</span><span class="o">*</span><span class="n">weights_m</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">vort_norm_noisy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vort_m_noisy</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">vort_norm_weighted_noisy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vort_m_noisy</span><span class="o">*</span><span class="n">weights_m</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">U_norm</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">U_m</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">U_norm_weighted</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">U_m</span><span class="o">*</span><span class="n">pt</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">weights_m</span><span class="p">,</span> <span class="n">weights_m</span><span class="p">)),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">U_norm_noisy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">U_m_noisy</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">U_norm_weighted_noisy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">U_m_noisy</span><span class="o">*</span><span class="n">pt</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">weights_m</span><span class="p">,</span> <span class="n">weights_m</span><span class="p">)),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<p>In the next two plots below, we visualize the temporal standard deviation of the state vectors’ spatial norm in a region of interest. First, the spatial norm of all state vectors is computed. This computation results in one norm (one scalar value) for snapshot. Then the norm’s temporal standard deviation is computed, which yields one scalar value for each data matrix. This process is repeated for several regions of interest, which are defined based on <span class="math notranslate nohighlight">\(x_{max}\)</span>. The variable
+<span class="math notranslate nohighlight">\(x_{max}\)</span> defines the extend of the selected part of the snapshot (all points with <span class="math notranslate nohighlight">\(x &lt; x_{max}\)</span> are selected). Finally, the temporal standard deviation is normalized with the temporal mean to make the analysis of different state vectors comparable.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">labels</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;clean&quot;</span><span class="p">,</span> <span class="s2">&quot;clean, weighted&quot;</span><span class="p">,</span> <span class="s2">&quot;noisy&quot;</span><span class="p">,</span> <span class="s2">&quot;noisy, weighted&quot;</span><span class="p">)</span>
+<span class="n">ls</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="s2">&quot;-.&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">state</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="n">vort_norm</span><span class="p">,</span> <span class="n">vort_norm_weighted</span><span class="p">,</span> <span class="n">vort_norm_noisy</span><span class="p">,</span> <span class="n">vort_norm_weighted_noisy</span><span class="p">)):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_max</span><span class="p">,</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">/</span><span class="n">s</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">state</span><span class="p">],</span> <span class="n">ls</span><span class="o">=</span><span class="n">ls</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$x_</span><span class="si">{max}</span><span class="s2">$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">x_max</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_max</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\mathrm</span><span class="si">{std}</span><span class="s2">(||\mathbf</span><span class="si">{x}</span><span class="s2">||(t)) / \mathrm</span><span class="si">{mean}</span><span class="s2">(||\mathbf</span><span class="si">{x}</span><span class="s2">||(t))$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;vorticity norm for varying domain length&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_unitary_dmd_12_0.png" src="../_images/notebooks_unitary_dmd_12_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">state</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="n">U_norm</span><span class="p">,</span> <span class="n">U_norm_weighted</span><span class="p">,</span> <span class="n">U_norm_noisy</span><span class="p">,</span> <span class="n">U_norm_weighted_noisy</span><span class="p">)):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_max</span><span class="p">,</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">/</span><span class="n">s</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">state</span><span class="p">],</span> <span class="n">ls</span><span class="o">=</span><span class="n">ls</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$x_</span><span class="si">{max}</span><span class="s2">$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">x_max</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_max</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\mathrm</span><span class="si">{std}</span><span class="s2">(||\mathbf</span><span class="si">{x}</span><span class="s2">||(t)) / \mathrm</span><span class="si">{mean}</span><span class="s2">(||\mathbf</span><span class="si">{x}</span><span class="s2">||(t))$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;velocity norm for varying domain length&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_unitary_dmd_13_0.png" src="../_images/notebooks_unitary_dmd_13_0.png" />
+</div>
+</div>
+<p>For all tested state vectors, the relative change of the state vectors’ norm is well below <span class="math notranslate nohighlight">\(1\%\)</span>. We can now take a closer look on how the norm changes over time. Again, it is sensible to normalize the spatial norm with its temoral mean value to make the norms of different state vectors comparable.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">ind</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">state</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="n">vort_norm</span><span class="p">,</span> <span class="n">vort_norm_weighted</span><span class="p">,</span> <span class="n">vort_norm_noisy</span><span class="p">,</span> <span class="n">vort_norm_weighted_noisy</span><span class="p">)):</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times_num</span><span class="p">,</span> <span class="n">state</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">/</span> <span class="n">state</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">ls</span><span class="o">=</span><span class="n">ls</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">state</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="n">U_norm</span><span class="p">,</span> <span class="n">U_norm_weighted</span><span class="p">,</span> <span class="n">U_norm_noisy</span><span class="p">,</span> <span class="n">U_norm_weighted_noisy</span><span class="p">)):</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">times_num</span><span class="p">,</span> <span class="n">state</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">/</span> <span class="n">state</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">ls</span><span class="o">=</span><span class="n">ls</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;x_max=</span><span class="si">{</span><span class="n">x_max</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s2">2.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$||\mathbf</span><span class="si">{x}</span><span class="s2">||/\mathrm</span><span class="si">{mean}</span><span class="s2">(||\mathbf</span><span class="si">{x}</span><span class="s2">||)$&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;vorticity norm&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$||\mathbf</span><span class="si">{x}</span><span class="s2">||/\mathrm</span><span class="si">{mean}</span><span class="s2">(||\mathbf</span><span class="si">{x}</span><span class="s2">||)$&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;velocity norm&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">times_num</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">times_num</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$t$ in $s$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+x_max=1.30
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_unitary_dmd_15_1.png" src="../_images/notebooks_unitary_dmd_15_1.png" />
+</div>
+</div>
+<p>Based on the plot above, the following observations may be made:</p>
+<ul class="simple">
+<li><p>weighting the state vector with the cell volume yields a small increase in the norm’s variability over time; however, the change is below <span class="math notranslate nohighlight">\(2\%\)</span> and <span class="math notranslate nohighlight">\(0.6\%\)</span> relative to the temporal mean for vorticity and velocity, respectively</p></li>
+<li><p>additional noise in the data increases the changes in the norm; nonetheless, this change is not significant for the cylinder data</p></li>
+</ul>
+</div>
+<div class="section" id="DMD-variants-and-options">
+<h4>DMD variants and options<a class="headerlink" href="#DMD-variants-and-options" title="Permalink to this heading">¶</a></h4>
+<p>In this section, we investigate the influence of the orthogonality contraint on the DMD analysis. The region of interested is slected such that <span class="math notranslate nohighlight">\(0.0 \leq x \leq 1.0\)</span>. Only the vorticity field is investigated further. First, the reconstruction error is computed for the following combinations of data and settings:</p>
+<ul class="simple">
+<li><p>SVD ranks between 2 and 20</p></li>
+<li><p>clean and noisy data</p></li>
+<li><p>standard DMD</p></li>
+<li><p>standard DMD with optimal mode amplitudes</p></li>
+<li><p>DMD with orthogonality constraint</p></li>
+<li><p>DMD with orthogonality constraint and optimal mode amplitudes</p></li>
+</ul>
+<p>Note that for the noisy data, the error is computed by comparing the reconstruction to the <strong>clean data</strong>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">mask</span> <span class="o">=</span> <span class="n">mask_box</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">n_points</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">dm</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_points</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">window_times</span><span class="p">)))</span>
+<span class="n">dm_noisy</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">window_times</span><span class="p">)):</span>
+    <span class="n">dm</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">masked_select</span><span class="p">(</span><span class="n">vort</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="n">dm_noisy</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">masked_select</span><span class="p">(</span><span class="n">vort_noisy</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">err</span><span class="p">,</span> <span class="n">err_noisy</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="n">err_opt</span><span class="p">,</span> <span class="n">err_noisy_opt</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="n">err_orth</span><span class="p">,</span> <span class="n">err_noisy_orth</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="n">err_opt_orth</span><span class="p">,</span> <span class="n">err_noisy_opt_orth</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+<span class="n">dt</span> <span class="o">=</span> <span class="n">times_num</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">times_num</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">rank</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">21</span><span class="p">):</span>
+    <span class="n">err</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">DMD</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">)</span><span class="o">.</span><span class="n">reconstruction</span> <span class="o">-</span> <span class="n">dm</span><span class="p">))</span>
+    <span class="n">err_noisy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">DMD</span><span class="p">(</span><span class="n">dm_noisy</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">)</span><span class="o">.</span><span class="n">reconstruction</span> <span class="o">-</span> <span class="n">dm</span><span class="p">))</span>
+    <span class="n">err_opt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">DMD</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">optimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reconstruction</span> <span class="o">-</span> <span class="n">dm</span><span class="p">))</span>
+    <span class="n">err_noisy_opt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">DMD</span><span class="p">(</span><span class="n">dm_noisy</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">optimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reconstruction</span> <span class="o">-</span> <span class="n">dm</span><span class="p">))</span>
+    <span class="n">err_orth</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">DMD</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">unitary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reconstruction</span> <span class="o">-</span> <span class="n">dm</span><span class="p">))</span>
+    <span class="n">err_noisy_orth</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">DMD</span><span class="p">(</span><span class="n">dm_noisy</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">unitary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reconstruction</span> <span class="o">-</span> <span class="n">dm</span><span class="p">))</span>
+    <span class="n">err_opt_orth</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">DMD</span><span class="p">(</span><span class="n">dm</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">unitary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">optimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reconstruction</span> <span class="o">-</span> <span class="n">dm</span><span class="p">))</span>
+    <span class="n">err_noisy_opt_orth</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">DMD</span><span class="p">(</span><span class="n">dm_noisy</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">unitary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">optimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reconstruction</span> <span class="o">-</span> <span class="n">dm</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">labels</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;standard&quot;</span><span class="p">,</span> <span class="s2">&quot;optimal&quot;</span><span class="p">,</span> <span class="s2">&quot;orth.&quot;</span><span class="p">,</span> <span class="s2">&quot;orth., opt.&quot;</span><span class="p">)</span>
+<span class="n">ls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="s2">&quot;-.&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">err</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="n">err</span><span class="p">,</span> <span class="n">err_opt</span><span class="p">,</span> <span class="n">err_orth</span><span class="p">,</span> <span class="n">err_opt_orth</span><span class="p">)):</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="n">err</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="n">ls</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">err</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="n">err_noisy</span><span class="p">,</span> <span class="n">err_noisy_opt</span><span class="p">,</span> <span class="n">err_noisy_orth</span><span class="p">,</span> <span class="n">err_noisy_opt_orth</span><span class="p">)):</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="n">err</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="n">ls</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;vorticity, clean&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;vorticity, noisy&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$r$&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">21</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$L_2(\mathbf</span><span class="si">{X}</span><span class="s2">-\tilde{\mathbf</span><span class="si">{X}</span><span class="s2">})$&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_unitary_dmd_19_0.png" src="../_images/notebooks_unitary_dmd_19_0.png" />
+</div>
+</div>
+<p>A few observations in the plot above:</p>
+<ul class="simple">
+<li><p>for clean data, the orthogonality constraint limits the absolute accuracy compared to the standard DMD; this effect might be caused by some transient behavior in the snapshot data, which can not be captured if the linear operator is unitary (the magnitude of all eigenvalues is always one).</p></li>
+<li><p>for the clean data, the optimal mode amplitudes yield a lower reconstruction error in both cases</p></li>
+<li><p>for the noisy data, the DMD with orthogonality constraint yields the lowest reconstruction error over a wide range of ranks; note that the optimal amplitudes are computed based on the noisy data while the reconstruction error is computed against the clean data; therefore, the optimal amplitudes can display a higher reconstruction error</p></li>
+</ul>
+</div>
+<div class="section" id="Influence-of-the-noise-level">
+<h4>Influence of the noise level<a class="headerlink" href="#Influence-of-the-noise-level" title="Permalink to this heading">¶</a></h4>
+<p>In this section, we push the noise level in the data to an extreme and observe the influence of the orthogonality constraint.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">err</span><span class="p">,</span> <span class="n">err_opt</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="n">err_orth</span><span class="p">,</span> <span class="n">err_opt_orth</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+<span class="n">n_points</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="n">vort_m</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_points</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">window_times</span><span class="p">)))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">window_times</span><span class="p">)):</span>
+    <span class="n">vort_m</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">masked_select</span><span class="p">(</span><span class="n">vort</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+
+<span class="n">levels</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">levels</span><span class="p">:</span>
+    <span class="n">vort_noisy</span> <span class="o">=</span> <span class="n">add_noise_to_data</span><span class="p">(</span><span class="n">vort_m</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span>
+    <span class="n">err</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">DMD</span><span class="p">(</span><span class="n">vort_noisy</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">reconstruction</span> <span class="o">-</span> <span class="n">vort_m</span><span class="p">))</span>
+    <span class="n">err_opt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">DMD</span><span class="p">(</span><span class="n">vort_noisy</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">optimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reconstruction</span> <span class="o">-</span> <span class="n">vort_m</span><span class="p">))</span>
+    <span class="n">err_orth</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">DMD</span><span class="p">(</span><span class="n">vort_noisy</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">unitary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reconstruction</span> <span class="o">-</span> <span class="n">vort_m</span><span class="p">))</span>
+    <span class="n">err_opt_orth</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">DMD</span><span class="p">(</span><span class="n">vort_noisy</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">unitary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">optimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reconstruction</span> <span class="o">-</span> <span class="n">vort_m</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">labels</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;standard&quot;</span><span class="p">,</span> <span class="s2">&quot;opt.&quot;</span><span class="p">,</span> <span class="s2">&quot;orth.&quot;</span><span class="p">,</span> <span class="s2">&quot;opt., orth.&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">((</span><span class="n">err</span><span class="p">,</span> <span class="n">err_opt</span><span class="p">,</span> <span class="n">err_orth</span><span class="p">,</span> <span class="n">err_opt_orth</span><span class="p">)):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">levels</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;noise level&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$L_2(\mathbf</span><span class="si">{X}</span><span class="s2">-\tilde{\mathbf</span><span class="si">{X}</span><span class="s2">})$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_unitary_dmd_22_0.png" src="../_images/notebooks_unitary_dmd_22_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, flowTorch contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

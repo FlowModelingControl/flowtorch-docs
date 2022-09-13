@@ -1,0 +1,1245 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>flowtorch.data.foam_dataloader &mdash; flowTorch 1.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> flowTorch
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/linear_algebra_basics.html">Linear algebra with PyTorch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_ht.html">Optimal hard threshold for singular values</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/ipsp_explorer.html">PSP data explorer and loader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_intro.html">An introduction to DMD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/svd_cylinder.html">SVD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_cylinder.html">DMD of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/cnm_cylinder.html">CNM of the flow past a circular cylinder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/dmd_naca0012_surface.html">SVD and DMD analysis of airfoil surface data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/piv_analysis.html">Analyzing PIV data of a longitudinal vortex</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Python API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../flowtorch.html">flowtorch</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">flowTorch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>flowtorch.data.foam_dataloader</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for flowtorch.data.foam_dataloader</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Classes to work with OpenFOAM cases, meshes, and fields.</span>
+
+<span class="sd">The :class:`FOAMDataloader` class allows to load fields from</span>
+<span class="sd">an OpenFOAM simulation folder. Currently, only the ESI-OpenCFD</span>
+<span class="sd">branch of OpenFOAM is supported (v1912, v2006). The :class:`FOAMCase`</span>
+<span class="sd">class assembles information about the folder and file structure</span>
+<span class="sd">of a simulation. The :class:`FOAMMesh` allows loading and parsing</span>
+<span class="sd">the finite volume mesh.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># standard library packages</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="c1"># third party packages</span>
+<span class="kn">import</span> <span class="nn">torch</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="c1"># flowtorch packages</span>
+<span class="kn">from</span> <span class="nn">flowtorch</span> <span class="kn">import</span> <span class="n">DEFAULT_DTYPE</span>
+<span class="kn">from</span> <span class="nn">.dataloader</span> <span class="kn">import</span> <span class="n">Dataloader</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">check_and_standardize_path</span><span class="p">,</span> <span class="n">check_list_or_str</span>
+
+
+<span class="n">FIELD_TYPE_DIMENSION</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sa">b</span><span class="s2">&quot;volScalarField&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="sa">b</span><span class="s2">&quot;volVectorField&quot;</span><span class="p">:</span> <span class="mi">3</span>
+<span class="p">}</span>
+<span class="n">CONSTANT_PATH</span> <span class="o">=</span> <span class="s2">&quot;constant/&quot;</span>
+<span class="n">POLYMESH_PATH</span> <span class="o">=</span> <span class="s2">&quot;constant/polyMesh/&quot;</span>
+<span class="n">MESH_FILES</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;points&quot;</span><span class="p">,</span> <span class="s2">&quot;owner&quot;</span><span class="p">,</span> <span class="s2">&quot;neighbour&quot;</span><span class="p">,</span> <span class="s2">&quot;faces&quot;</span><span class="p">,</span> <span class="s2">&quot;boundary&quot;</span><span class="p">)</span>
+
+
+<span class="n">MAX_LINE_HEADER</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">MAX_LINE_INTERNAL_FIELD</span> <span class="o">=</span> <span class="mi">40</span>
+
+<span class="n">SIZE_OF_CHAR</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">calcsize</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">)</span>
+<span class="n">SIZE_OF_INT</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">calcsize</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+<span class="n">SIZE_OF_DOUBLE</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">calcsize</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="FOAMDataloader"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMDataloader">[docs]</a><span class="k">class</span> <span class="nc">FOAMDataloader</span><span class="p">(</span><span class="n">Dataloader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load internal fields and mesh properties of OpenFOAM cases.</span>
+
+<span class="sd">    The project ofpp_ by Xu Xianghua has been a great</span>
+<span class="sd">    help to implement some of the methods.</span>
+
+<span class="sd">    .. _ofpp: https://github.com/xu-xianghua/ofpp</span>
+
+<span class="sd">    Examples</span>
+
+<span class="sd">    &gt;&gt;&gt; from flowtorch import DATASETS</span>
+<span class="sd">    &gt;&gt;&gt; from flowtorch.data import FOAMDataloader</span>
+<span class="sd">    &gt;&gt;&gt; path = DATASETS[&quot;of_cavity_ascii_parallel&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; loader = FOAMDataloader(path)</span>
+<span class="sd">    &gt;&gt;&gt; loader.write_times</span>
+<span class="sd">    [&#39;0&#39;, &#39;0.1&#39;, &#39;0.2&#39;, &#39;0.3&#39;, &#39;0.4&#39;, &#39;0.5&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; loader.field_names</span>
+<span class="sd">    {&#39;0&#39;: [&#39;p&#39;, &#39;U&#39;], &#39;0.1&#39;: [&#39;p&#39;, &#39;phi&#39;, &#39;U&#39;], &#39;0.2&#39;: [&#39;p&#39;, &#39;phi&#39;, &#39;U&#39;], &#39;0.3&#39;: [</span>
+<span class="sd">        &#39;p&#39;, &#39;phi&#39;, &#39;U&#39;], &#39;0.4&#39;: [&#39;p&#39;, &#39;phi&#39;, &#39;U&#39;], &#39;0.5&#39;: [&#39;p&#39;, &#39;phi&#39;, &#39;U&#39;]}</span>
+<span class="sd">    &gt;&gt;&gt; vertices = loader.vertices</span>
+<span class="sd">    &gt;&gt;&gt; vertices[:3]</span>
+<span class="sd">    tensor([[0.0025, 0.0025, 0.0050],</span>
+<span class="sd">            [0.0075, 0.0025, 0.0050],</span>
+<span class="sd">            [0.0125, 0.0025, 0.0050]])</span>
+<span class="sd">    &gt;&gt;&gt; loader.weights[:3]  # cell volumes</span>
+<span class="sd">    tensor([2.5000e-07, 2.5000e-07, 2.5000e-07])</span>
+<span class="sd">    &gt;&gt;&gt; p = loader.load_snapshot(&quot;p&quot;, &quot;0.5&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; p.shape</span>
+<span class="sd">    torch.Size([400])</span>
+<span class="sd">    &gt;&gt;&gt; p[:3]</span>
+<span class="sd">    tensor([ 4.2993e-06, -5.8226e-03, -1.2960e-02])</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_DTYPE</span><span class="p">,</span>
+                 <span class="n">distributed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a FOAMDataloader instance from a path.</span>
+
+<span class="sd">        :param path: path to an OpenFOAM simulation folder.</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :param dtype: tensor type; default is single precision, `torch.float32`</span>
+<span class="sd">        :type dtype: str</span>
+<span class="sd">        :param distributed: case is considered distributed if True; if None,</span>
+<span class="sd">            the case type (parallel/serial) is determined automatically;</span>
+<span class="sd">            defaults to None</span>
+<span class="sd">        :type distributed: bool </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_case</span> <span class="o">=</span> <span class="n">FOAMCase</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">distributed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mesh</span> <span class="o">=</span> <span class="n">FOAMMesh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+
+    <span class="k">def</span> <span class="nf">_parse_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Prase field data from an OpenFOAM snapshot.</span>
+
+<span class="sd">        :param data: full content of the snapshot file (including header</span>
+<span class="sd">            and metadata)</span>
+<span class="sd">        :type data: List[str]</span>
+<span class="sd">        :raises ValueError: if the field type is not supported</span>
+<span class="sd">        :return: numerical values stored in the snapshot</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">field_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_field_type</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">field_type</span> <span class="ow">in</span> <span class="n">FIELD_TYPE_DIMENSION</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Field type </span><span class="si">{</span><span class="n">field_type</span><span class="si">}</span><span class="s2"> not supported.&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_is_binary</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">]):</span>
+                <span class="n">field_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_internalfield_binary</span><span class="p">(</span>
+                    <span class="n">data</span><span class="p">,</span> <span class="n">FIELD_TYPE_DIMENSION</span><span class="p">[</span><span class="n">field_type</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">field_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_internalfield_ascii</span><span class="p">(</span>
+                    <span class="n">data</span><span class="p">,</span> <span class="n">FIELD_TYPE_DIMENSION</span><span class="p">[</span><span class="n">field_type</span><span class="p">]</span>
+                <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">field_data</span>
+
+    <span class="k">def</span> <span class="nf">_find_nonuniform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Determine the start index and size of a nonuniform field.</span>
+
+<span class="sd">        OpenFOAM output files with nonuniform fields contain the line</span>
+<span class="sd">            nonuniform</span>
+<span class="sd">            #####</span>
+<span class="sd">            (...</span>
+<span class="sd">            )</span>
+<span class="sd">        where ##### is an integer number indicating the number of list</span>
+<span class="sd">        entries. This number is needed,</span>
+
+<span class="sd">        :param data: [description]</span>
+<span class="sd">        :type data: List[str]</span>
+<span class="sd">        :return: line index containing the keyword *nonuniform* and the</span>
+<span class="sd">            size if the nonuniform list; if the keyword is not found, two</span>
+<span class="sd">            zeros are returned</span>
+<span class="sd">        :rtype: Tuple[int, int]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="k">if</span> <span class="sa">b</span><span class="s2">&quot;nonuniform&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">_field_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Determine the tensor type of a field.</span>
+
+<span class="sd">        :param data: content of an OpenFoam output file</span>
+<span class="sd">        :type data: List[str]</span>
+<span class="sd">        :return: the field type; if the type is not supported or not found,</span>
+<span class="sd">        `None` is returned</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="sa">b</span><span class="s2">&quot;class&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">field_type</span> <span class="ow">in</span> <span class="n">FIELD_TYPE_DIMENSION</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">field_type</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">field_type</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_unpack_internalfield_ascii</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Parse internal field given as ASCII-encoded text.</span>
+
+<span class="sd">        :param data: content of output file</span>
+<span class="sd">        :type data: List[str]</span>
+<span class="sd">        :param dim: dimensionality of the field, e.g., 1 for a scalar or</span>
+<span class="sd">            3 for a vector</span>
+<span class="sd">        :type dim: int</span>
+<span class="sd">        :return: tensor holding the field data as numerical values</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start</span><span class="p">,</span> <span class="n">n_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_nonuniform</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_INTERNAL_FIELD</span><span class="p">])</span>
+        <span class="n">start</span> <span class="o">+=</span> <span class="mi">3</span>
+        <span class="k">if</span> <span class="n">dim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span> <span class="o">+</span> <span class="n">n_values</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+                 <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span> <span class="o">+</span> <span class="n">n_values</span><span class="p">]],</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_unpack_internalfield_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Prase internal field given in binary encoding.</span>
+
+<span class="sd">        :param data: content of output file</span>
+<span class="sd">        :type data: List[str]</span>
+<span class="sd">        :param dim: dimensionality of the field, e.g., 1 for a scalar or</span>
+<span class="sd">            3 for a vector</span>
+<span class="sd">        :type dim: int</span>
+<span class="sd">        :return: tensor holding the field data</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start</span><span class="p">,</span> <span class="n">n_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_nonuniform</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_INTERNAL_FIELD</span><span class="p">])</span>
+        <span class="n">start</span> <span class="o">+=</span> <span class="mi">2</span>
+        <span class="n">buffer</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:])</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">d&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dim</span><span class="o">*</span><span class="n">n_values</span><span class="p">),</span>
+            <span class="n">buffer</span><span class="p">[</span><span class="n">SIZE_OF_CHAR</span><span class="p">:</span><span class="n">SIZE_OF_CHAR</span><span class="o">+</span><span class="n">SIZE_OF_DOUBLE</span><span class="o">*</span><span class="n">n_values</span><span class="o">*</span><span class="n">dim</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">dim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_values</span><span class="p">,</span> <span class="n">dim</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_load_single_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Load a single snapshot of a single field from disk.</span>
+
+<span class="sd">        :param field_name: name of the field</span>
+<span class="sd">        :type field_name: str</span>
+<span class="sd">        :param time: snapshot write time</span>
+<span class="sd">        :type time: str</span>
+<span class="sd">        :return: tensor holding the field</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_paths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_distributed</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">proc</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_processors</span><span class="p">):</span>
+                <span class="n">file_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">build_file_path</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">proc</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">file_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">build_file_path</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">field_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">file_paths</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">field_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parse_data</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">field_data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_load_multiple_snapshots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">times</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Load multiple snapshots of a single field.</span>
+
+<span class="sd">        :param field_name: name of the field</span>
+<span class="sd">        :type field_name: str</span>
+<span class="sd">        :param times: list of write times to load</span>
+<span class="sd">        :type times: List[str]</span>
+<span class="sd">        :return: tensor holding multiple snapshots; the time dimension is always</span>
+<span class="sd">            the last dimension</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_load_single_snapshot</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span> <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">times</span><span class="p">],</span>
+            <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="FOAMDataloader.load_snapshot"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMDataloader.load_snapshot">[docs]</a>    <span class="k">def</span> <span class="nf">load_snapshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                      <span class="n">field_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+                      <span class="n">time</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+        <span class="n">check_list_or_str</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="s2">&quot;field_name&quot;</span><span class="p">)</span>
+        <span class="n">check_list_or_str</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">)</span>
+        <span class="c1"># load multiple fields</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_load_multiple_snapshots</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">field_name</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_load_single_snapshot</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">field_name</span><span class="p">]</span>
+        <span class="c1"># load a single field</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_multiple_snapshots</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_single_snapshot</span><span class="p">(</span><span class="n">field_name</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span></div>
+
+    <span class="o">@</span> <span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">write_times</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Access to available snapshot/write times via :func:`FOAMCase._eval_write_times`.</span>
+
+<span class="sd">        :getter: returns the available write times</span>
+<span class="sd">        :type: List[str]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_time_folders</span>
+
+    <span class="o">@</span> <span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">field_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Access to the available field names for all available write times via</span>
+<span class="sd">        :func:`FOAMCase._eval_field_names`.</span>
+
+<span class="sd">        :getter: returns names of availabe fields</span>
+<span class="sd">        :type: Dict[str, List[str]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_field_names</span>
+
+    <span class="o">@</span> <span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        In OpenFOAM, field for post-processing are defined at the control volume&#39;s</span>
+<span class="sd">        center (*vol&lt;Type&gt;Fields*). Therefore, the `vertices` property enables access</span>
+<span class="sd">        to cell center locations via :class:`FOAMMesh`.</span>
+
+<span class="sd">        :getter: returns control volume centers</span>
+<span class="sd">        :type: pt.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mesh</span><span class="o">.</span><span class="n">get_cell_centers</span><span class="p">()</span>
+
+    <span class="o">@</span> <span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">weights</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        For results obtained using a finite volume method with co-located</span>
+<span class="sd">        arrangement (OpenFOAM), a sensible weight for a cell-centered value</span>
+<span class="sd">        is the cell volume. The cell volumes are availabe via the</span>
+<span class="sd">        :class:`FOAMMesh` class.</span>
+
+<span class="sd">        :getter: returns cell volumes</span>
+<span class="sd">        :type: pt.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mesh</span><span class="o">.</span><span class="n">get_cell_volumes</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="FOAMCase"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMCase">[docs]</a><span class="k">class</span> <span class="nc">FOAMCase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to access and parse OpenFOAM cases.</span>
+
+<span class="sd">    Most of the attributes and methods are private because they are</span>
+<span class="sd">    typically accessed via a :class:`FOAMDataloader` instance.</span>
+
+<span class="sd">    .. automethod:: _eval_distributed</span>
+<span class="sd">    .. automethod:: _eval_processors</span>
+<span class="sd">    .. automethod:: _eval_write_times</span>
+<span class="sd">    .. automethod:: _eval_field_names</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">distributed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a `FOAMCase` instance based on a path.</span>
+
+<span class="sd">        :param path: path to OpenFOAM simulation case</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :param distributed: case is considered distributed if True; if None,</span>
+<span class="sd">            the presence of processor folders is checked to evaluate the</span>
+<span class="sd">            parameter; defaults to False</span>
+<span class="sd">        :type distributed: bool</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">check_and_standardize_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_distributed</span> <span class="o">=</span> <span class="n">distributed</span> <span class="k">if</span> <span class="n">distributed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> \
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eval_distributed</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_processors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eval_processors</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_time_folders</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eval_write_times</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_field_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eval_field_names</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_mesh_files</span><span class="p">():</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;Error: could not find valid mesh in case </span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_is_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">header</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Determine if the write format is binary.</span>
+
+<span class="sd">        :param header: header of the OpenFOAM file</span>
+<span class="sd">        :type header: List[str]</span>
+<span class="sd">        :return: True if the format is binary</span>
+<span class="sd">        :rtype: bool</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">header</span><span class="p">:</span>
+            <span class="k">if</span> <span class="sa">b</span><span class="s2">&quot;format&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">if</span> <span class="sa">b</span><span class="s2">&quot;binary&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_check_mesh_files</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Check if all mesh files are available.</span>
+
+<span class="sd">        :return: True if all required files are available.</span>
+<span class="sd">        :rtype: bool</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distributed</span><span class="p">:</span>
+            <span class="n">files_found</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">proc</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_processors</span><span class="p">):</span>
+                <span class="n">files_found</span> <span class="o">+=</span> <span class="p">[</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="s2">&quot;/processor</span><span class="si">{:d}</span><span class="s2">/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">proc</span><span class="p">)</span>
+                        <span class="o">+</span> <span class="n">POLYMESH_PATH</span> <span class="o">+</span> <span class="n">mesh_file</span>
+                    <span class="p">)</span>
+                    <span class="k">for</span> <span class="n">mesh_file</span> <span class="ow">in</span> <span class="n">MESH_FILES</span>
+                <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">files_found</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">POLYMESH_PATH</span> <span class="o">+</span> <span class="n">mesh_file</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">mesh_file</span> <span class="ow">in</span> <span class="n">MESH_FILES</span>
+            <span class="p">]</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">files_found</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FOAMCase._eval_distributed"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMCase._eval_distributed">[docs]</a>    <span class="k">def</span> <span class="nf">_eval_distributed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Check if the simulation case is distributed (parallel).</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            Collated output is currently not supported/not detected.</span>
+
+<span class="sd">        :return: `True` if distributed</span>
+<span class="sd">        :rtype: bool</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">proc_dirs</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="s2">&quot;/processor*&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">proc_dirs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="FOAMCase._eval_processors"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMCase._eval_processors">[docs]</a>    <span class="k">def</span> <span class="nf">_eval_processors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get number of processor folders.</span>
+
+<span class="sd">        :return: number of processor folders or 1 for serial runs</span>
+<span class="sd">        :rtype: int</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distributed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="s2">&quot;/processor*&quot;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="FOAMCase._eval_write_times"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMCase._eval_write_times">[docs]</a>    <span class="k">def</span> <span class="nf">_eval_write_times</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Assemble a list of all write times.</span>
+
+<span class="sd">        :return: a list of all time folders</span>
+<span class="sd">        :rtype: List[str]</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            For distributed simulations, it is assumed that all processor</span>
+<span class="sd">            folders contain the same time folders.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distributed</span><span class="p">:</span>
+            <span class="n">time_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="s2">&quot;/processor0&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">time_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
+        <span class="n">dirs</span> <span class="o">=</span> <span class="p">[</span><span class="n">folder</span> <span class="k">for</span> <span class="n">folder</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">time_path</span><span class="p">)</span> <span class="k">if</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">time_path</span><span class="p">,</span> <span class="n">folder</span><span class="p">))]</span>
+        <span class="n">time_dirs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+                <span class="n">time_dirs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">time_dirs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Warning: found only one or less time folders in </span><span class="si">{:s}</span><span class="s2">&quot;</span>
+                <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">time_dirs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FOAMCase._eval_field_names"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMCase._eval_field_names">[docs]</a>    <span class="k">def</span> <span class="nf">_eval_field_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Get a dictionary of all fields and files in all time folders.</span>
+
+<span class="sd">        .. warning::</span>
+<span class="sd">            For distributed cases, only *processor0* is evaluated. The fields</span>
+<span class="sd">            for all other processors are assumed to be the same.</span>
+
+<span class="sd">        :return: dictionary with write times as keys and a list of field names</span>
+<span class="sd">            for each time as values</span>
+<span class="sd">        :rtype: Dict[str, List[str]]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">all_time_folders</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">build_file_path</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">time</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_time_folders</span>
+        <span class="p">]</span>
+        <span class="n">all_fields</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">folder</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">all_time_folders</span><span class="p">):</span>
+            <span class="n">all_fields</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_time_folders</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">field</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span>
+            <span class="p">]</span>
+        <span class="k">return</span> <span class="n">all_fields</span></div>
+
+<div class="viewcode-block" id="FOAMCase.build_file_path"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMCase.build_file_path">[docs]</a>    <span class="k">def</span> <span class="nf">build_file_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">processor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create the path to file inside the time folder of a simulation.</span>
+
+<span class="sd">        :param field_name: name of the field or file, e.g., \&quot;U\&quot; or \&quot;p\&quot;</span>
+<span class="sd">        :type field_name: str</span>
+<span class="sd">        :param time: name of the time folder, e.g., \&quot;0.01\&quot;</span>
+<span class="sd">        :type time: str</span>
+<span class="sd">        :param processor: processor folder to load the data from; ignored</span>
+<span class="sd">            in serial simulation cases; defaults to `0`</span>
+<span class="sd">        :type processor: int, optional</span>
+<span class="sd">        :return: path to file inside a time folder</span>
+<span class="sd">        :rtype: str</span>
+
+<span class="sd">        Examples</span>
+
+<span class="sd">        &gt;&gt;&gt; from flowtorch.data import FOAMCase</span>
+<span class="sd">        &gt;&gt;&gt; case = FOAMCase(&quot;./cavity_binary_parallel/&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; case._distributed</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; case._processors</span>
+<span class="sd">        4</span>
+<span class="sd">        &gt;&gt;&gt; case._time_folders</span>
+<span class="sd">        [&#39;0&#39;, &#39;0.1&#39;, &#39;0.2&#39;, &#39;0.3&#39;, &#39;0.4&#39;, &#39;0.5&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; case._field_names</span>
+<span class="sd">        {&#39;0&#39;: [&#39;U&#39;, &#39;p&#39;], &#39;0.1&#39;: [&#39;U&#39;, &#39;p&#39;, &#39;phi&#39;], &#39;0.2&#39;: [&#39;U&#39;, &#39;p&#39;, &#39;phi&#39;], &#39;0.3&#39;: [</span>
+<span class="sd">            &#39;U&#39;, &#39;p&#39;, &#39;phi&#39;], &#39;0.4&#39;: [&#39;U&#39;, &#39;p&#39;, &#39;phi&#39;], &#39;0.5&#39;: [&#39;U&#39;, &#39;p&#39;, &#39;phi&#39;]}</span>
+<span class="sd">        &gt;&gt;&gt; case.build_file_path(&quot;U&quot;, &quot;0.1&quot;, 1)</span>
+<span class="sd">        &#39;./cavity_binary_parallel/processor1/0.1/U&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distributed</span><span class="p">:</span>
+            <span class="n">file_path</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span>
+                <span class="s2">&quot;/processor</span><span class="si">{:d}</span><span class="s2">/</span><span class="si">{:s}</span><span class="s2">/</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">processor</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="s2">&quot;/</span><span class="si">{:s}</span><span class="s2">/</span><span class="si">{:s}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">file_path</span></div></div>
+
+
+<div class="viewcode-block" id="FOAMMesh"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMMesh">[docs]</a><span class="k">class</span> <span class="nc">FOAMMesh</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to load and process OpenFOAM meshes.</span>
+
+<span class="sd">    OpenFOAM stores the finite volume mesh as a collection of several</span>
+<span class="sd">    files located in *constant/polyMesh* or in *processorXX/constant/polyMesh*</span>
+<span class="sd">    for serial and distributed cases, respectively. Even though OpenFOAM</span>
+<span class="sd">    is a cell-centered finite volume method, the cell-centers and volumes are</span>
+<span class="sd">    not explicitly stored. Instead, a so-called face-addressing storage is used.</span>
+<span class="sd">    All internal faces have an owner cell and a neighbor cell. Boundary faces only</span>
+<span class="sd">    have an owner cell. The mesh attributes are defined in several files:</span>
+
+<span class="sd">    - **points**: list of vertices forming cell faces; the list index of a point is used as label</span>
+<span class="sd">    - **faces**: list of all cell faces defined as point labels</span>
+<span class="sd">    - **owner**: list of cell labels that are face owners</span>
+<span class="sd">    - **neighbour**: list of cell labels that are face neighbors; BE spelling</span>
+<span class="sd">    - **boundary**: definition of faces belonging to a patch</span>
+
+<span class="sd">    Examples</span>
+
+<span class="sd">    &gt;&gt;&gt; from flowtorch.data import FOAMMesh</span>
+<span class="sd">    &gt;&gt;&gt; mesh = FOAMMesh.from_path(&quot;./&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; centers = mesh.get_cell_centers()</span>
+<span class="sd">    &gt;&gt;&gt; centers.size()</span>
+<span class="sd">    torch.Size([400, 3])</span>
+<span class="sd">    &gt;&gt;&gt; centers[:2]</span>
+<span class="sd">    tensor([[0.0025, 0.0025, 0.0050],</span>
+<span class="sd">            [0.0075, 0.0025, 0.0050]])</span>
+<span class="sd">    &gt;&gt;&gt; volumes = mesh.get_cell_volumes()</span>
+<span class="sd">    &gt;&gt;&gt; volumes.size()</span>
+<span class="sd">    torch.Size([400])</span>
+<span class="sd">    &gt;&gt;&gt; volumes[:2]</span>
+<span class="sd">    tensor([2.5000e-07, 2.5000e-07])</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">            Dynamically changing meshes are currently not supported.</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">            Distributed meshes may be parsed and concatenated, but</span>
+<span class="sd">            the cell centers and volumes won&#39;t have the same ordering</span>
+<span class="sd">            as when computed from a reconstructed mesh.</span>
+
+<span class="sd">    .. automethod:: _compute_face_centers_and_areas</span>
+<span class="sd">    .. automethod:: _compute_cell_centers_and_volumes</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">case</span><span class="p">:</span> <span class="n">FOAMCase</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_DTYPE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create FOAMMesh object based on :class:`FOAMCase`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">case</span><span class="p">,</span> <span class="n">FOAMCase</span><span class="p">):</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="s2">&quot;Error: case must be of type FOAMCase, not </span><span class="si">{:s}</span><span class="s2">&quot;</span>
+                     <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">case</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_case</span> <span class="o">=</span> <span class="n">case</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_itype</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">int64</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cell_centers</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cell_volumes</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="FOAMMesh.from_path"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMMesh.from_path">[docs]</a>    <span class="o">@</span> <span class="nb">classmethod</span>
+    <span class="k">def</span> <span class="nf">from_path</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">DEFAULT_DTYPE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a new instance based on the simulation&#39;s path.</span>
+
+<span class="sd">        :param path: path to the OpenFOAM simulation</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :param dtype: tensor type, defaults to DEFAULT_DTYPE</span>
+<span class="sd">        :type dtype: str, optional</span>
+<span class="sd">        :return: FOAMMesh instance</span>
+<span class="sd">        :rtype: FOAMMesh</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">FOAMCase</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="n">dtype</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_list_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Find list length of points, faces, and cells.</span>
+
+<span class="sd">        :param data: content of points, faces, or owner/neighbour file</span>
+<span class="sd">        :type data: List[str]</span>
+<span class="sd">        :return: line with first list entry and number of elements in list;</span>
+<span class="sd">            returns zeros if the number of elements could not be determined</span>
+<span class="sd">        :rtype: Tuple[int, int]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">n_entries</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="n">n_entries</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">_get_n_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Extract number of cells from *owner* file.</span>
+
+<span class="sd">        :param mesh_path: mesh location</span>
+<span class="sd">        :type mesh_path: str</span>
+<span class="sd">        :return: number of cells; defaults to 0</span>
+<span class="sd">        :rtype: int</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_cells</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mesh_path</span> <span class="o">+</span> <span class="s2">&quot;owner&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                <span class="k">if</span> <span class="sa">b</span><span class="s2">&quot;note&quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="sa">b</span><span class="s2">&quot;nCells&quot;</span> <span class="ow">in</span> <span class="n">token</span><span class="p">:</span>
+                            <span class="n">n_cells</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+                            <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">n_cells</span>
+
+    <span class="k">def</span> <span class="nf">_parse_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Parse mesh vertices defined in *constant/polyMesh/points*.</span>
+
+<span class="sd">        :param mesh_path: mesh location</span>
+<span class="sd">        :type mesh_path: str</span>
+<span class="sd">        :return: tensor holding the mesh vertices</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mesh_path</span> <span class="o">+</span> <span class="s2">&quot;points&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_list_length</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_is_binary</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">]):</span>
+                <span class="n">start</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">buffer</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:])</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">d&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">length</span><span class="p">),</span>
+                    <span class="n">buffer</span><span class="p">[</span><span class="n">SIZE_OF_CHAR</span><span class="p">:</span><span class="n">SIZE_OF_CHAR</span><span class="o">+</span><span class="n">SIZE_OF_DOUBLE</span><span class="o">*</span><span class="n">length</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">start</span> <span class="o">+=</span> <span class="mi">2</span>
+                <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                    <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+                     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span> <span class="o">+</span> <span class="n">length</span><span class="p">]],</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+                <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_parse_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Parse cell faces stored in *constant/polyMesh/faces*.</span>
+
+<span class="sd">        :param mesh_path: mesh location</span>
+<span class="sd">        :type mesh_path: str</span>
+<span class="sd">        :return: tuple of tensors with the first tensor holding the</span>
+<span class="sd">            number if points per face and the second one holding the</span>
+<span class="sd">            point labels forming the face; the second dimension of the</span>
+<span class="sd">            point label tensor is determined by the face with the highest</span>
+<span class="sd">            number of points; faces with fewer points are padded with zeros</span>
+<span class="sd">        :rtype: Tuple[pt.Tensor, pt.Tensor]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">zero_pad</span><span class="p">(</span><span class="n">tensor</span><span class="p">,</span> <span class="n">new_size</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Increase size of second tensor dimension.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">new_size</span> <span class="o">-</span> <span class="n">tensor</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">pad</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">tensor</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">diff</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_itype</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">tensor</span><span class="p">,</span> <span class="n">pad</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mesh_path</span> <span class="o">+</span> <span class="s2">&quot;faces&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_list_length</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_is_binary</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">]):</span>
+                <span class="n">n_points_faces</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_itype</span><span class="p">)</span>
+                <span class="n">faces</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">n_points_faces</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_itype</span><span class="p">)</span>
+                <span class="n">start</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">buffer</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:])</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">i&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">length</span><span class="p">),</span>
+                    <span class="n">buffer</span><span class="p">[</span><span class="n">SIZE_OF_CHAR</span><span class="p">:</span><span class="n">SIZE_OF_CHAR</span> <span class="o">+</span> <span class="n">SIZE_OF_INT</span><span class="o">*</span><span class="n">length</span><span class="p">]</span>
+                <span class="p">)</span>
+
+                <span class="c1"># search or the next opening bracket to see where the second list starts</span>
+                <span class="c1"># the length of the second list is interpreted as a sequence of characters</span>
+                <span class="c1"># so looking 50 characters ahead allows for a very large number of faces</span>
+                <span class="n">list_0_end</span> <span class="o">=</span> <span class="n">SIZE_OF_INT</span><span class="o">*</span><span class="n">length</span>
+                <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">buffer</span><span class="p">[</span><span class="n">list_0_end</span><span class="p">:</span><span class="n">list_0_end</span> <span class="o">+</span> <span class="mi">50</span><span class="o">*</span><span class="n">SIZE_OF_CHAR</span><span class="p">]):</span>
+                    <span class="k">if</span> <span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="sa">r</span><span class="s2">&quot;(&quot;</span><span class="p">:</span>
+                        <span class="n">offset</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">i&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+                    <span class="n">buffer</span><span class="p">[</span><span class="n">offset</span><span class="o">+</span><span class="n">SIZE_OF_INT</span><span class="o">*</span><span class="n">length</span><span class="p">:</span><span class="n">offset</span> <span class="o">+</span>
+                           <span class="p">(</span><span class="n">length</span><span class="o">+</span><span class="n">idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">SIZE_OF_INT</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">face_labels</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                        <span class="n">values</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span><span class="n">idx</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_itype</span><span class="p">)</span>
+                    <span class="n">n_points_faces</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">face_labels</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">face_labels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">faces</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">1</span><span class="p">]:</span>
+                        <span class="n">faces</span> <span class="o">=</span> <span class="n">zero_pad</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">face_labels</span><span class="p">))</span>
+                    <span class="n">faces</span><span class="p">[</span><span class="n">i</span><span class="p">][:</span><span class="nb">len</span><span class="p">(</span><span class="n">face_labels</span><span class="p">)]</span> <span class="o">=</span> <span class="n">face_labels</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">n_points_faces</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">length</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_itype</span><span class="p">)</span>
+                <span class="n">faces</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">n_points_faces</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_itype</span><span class="p">)</span>
+                <span class="n">start</span> <span class="o">+=</span> <span class="mi">2</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span> <span class="o">+</span> <span class="n">length</span><span class="p">]):</span>
+                    <span class="n">n_points_faces</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">face_labels</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                        <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">())),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_itype</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">face_labels</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">faces</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">1</span><span class="p">]:</span>
+                        <span class="n">faces</span> <span class="o">=</span> <span class="n">zero_pad</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">face_labels</span><span class="p">))</span>
+                    <span class="n">faces</span><span class="p">[</span><span class="n">i</span><span class="p">][:</span><span class="nb">len</span><span class="p">(</span><span class="n">face_labels</span><span class="p">)]</span> <span class="o">=</span> <span class="n">face_labels</span>
+            <span class="k">return</span> <span class="n">n_points_faces</span><span class="p">,</span> <span class="n">faces</span>
+
+    <span class="k">def</span> <span class="nf">_parse_owners_and_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Parse face owners and neighbors.</span>
+
+<span class="sd">        - owners are parsed from *constant/polyMesh/owner*</span>
+<span class="sd">        - neighbors are parsed from *constant/polyMesh/neighbour*</span>
+
+<span class="sd">        :param mesh_path: mesh location</span>
+<span class="sd">        :type mesh_path: str</span>
+<span class="sd">        :return: tensor holding the cell labels owning or neighbouring</span>
+<span class="sd">            a face</span>
+<span class="sd">        :rtype: Tuple[pt.Tensor, pt.Tensor]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mesh_path</span> <span class="o">+</span> <span class="s2">&quot;owner&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_list_length</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_is_binary</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">]):</span>
+                <span class="n">start</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">buffer</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:])</span>
+                <span class="n">owner_values</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">i&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">length</span><span class="p">),</span>
+                    <span class="n">buffer</span><span class="p">[</span><span class="n">SIZE_OF_CHAR</span><span class="p">:</span><span class="n">SIZE_OF_CHAR</span><span class="o">+</span><span class="n">SIZE_OF_INT</span><span class="o">*</span><span class="n">length</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">start</span> <span class="o">+=</span> <span class="mi">2</span>
+                <span class="n">owner_values</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span> <span class="o">+</span> <span class="n">length</span><span class="p">]</span>
+                <span class="p">]</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mesh_path</span> <span class="o">+</span> <span class="s2">&quot;neighbour&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_list_length</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_is_binary</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">]):</span>
+                <span class="n">start</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">buffer</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:])</span>
+                <span class="n">neighbor_values</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">i&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">length</span><span class="p">),</span>
+                    <span class="n">buffer</span><span class="p">[</span><span class="n">SIZE_OF_CHAR</span><span class="p">:</span><span class="n">SIZE_OF_CHAR</span><span class="o">+</span><span class="n">SIZE_OF_INT</span><span class="o">*</span><span class="n">length</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">start</span> <span class="o">+=</span> <span class="mi">2</span>
+                <span class="n">neighbor_values</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span> <span class="o">+</span> <span class="n">length</span><span class="p">]</span>
+                <span class="p">]</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">owner_values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_itype</span><span class="p">),</span>
+            <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">neighbor_values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_itype</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_centers_and_volumes_computed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Check if files *C* and *V* exist in the specified location.</span>
+
+<span class="sd">        :param path: mesh location</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :return: True if volumes and cell centers are available</span>
+<span class="sd">        :rtype: bool</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;C&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;V&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_parse_cell_centers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Parse cell centers from the constant directory.</span>
+
+<span class="sd">        :param path: mesh location</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :return: tensor holding the cell center coordinates</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_list_length</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_is_binary</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">]):</span>
+                <span class="n">start</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">buffer</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:])</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">d&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">length</span><span class="p">),</span>
+                    <span class="n">buffer</span><span class="p">[</span><span class="n">SIZE_OF_CHAR</span><span class="p">:</span><span class="n">SIZE_OF_CHAR</span><span class="o">+</span><span class="n">SIZE_OF_DOUBLE</span><span class="o">*</span><span class="n">length</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">start</span> <span class="o">+=</span> <span class="mi">2</span>
+                <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                    <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+                     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span> <span class="o">+</span> <span class="n">length</span><span class="p">]],</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+                <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_parse_cell_volumes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Parse cell volumes from the constant directory.</span>
+
+<span class="sd">        :param path: mesh location</span>
+<span class="sd">        :type path: str</span>
+<span class="sd">        :return: tensor holding the cell volumes</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;V&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_list_length</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_is_binary</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="n">MAX_LINE_HEADER</span><span class="p">]):</span>
+                <span class="n">start</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">buffer</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:])</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">d&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">length</span><span class="p">),</span>
+                    <span class="n">buffer</span><span class="p">[</span><span class="n">SIZE_OF_CHAR</span><span class="p">:</span><span class="n">SIZE_OF_CHAR</span><span class="o">+</span><span class="n">SIZE_OF_DOUBLE</span><span class="o">*</span><span class="n">length</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">start</span> <span class="o">+=</span> <span class="mi">2</span>
+                <span class="k">return</span> <span class="n">pt</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                    <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span> <span class="o">+</span> <span class="n">length</span><span class="p">]],</span>
+                    <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span>
+                <span class="p">)</span>
+
+<div class="viewcode-block" id="FOAMMesh._compute_face_centers_and_areas"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMMesh._compute_face_centers_and_areas">[docs]</a>    <span class="k">def</span> <span class="nf">_compute_face_centers_and_areas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                        <span class="n">points</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+                                        <span class="n">faces</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+                                        <span class="n">n_points_faces</span><span class="p">:</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span>
+                                        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Compute face centers and areas.</span>
+
+<span class="sd">        The implemented algorithm is close to the one in makeFaceCentresAndAreas_.</span>
+<span class="sd">        The main steps are:</span>
+
+<span class="sd">        1. compute an estimate of the face center by averaging all face vertices</span>
+<span class="sd">        2. decompose the face into triangles</span>
+<span class="sd">        3. compute the sum over all area-weighted triangle centroids, triangle areas,</span>
+<span class="sd">           and face area normal vectors</span>
+<span class="sd">        4. compute the face centroid and face area normal from the (weighted) sums</span>
+
+<span class="sd">        .. _makeFaceCentresAndAreas: https://www.openfoam.com/documentation/guides/latest/api/primitiveMeshFaceCentresAndAreas_8C_source.html</span>
+
+<span class="sd">        :param points: list of points</span>
+<span class="sd">        :type points: pt.Tensor</span>
+<span class="sd">        :param faces: list point labels forming each face</span>
+<span class="sd">        :type faces: pt.Tensor</span>
+<span class="sd">        :param n_points_faces: number of points forming each face</span>
+<span class="sd">        :type n_points_faces: pt.Tensor</span>
+<span class="sd">        :return: tuple of two tensors; the first one holds the face centers</span>
+<span class="sd">            and the second one holds the face areas</span>
+<span class="sd">        :rtype: Tuple[pt.Tensor, pt.Tensor]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">face_centers</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">n_points_faces</span><span class="o">.</span><span class="n">size</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+        <span class="n">face_areas</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">face_centers</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+        <span class="n">center_estimates</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">face_centers</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">center_estimates</span> <span class="o">+=</span> <span class="n">points</span><span class="p">[</span><span class="n">faces</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]]</span> <span class="o">*</span> \
+                <span class="n">pt</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_points_faces</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">center_estimates</span> <span class="o">/=</span> <span class="n">n_points_faces</span>
+
+        <span class="n">area_sums</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">n_points_faces</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">faces</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">this_point_mask</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_points_faces</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">next_point_mask</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="o">&lt;</span> <span class="n">n_points_faces</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">last_point_mask</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="o">==</span> <span class="n">n_points_faces</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">this_point</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">faces</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]]</span> <span class="o">*</span> <span class="n">this_point_mask</span>
+            <span class="k">if</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="o">&lt;</span> <span class="n">faces</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">next_point</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">faces</span><span class="p">[:,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="n">next_point_mask</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">next_point</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">face_centers</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+            <span class="n">next_point</span> <span class="o">+=</span> <span class="n">points</span><span class="p">[</span><span class="n">faces</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="n">last_point_mask</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">center_estimates</span> <span class="o">*</span> <span class="n">this_point_mask</span> <span class="o">+</span> <span class="n">this_point</span> <span class="o">+</span> <span class="n">next_point</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span>
+                <span class="n">next_point</span> <span class="o">-</span> <span class="n">this_point</span><span class="p">,</span> <span class="n">center_estimates</span> <span class="o">*</span> <span class="n">this_point_mask</span> <span class="o">-</span> <span class="n">this_point</span><span class="p">,</span>
+                <span class="n">dim</span><span class="o">=</span><span class="mi">1</span>
+            <span class="p">)</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">face_centers</span> <span class="o">+=</span> <span class="n">c</span> <span class="o">*</span> <span class="n">a</span>
+            <span class="n">area_sums</span> <span class="o">+=</span> <span class="n">a</span>
+            <span class="n">face_areas</span> <span class="o">+=</span> <span class="n">n</span>
+
+        <span class="n">face_centers</span> <span class="o">/=</span> <span class="p">(</span><span class="n">area_sums</span> <span class="o">*</span> <span class="mf">3.0</span><span class="p">)</span>
+        <span class="n">face_areas</span> <span class="o">*=</span> <span class="mf">0.5</span>
+
+        <span class="k">return</span> <span class="n">face_centers</span><span class="p">,</span> <span class="n">face_areas</span></div>
+
+<div class="viewcode-block" id="FOAMMesh._compute_cell_centers_and_volumes"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMMesh._compute_cell_centers_and_volumes">[docs]</a>    <span class="k">def</span> <span class="nf">_compute_cell_centers_and_volumes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Compute the cell centers and volumes of an OpenFOAM mesh.</span>
+
+<span class="sd">        The implemented algorithm is close to the one in makeCellCentresAndVols_.</span>
+<span class="sd">        The following steps are involved:</span>
+
+<span class="sd">        1. compute an estimate of the cell center as the average over all face centers</span>
+<span class="sd">        2. compute centroids and volumes of all pyramids formed by the cell faces and</span>
+<span class="sd">           and the center estimate</span>
+<span class="sd">        3. the cell volume equals the sum over all pyramid volumes</span>
+<span class="sd">        4. the cell center is the volume-weighted average of all pyramid centroids</span>
+
+<span class="sd">        .. _makeCellCentresAndVols: https://www.openfoam.com/documentation/guides/latest/api/primitiveMeshCellCentresAndVols_8C_source.html</span>
+
+<span class="sd">        :param mesh_path: mesh location</span>
+<span class="sd">        :type mesh_path: str</span>
+<span class="sd">        :return: tuple of two tensors; the first one holds the cell centers and</span>
+<span class="sd">            the second one holds the cell volumes</span>
+<span class="sd">        :rtype: Tuple[pt.Tensor, pt.Tensor]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_points</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">)</span>
+        <span class="n">n_points_faces</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_faces</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">)</span>
+        <span class="n">owners</span><span class="p">,</span> <span class="n">neighbors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_owners_and_neighbors</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">)</span>
+        <span class="n">face_centers</span><span class="p">,</span> <span class="n">face_areas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_face_centers_and_areas</span><span class="p">(</span>
+            <span class="n">points</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">n_points_faces</span>
+        <span class="p">)</span>
+        <span class="n">n_cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_n_cells</span><span class="p">(</span><span class="n">mesh_path</span><span class="p">)</span>
+        <span class="n">cell_centers</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cells</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+        <span class="n">cell_volumes</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dtype</span><span class="p">)</span>
+        <span class="n">center_estimate</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">cell_centers</span><span class="p">)</span>
+        <span class="n">n_faces_cell</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_cells</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_itype</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">owner</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">owners</span><span class="p">):</span>
+            <span class="n">center_estimate</span><span class="p">[</span><span class="n">owner</span><span class="p">]</span> <span class="o">+=</span> <span class="n">face_centers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">n_faces_cell</span><span class="p">[</span><span class="n">owner</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">neigh</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">neighbors</span><span class="p">):</span>
+            <span class="n">center_estimate</span><span class="p">[</span><span class="n">neigh</span><span class="p">]</span> <span class="o">+=</span> <span class="n">face_centers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">n_faces_cell</span><span class="p">[</span><span class="n">neigh</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">center_estimate</span> <span class="o">/=</span> <span class="n">n_faces_cell</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">owner</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">owners</span><span class="p">):</span>
+            <span class="n">pyr_3vol</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
+                <span class="n">face_areas</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">face_centers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">center_estimate</span><span class="p">[</span><span class="n">owner</span><span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="n">pyr_ctr</span> <span class="o">=</span> <span class="mf">3.0</span><span class="o">/</span><span class="mf">4.0</span> <span class="o">*</span> <span class="n">face_centers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">center_estimate</span><span class="p">[</span><span class="n">owner</span><span class="p">]</span> <span class="o">/</span> <span class="mf">4.0</span>
+            <span class="n">cell_centers</span><span class="p">[</span><span class="n">owner</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pyr_3vol</span> <span class="o">*</span> <span class="n">pyr_ctr</span>
+            <span class="n">cell_volumes</span><span class="p">[</span><span class="n">owner</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pyr_3vol</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">neigh</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">neighbors</span><span class="p">):</span>
+            <span class="n">pyr_3vol</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
+                <span class="n">face_areas</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">center_estimate</span><span class="p">[</span><span class="n">neigh</span><span class="p">]</span> <span class="o">-</span> <span class="n">face_centers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">pyr_ctr</span> <span class="o">=</span> <span class="mf">3.0</span><span class="o">/</span><span class="mf">4.0</span> <span class="o">*</span> <span class="n">face_centers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">center_estimate</span><span class="p">[</span><span class="n">neigh</span><span class="p">]</span> <span class="o">/</span> <span class="mf">4.0</span>
+            <span class="n">cell_centers</span><span class="p">[</span><span class="n">neigh</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pyr_3vol</span> <span class="o">*</span> <span class="n">pyr_ctr</span>
+            <span class="n">cell_volumes</span><span class="p">[</span><span class="n">neigh</span><span class="p">]</span> <span class="o">+=</span> <span class="n">pyr_3vol</span>
+
+        <span class="n">cell_centers</span> <span class="o">/=</span> <span class="n">cell_volumes</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">cell_volumes</span> <span class="o">/=</span> <span class="mf">3.0</span>
+
+        <span class="k">return</span> <span class="n">cell_centers</span><span class="p">,</span> <span class="n">cell_volumes</span></div>
+
+    <span class="k">def</span> <span class="nf">_load_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load or compute cell volumes and centers.</span>
+
+<span class="sd">        .. warning:: For distributed cases, individual processor fields</span>
+<span class="sd">        are simply concatenated. This reconstruction does not yield volumes</span>
+<span class="sd">        and centers in the same order as the reconstructed OpenFOAM mesh.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_distributed</span><span class="p">:</span>
+            <span class="n">proc_data</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">proc</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_processors</span><span class="p">):</span>
+                <span class="n">mesh_location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> \
+                    <span class="s2">&quot;/processor</span><span class="si">{:d}</span><span class="s2">/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">proc</span><span class="p">)</span> <span class="o">+</span> <span class="n">POLYMESH_PATH</span>
+                <span class="n">proc_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_compute_cell_centers_and_volumes</span><span class="p">(</span><span class="n">mesh_location</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="n">centers</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">proc_data</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">volumes</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">proc_data</span><span class="p">))[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_centers_and_volumes_computed</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">CONSTANT_PATH</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Loading precomputed cell centers and volumes from </span><span class="si">{</span><span class="n">CONSTANT_PATH</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">centers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_cell_centers</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">CONSTANT_PATH</span><span class="p">)</span>
+                <span class="n">volumes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_cell_volumes</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">CONSTANT_PATH</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mesh_location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_case</span><span class="o">.</span><span class="n">_path</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">POLYMESH_PATH</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">&quot;Could not find precomputed cell centers and volumes.</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                    <span class="s2">&quot;Computing cell geometry from scratch (slow, not recommended for large meshes).</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                    <span class="s2">&quot;To compute cell centers and volumes in OpenFOAM, run:</span><span class="se">\n\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                    <span class="s2">&quot;postProcess -func </span><span class="se">\&quot;</span><span class="s2">writeCellCentres</span><span class="se">\&quot;</span><span class="s2"> -constant -time none</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>
+                    <span class="s2">&quot;postProcess -func </span><span class="se">\&quot;</span><span class="s2">writeCellVolumes</span><span class="se">\&quot;</span><span class="s2"> -constant -time none&quot;</span>
+                <span class="p">)</span>
+                <span class="n">centers</span><span class="p">,</span> <span class="n">volumes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_cell_centers_and_volumes</span><span class="p">(</span>
+                    <span class="n">mesh_location</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cell_centers</span> <span class="o">=</span> <span class="n">centers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cell_volumes</span> <span class="o">=</span> <span class="n">volumes</span>
+
+<div class="viewcode-block" id="FOAMMesh.get_cell_centers"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMMesh.get_cell_centers">[docs]</a>    <span class="k">def</span> <span class="nf">get_cell_centers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return or compute and return control volume centers.</span>
+
+<span class="sd">        :return: control volume centers</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_centers</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_load_mesh</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_centers</span></div>
+
+<div class="viewcode-block" id="FOAMMesh.get_cell_volumes"><a class="viewcode-back" href="../../../flowtorch.data.html#flowtorch.data.foam_dataloader.FOAMMesh.get_cell_volumes">[docs]</a>    <span class="k">def</span> <span class="nf">get_cell_volumes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pt</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return or compute and return cell volumes.</span>
+
+<span class="sd">        :return: cell volumes</span>
+<span class="sd">        :rtype: pt.Tensor</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_volumes</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_load_mesh</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_volumes</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, flowTorch contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
